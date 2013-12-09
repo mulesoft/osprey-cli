@@ -6,5 +6,8 @@
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.1"
+  },
+  "dependencies": {
+    "swig": "~1.2.2"
   }
 }

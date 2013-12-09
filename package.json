@@ -1,0 +1,10 @@
+{
+  "author": "RAML Toolkit",
+  "name": "raml-toolkit",
+  "description": "RAML Toolkit",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "grunt": "~0.4.1"
+  }
+}

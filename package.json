@@ -4,8 +4,12 @@
   "description": "RAML Toolkit",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
   "devDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.7.0"
   },
   "dependencies": {
     "swig": "~1.2.2"

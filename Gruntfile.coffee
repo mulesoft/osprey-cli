@@ -12,7 +12,10 @@ module.exports = (grunt) ->
         ext: '.js'
 
     coffeelint:
-      app: ['src/**/*.coffee']
+      app: ['src/**/*.coffee'],
+      options:
+        max_line_length:
+          level: 'ignore'
 
     clean:
       build: ['dist']

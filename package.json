@@ -13,6 +13,8 @@
     "grunt-coffeelint": "0.0.8"
   },
   "dependencies": {
-    "swig": "~1.2.2"
+    "swig": "~1.2.2",
+    "commander": "~2.1.0",
+    "simply-log": "~0.2.6"
   }
 }

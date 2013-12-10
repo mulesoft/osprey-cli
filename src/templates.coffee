@@ -1,6 +1,6 @@
 swig  = require 'swig'
+templatePath = 'templates/node/express'
 
-console.log swig.renderFile('templates/get.swig', {
-  pagename: 'awesome people',
-  authors: ['Paul', 'Jim', 'Jane']
+console.log swig.renderFile("#{ templatePath }/get.swig", {
+  example: '{ username: req.user.username, email: req.user.email }'
 })

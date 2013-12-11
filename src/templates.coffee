@@ -11,11 +11,11 @@ console.log swig.renderFile("#{ templatePath }/get.swig", {
 class Scaffolder
   constructor: (@logger) ->
 
-  generate: (raml) ->
+  generate: (resources) ->
     @logger.debug 'Starting scaffolder'
-    for resource in raml.resources
+    for resource in resources
       do (resource) ->
-        for operation in resource.operations
+        for method in resource.methods
           do (operation) ->
             console.log operation.name
             console.log swig.renderFile "#{ templatePath }/#{ operation.name }.swig", {

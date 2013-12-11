@@ -8,6 +8,13 @@ class ToolkitParser
   getResources: ->
     @resources
 
+  getResourcesList: ->
+    resourceList = []
+    for key,resource of @resources
+      resource.uri = key
+      resourceList.push resource
+    resourceList
+
   getProtocols: ->
     @raml.protocols
 

@@ -5,43 +5,31 @@ parser = require './parser/toolkit-parser'
 swig  = require 'swig'
 templatePath = 'templates/node/express'
 
-console.log swig.renderFile("#{ templatePath }/get.swig", {
-  example: '{ username: req.user.username, email: req.user.email }'
-})
-
 class Scaffolder
   constructor: (@logger) ->
 
   generate: (resources) ->
-    parser.loadRaml('./examples/leagues/leagues.raml', (toolkitParser) ->
-      console.log toolkitParser.getResourcesList()
-    )
-
+    maps = []
     @logger.debug 'Starting scaffolder'
     for resource in resources
       do (resource) ->
+        maps.push({ uri: resource.uri, templates: [] })
+        console.log resource.uri
         for method in resource.methods
-          do (operation) ->
-            console.log operation.name
-            console.log swig.renderFile "#{ templatePath }/#{ operation.name }.swig", {
-              example: 'test'
-            }
+          temp = maps[maps.length - 1]
+          do (method) ->
+            temp.templates.push(
+              swig.renderFile "#{ templatePath }/#{ method.method }.swig", {
+                uri: resource.uri,
+                example: method.body?['application/json']?.example?
+              })
+            console.log temp
 
 #Example usage
 log = logger.consoleLogger 'raml-toolkit'
 log.setLevel logger.DEBUG
 
-scaffolder = new Scaffolder log
-scaffolder.generate {
-  resources: [{
-    uri: '/services',
-    operations: [{
-      name: 'get'
-    }, {
-      name: 'post'
-    }]
-  }, {
-    uri: '/consumers',
-    operations: []
-  }]
-}
+parser.loadRaml('./examples/leagues/leagues.raml', (toolkitParser) ->
+  scaffolder = new Scaffolder log
+  scaffolder.generate toolkitParser.getResourcesList()
+)

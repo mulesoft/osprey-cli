@@ -1,3 +1,3 @@
-exports.get = (req, res) ->
-  res.json({{example}})
-  res.end()
+app.get('{{uri}}', (req, res) ->
+  res.send({{example}})
+)

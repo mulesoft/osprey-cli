@@ -1,5 +1,6 @@
 # TODO: remove this dependency
 logger = require 'simply-log'
+parser = require './parser/toolkit-parser'
 
 swig  = require 'swig'
 templatePath = 'templates/node/express'
@@ -12,6 +13,10 @@ class Scaffolder
   constructor: (@logger) ->
 
   generate: (resources) ->
+    parser.loadRaml('./examples/leagues/leagues.raml', (toolkitParser) ->
+      console.log toolkitParser.getResourcesList()
+    )
+
     @logger.debug 'Starting scaffolder'
     for resource in resources
       do (resource) ->

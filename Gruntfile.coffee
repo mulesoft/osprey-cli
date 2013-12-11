@@ -27,6 +27,12 @@ module.exports = (grunt) ->
         cwd: 'src',
         src: 'templates/**/*.swig',
         dest: 'dist/'
+      examples:
+        expand: true,
+        flatten: false,
+        cwd: 'src',
+        src: 'examples/leagues/**/*.*',
+        dest: 'dist/'
 
     watch:
       coffee:
@@ -37,6 +43,11 @@ module.exports = (grunt) ->
       swig:
         files: ['src/**/*.swig'],
         tasks: ['copy:templates'],
+        options:
+          atBegin: true
+      examples:
+        files: ['src/**/*.raml'],
+        tasks: ['copy:examples'],
         options:
           atBegin: true
   )

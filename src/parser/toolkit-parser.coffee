@@ -12,7 +12,7 @@ class ToolkitParser
     resourceList = []
     for key,resource of @resources
       resourceCopy = clone resource
-      resourceCopy.uri = key
+      resourceCopy.uri = key.replace(/{(.*?)}/g,":$1")
       resourceList.push resourceCopy
     resourceList
 

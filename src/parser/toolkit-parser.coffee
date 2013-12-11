@@ -11,8 +11,9 @@ class ToolkitParser
   getResourcesList: ->
     resourceList = []
     for key,resource of @resources
-      resource.uri = key
-      resourceList.push resource
+      resourceCopy = clone resource
+      resourceCopy.uri = key
+      resourceList.push resourceCopy
     resourceList
 
   getProtocols: ->
@@ -34,9 +35,33 @@ class ToolkitParser
     if resource.resources?
       this._processResource x, resourceMap, uri + x.relativeUri for x in resource.resources
 
-    resourceMap[uri] = resource
+    resourceMap[uri] = clone resource
     delete resourceMap[uri].relativeUri
     delete resourceMap[uri]?.resources
+
+
+
+clone = (obj) ->
+  if not obj? or typeof obj isnt 'object'
+    return obj
+
+  if obj instanceof Date
+    return new Date(obj.getTime())
+
+  if obj instanceof RegExp
+    flags = ''
+    flags += 'g' if obj.global?
+    flags += 'i' if obj.ignoreCase?
+    flags += 'm' if obj.multiline?
+    flags += 'y' if obj.sticky?
+    return new RegExp(obj.source, flags)
+
+  newInstance = new obj.constructor()
+
+  for key of obj
+    newInstance[key] = clone obj[key]
+
+  return newInstance
 
 
 exports.loadRaml = (filePath, callback) ->

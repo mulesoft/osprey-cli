@@ -1,5 +1,5 @@
 parser = require("./toolkit-parser")
-should = require("should");
+should = require("should")
 parsedRaml = null
 
 describe 'TOOLKIT PARSER', ->
@@ -22,12 +22,12 @@ describe 'TOOLKIT PARSER', ->
       done()
 
   describe 'RESOURCES MAP', ->
-      it 'Should have 5 resources', (done) ->
-        resources = parsedRaml.getResources()
-        resources.should.be.an.instanceOf Object
-        resources.should.have.properties '/teams', '/teams/{teamId}', '/positions',
-          '/fixture', '/fixture/{homeTeamId}/{awayTeamId}'
-        done()
+    it 'Should have 5 resources', (done) ->
+      resources = parsedRaml.getResources()
+      resources.should.be.an.instanceOf Object
+      resources.should.have.properties '/teams', '/teams/{teamId}', '/positions',
+        '/fixture', '/fixture/{homeTeamId}/{awayTeamId}'
+      done()
 
   describe 'RESOURCES LIST', ->
     it 'Should have 5 resources', (done) ->

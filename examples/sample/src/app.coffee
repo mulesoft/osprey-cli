@@ -11,8 +11,36 @@ app.use(express.bodyParser())
 app.use(express.methodOverride())
 app.use(app.router)
 
+# toolkitParser.load 'raml', (parser) => {
+# 	@parser = parser
+# }
+
+# app.middle(ramlValidations (
+# 	raml: @parser.getResources
+# ))
+
+# class ramlValidations
+# 	@constructor: (uri, method) ->
+# 		rule rules.findbyuri uri
+
+# 		rule[method]
+
+# rules:
+# 	'/leages/:id':
+# 		get:
+# 			headers:
+# 				'content-type': 'application/json'
+# 			queryParam:
+# 				name:
+# 					required: true
+
+# rules[uri][method].queryParam
+
 app.get('/leagues', (req, res) ->
-  res.send({ name: 'test' })
+	if this.isValid('/leagues', 'GET')
+		res.send({ name: 'test' })
+	else
+		#anda a la goma
 )
 
 http.createServer(app).listen(app.get('port'), () ->

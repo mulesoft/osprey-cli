@@ -6,12 +6,11 @@ simplyLog = require 'simply-log'
 describe 'TOOLKIT SCAFFOLDER', ->
   before (done) ->
     @logger = simplyLog.consoleLogger 'raml-toolkit'
-    #@logger.setLevel simplyLog.DEBUG
     @templatePath = './src/templates/node/express'
 
     parser.loadRaml "./examples/leagues/leagues.raml", @logger, (toolkitParser) =>
       @parsedRaml = toolkitParser
-      @scaffolder = new Scaffolder './src/templates/node/express', @logger
+      @scaffolder = new Scaffolder './src/templates/node/express', @logger, @fileWriter
       done()
 
   describe 'SCAFFOLDER READ RAML RESOURCES', ->
@@ -28,6 +27,22 @@ describe 'TOOLKIT SCAFFOLDER', ->
       resources[2].templates.should.have.lengthOf 1
       resources[3].templates.should.have.lengthOf 2
       resources[4].templates.should.have.lengthOf 1
+
+      done()
+
+  describe 'SCAFFOLDER GENERATE BASE APP', ->
+    it 'Should correctly generate the base app for Express Templates', (done) ->
+      fileWriter = new (class FileWriter
+        writeFile:  (target, content) =>
+          @target = target
+          @content = content
+      )
+
+      scaffolder = new Scaffolder './src/templates/node/express', @logger, fileWriter
+      scaffolder.generateBaseApp '/target'
+
+      fileWriter.target.should.eql '/target'
+      fileWriter.content.should.eql "express = require('express')\nhttp = require('http')\npath = require('path')\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n.coffee"
 
       done()
 

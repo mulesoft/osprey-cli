@@ -9,7 +9,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
     #@logger.setLevel simplyLog.DEBUG
     @templatePath = './src/templates/node/express'
 
-    parser.loadRaml "./src/examples/leagues/leagues.raml", (toolkitParser) =>
+    parser.loadRaml "./examples/leagues/leagues.raml", (toolkitParser) =>
       @parsedRaml = toolkitParser
       @scaffolder = new Scaffolder './src/templates/node/express', @logger
       done()

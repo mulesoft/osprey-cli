@@ -3,7 +3,7 @@ should = require 'should'
 
 describe 'TOOLKIT PARSER', ->
   before (done) ->
-    parser.loadRaml "./src/examples/leagues/leagues.raml",(toolkitParser) =>
+    parser.loadRaml "./examples/leagues/leagues.raml",(toolkitParser) =>
       @parsedRaml = toolkitParser
       done()
 

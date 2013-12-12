@@ -1,29 +1,28 @@
-parser = require("../src/toolkit-parser")
-should = require("should")
-parsedRaml = null
+parser = require '../src/toolkit-parser'
+should = require 'should'
 
 describe 'TOOLKIT PARSER', ->
   before (done) ->
-    parser.loadRaml "./src/examples/leagues/leagues.raml",(toolkitParser) ->
-      parsedRaml = toolkitParser
+    parser.loadRaml "./src/examples/leagues/leagues.raml",(toolkitParser) =>
+      @parsedRaml = toolkitParser
       done()
 
   describe 'RAML PARSER DATA ELEMENT', ->
     it 'Should contain at least base properties: title,version,baseUri', (done)->
-      raml = parsedRaml.getRaml()
+      raml = @parsedRaml.getRaml()
       raml.should.have.property 'title', 'La Liga'
       raml.should.have.property 'version', '1.0'
       raml.should.have.property 'baseUri', 'http://localhost:8080/api'
       done()
     it 'Should contain 3 parent resources and 1st resources shoud have 2 methods', (done)->
-      raml = parsedRaml.getRaml()
+      raml = @parsedRaml.getRaml()
       raml.should.have.property('resources').with.a.lengthOf(3)
       raml.resources[0].should.have.property('methods').with.a.lengthOf(2)
       done()
 
   describe 'RESOURCES MAP', ->
     it 'Should have 5 resources', (done) ->
-      resources = parsedRaml.getResources()
+      resources = @parsedRaml.getResources()
       resources.should.be.an.instanceOf Object
       resources.should.have.properties '/teams', '/teams/{teamId}', '/positions',
         '/fixture', '/fixture/{homeTeamId}/{awayTeamId}'
@@ -31,7 +30,7 @@ describe 'TOOLKIT PARSER', ->
 
   describe 'RESOURCES LIST', ->
     it 'Should have 5 resources', (done) ->
-      resources = parsedRaml.getResourcesList()
+      resources = @parsedRaml.getResourcesList()
       resources.should.be.an.instanceOf Object
       resources[0].should.have.property 'uri', '/teams/:teamId'
       resources[1].should.have.property 'uri', '/teams'

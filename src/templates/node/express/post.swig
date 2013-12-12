@@ -1,1 +1,1 @@
-post!!
+app.post('{{uri}}', (req, res) ->)

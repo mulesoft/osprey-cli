@@ -2,25 +2,34 @@ parser = require './toolkit-parser'
 swig  = require 'swig'
 
 class Scaffolder
-  constructor: (@logger, @templatePath) ->
+  constructor: (@templatePath, @logger) ->
 
-  generate: (resources) ->
-    maps = []
+  generate: (resources) =>
     @logger.debug 'Starting scaffolder'
+    @readResources resources
 
-    for resource in resources
-      do (resource) =>
-        maps.push({ uri: resource.uri, templates: [] })
+  readResources: (ramlResources) =>
+    @logger.debug 'Reading RAML resources'
 
-        for method in resource.methods
-          temp = maps[maps.length - 1]
+    resources = []
+
+    for ramlResource in ramlResources
+      do (ramlResource) =>
+        resource = { uri: ramlResource.uri, templates: [] }
+
+        for method in ramlResource.methods
           do (method) =>
-            temp.templates.push(
-              swig.renderFile "#{ @templatePath }/#{ method.method }.swig", {
-                uri: resource.uri,
-                example: method.body?['application/json']?.example?
-              })
+            resource.templates.push @renderTemplateFor method, ramlResource.uri
 
-    maps
+        resources.push resource
+
+    resources
+
+  renderTemplateFor: (method, baseUri) =>
+    @logger.debug "Rendering #{ method.method } template for #{ baseUri }"
+
+    swig.renderFile "#{ @templatePath }/#{ method.method }.swig",
+      uri: baseUri,
+      example: method.body?['application/json']?.example?
 
 module.exports = Scaffolder

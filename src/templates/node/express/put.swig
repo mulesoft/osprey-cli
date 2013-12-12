@@ -1,1 +1,1 @@
-put!!
+app.put('{{uri}}', (req, res) ->)

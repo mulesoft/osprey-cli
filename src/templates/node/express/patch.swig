@@ -1,1 +1,1 @@
-patch!!
+app.patch('{{uri}}', (req, res) ->)

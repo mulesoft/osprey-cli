@@ -1,1 +1,1 @@
-trace!!
+app.trace('{{uri}}', (req, res) ->)

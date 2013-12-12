@@ -1,1 +1,1 @@
-delete!!!
+app.delete('{{uri}}', (req, res) ->)

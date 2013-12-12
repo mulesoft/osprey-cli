@@ -1,3 +1,1 @@
-app.get('{{uri}}', (req, res) ->
-  res.send({{example}})
-)
+app.get('{{uri}}', (req, res) ->)

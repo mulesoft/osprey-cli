@@ -1,1 +1,1 @@
-options!!
+app.options('{{uri}}', (req, res) ->)

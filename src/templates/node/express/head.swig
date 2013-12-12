@@ -1,1 +1,1 @@
-head!!
+app.head('{{uri}}', (req, res) ->)

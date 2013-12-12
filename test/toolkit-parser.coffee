@@ -28,8 +28,8 @@ describe 'TOOLKIT PARSER', ->
     it 'Should have 5 resources', (done) ->
       resources = @parsedRaml.getResources()
       resources.should.be.an.instanceOf Object
-      resources.should.have.properties '/teams', '/teams/{teamId}', '/positions',
-        '/fixture', '/fixture/{homeTeamId}/{awayTeamId}'
+      resources.should.have.properties '/teams', '/teams/:teamId', '/positions',
+        '/fixture', '/fixture/:homeTeamId/:awayTeamId'
       done()
 
   describe 'RESOURCES LIST', ->

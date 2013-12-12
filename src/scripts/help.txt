@@ -1,6 +1,0 @@
-  Examples:
-
-    $ raml-toolkit api.raml
-    $ raml-toolkit -t ruby-sinatra api.raml
-    $ raml-toolkit -t java-play api.raml
-    $ raml-toolkit -t clojure-compojure api.raml

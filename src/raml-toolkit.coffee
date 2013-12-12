@@ -70,14 +70,14 @@ catch e
   log.error "Error: Invalid target folder."
 
 # Validate RAML parameter
-throw "Error: Missing RAML parameter." if program.args.length is 0
-throw "Error: Invalid RAML parameter." if program.args.length isnt 1
+throw new Error "Error: Missing RAML parameter." if program.args.length is 0
+throw new Error "Error: Invalid RAML parameter." if program.args.length isnt 1
 ramlFile = program.args[0]
 
 
 # Parse RAML
 parser = require './toolkit-parser'
 
-parser.loadRaml ramlFile, log, (toolkitParser) =>
+parser.loadRaml ramlFile, log, (toolkitParser) ->
   scaffolder = new Scaffolder program.template, log
   scaffolder.generate toolkitParser.getResourcesList(), program.target

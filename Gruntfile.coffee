@@ -17,6 +17,13 @@ module.exports = (grunt) ->
         max_line_length:
           level: 'ignore'
 
+    mochaTest:
+      test:
+        options:
+          reporter: 'spec',
+          require: 'coffee-script'
+        src: ['test/**/*.coffee']
+
     clean:
       build: ['dist']
 
@@ -35,19 +42,9 @@ module.exports = (grunt) ->
         dest: 'dist/'
 
     watch:
-      coffee:
+      development:
         files: ['src/**/*.coffee'],
-        tasks: ['coffeelint', 'coffee'],
-        options:
-          atBegin: true
-      swig:
-        files: ['src/**/*.swig'],
-        tasks: ['copy:templates'],
-        options:
-          atBegin: true
-      examples:
-        files: ['src/**/*.raml'],
-        tasks: ['copy:examples'],
+        tasks: ['coffeelint', 'mochaTest'],
         options:
           atBegin: true
   )
@@ -57,5 +54,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-coffeelint')
+  grunt.loadNpmTasks('grunt-mocha-test')
 
   grunt.registerTask('default', ['clean:build', 'watch'])
+
+  grunt.registerTask('release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'copy:templates', 'copy:examples'])

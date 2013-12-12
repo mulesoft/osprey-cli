@@ -1,10 +1,10 @@
-parser = require("./toolkit-parser")
+parser = require("../src/toolkit-parser")
 should = require("should")
 parsedRaml = null
 
 describe 'TOOLKIT PARSER', ->
   before (done) ->
-    parser.loadRaml "../examples/leagues/leagues.raml",(toolkitParser) ->
+    parser.loadRaml "./src/examples/leagues/leagues.raml",(toolkitParser) ->
       parsedRaml = toolkitParser
       done()
 
@@ -39,9 +39,3 @@ describe 'TOOLKIT PARSER', ->
       resources[3].should.have.property 'uri', '/fixture/:homeTeamId/:awayTeamId'
       resources[4].should.have.property 'uri', '/fixture'
       done()
-
-
-
-
-
-

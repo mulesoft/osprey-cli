@@ -1,9 +1,13 @@
 parser = require '../src/toolkit-parser'
 should = require 'should'
+simplyLog = require 'simply-log'
 
 describe 'TOOLKIT PARSER', ->
   before (done) ->
-    parser.loadRaml "./examples/leagues/leagues.raml",(toolkitParser) =>
+    @logger = simplyLog.consoleLogger 'raml-toolkit'
+    #@logger.setLevel simplyLog.DEBUG
+
+    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (toolkitParser) =>
       @parsedRaml = toolkitParser
       done()
 
@@ -37,4 +41,23 @@ describe 'TOOLKIT PARSER', ->
       resources[2].should.have.property 'uri', '/positions'
       resources[3].should.have.property 'uri', '/fixture/:homeTeamId/:awayTeamId'
       resources[4].should.have.property 'uri', '/fixture'
+      done()
+
+  describe 'SECURITY SCHEMES', ->
+    it 'Should have the correct structure of Oauth', (done)->
+      schemes = @parsedRaml.getSecuritySchemes()
+      schemes[0].should.have.property "oauth_2_0"
+      schemes[0]["oauth_2_0"].settings.should.have.property "authorizationUri", "https://www.dropbox.com/1/oauth2/authorize"
+      schemes[0]["oauth_2_0"].settings.should.have.property "accessTokenUri", "https://api.dropbox.com/1/oauth2/token"
+      schemes[0]["oauth_2_0"].settings.authorizationGrants.should.have.length 2
+      schemes[0]["oauth_2_0"].settings.authorizationGrants.should.include "code"
+      schemes[0]["oauth_2_0"].settings.authorizationGrants.should.include "token"
+      done()
+
+  describe 'PROTOCOLS', ->
+    it 'Should return an array with HTTP, HTTPS protocols', (done)->
+      protocols = @parsedRaml.getProtocols()
+      protocols.should.have.length 2
+      protocols.should.include 'HTTPS'
+      protocols.should.include 'HTTP'
       done()

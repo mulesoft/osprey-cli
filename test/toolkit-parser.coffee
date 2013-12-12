@@ -7,7 +7,7 @@ describe 'TOOLKIT PARSER', ->
     @logger = simplyLog.consoleLogger 'raml-toolkit'
     #@logger.setLevel simplyLog.DEBUG
 
-    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (toolkitParser) =>
+    parser.loadRaml "./examples/leagues/leagues.raml", (toolkitParser) =>
       @parsedRaml = toolkitParser
       done()
 

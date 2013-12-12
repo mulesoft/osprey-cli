@@ -1,10 +1,15 @@
 ramlParser = require 'raml-parser'
+simplyLog = require 'simply-log'
+
+
 class ToolkitParser
   constructor: (data, @logger)->
+    @logger = simplyLog.consoleLogger 'toolkit-parser' if arguments.length == 1
     @logger.debug "Building ToolkitParser instance"
     @raml = data
     @resources = {}
     @_generateResources()
+
 
   getResources: ->
     @logger.debug "Getting Resources"
@@ -73,6 +78,10 @@ clone = (obj) ->
 
 
 exports.loadRaml = (filePath, loggerObj, callback) ->
+  if arguments.length == 2
+    callback = loggerObj
+    loggerObj = simplyLog.consoleLogger 'toolkit-parser'
+
   loggerObj.debug "Parsing RAML file #{filePath}"
   ramlParser.loadFile(filePath).then(
     (data) ->

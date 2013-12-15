@@ -1,1 +1,3 @@
-app.trace('{{uri}}', (req, res) ->)
+exports.trace = function(req, res){
+  //// Add your code here
+};

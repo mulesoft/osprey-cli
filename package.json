@@ -20,6 +20,7 @@
     "swig": "~1.2.2",
     "commander": "~2.1.0",
     "simply-log": "~0.2.6",
-    "raml-parser": "0.8.4"
+    "raml-parser": "0.8.4",
+    "lingo": "0.0.5"
   }
 }

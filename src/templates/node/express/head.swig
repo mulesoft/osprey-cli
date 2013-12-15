@@ -1,1 +1,3 @@
-app.head('{{uri}}', (req, res) ->)
+exports.head = function(req, res){
+  //// Add your code here
+};

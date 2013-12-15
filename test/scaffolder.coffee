@@ -30,7 +30,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       done()
 
-  describe 'SCAFFOLDER GENERATE BASE APP', ->
+  describe 'SCAFFOLDER GENERATION', ->
     it 'Should correctly generate the base app for Express Templates', (done) ->
       fileWriter = new (class FileWriter
         writeFile:  (target, content) =>
@@ -39,21 +39,44 @@ describe 'TOOLKIT SCAFFOLDER', ->
       )
 
       scaffolder = new Scaffolder './src/templates/node/express', @logger, fileWriter
-      scaffolder.generateBaseApp '/target'
+      scaffolder.generateBaseApp '/target', [
+        name: 'team'
+        uri: '/team'
+        methods: [
+          { name: 'get'}
+          { name: 'post' }
+        ]
+      ]
 
       fileWriter.target.should.eql '/target'
-      fileWriter.content.should.eql "express = require('express')\nhttp = require('http')\npath = require('path')\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n.coffee"
+      fileWriter.content.should.eql "express = require('express')\nhttp = require('http')\npath = require('path')\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\n\n  \n    app.get('/team', team.get)\n  \n    app.get('/team', team.post)\n  \n\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n.coffee"
 
       done()
 
-  describe 'SCAFFOLDER RENDER TEMPLATE', ->
+    it 'Should correctly generate a resource file', (done) ->
+      fileWriter = new (class FileWriter
+        writeFile:  (target, content) =>
+          @target = target
+          @content = content
+      )
+
+      scaffolder = new Scaffolder './src/templates/node/express', @logger, fileWriter
+      resources = scaffolder.generate(@parsedRaml.getResourcesList())
+
+      scaffolder.generateResourceFile '/target', resources[0]
+
+      fileWriter.target.should.eql '/target/resources'
+
+      done()
+
+  describe 'SCAFFOLDER RENDERING', ->
     it 'Should correctly render a template for GET method', (done) ->
       method =
         method: 'GET'
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.get(\'/resource\', (req, res) ->)")
+      template.should.include("exports.get = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -63,7 +86,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.post(\'/resource\', (req, res) ->)")
+      template.should.include("exports.post = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -73,7 +96,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.put(\'/resource\', (req, res) ->)")
+      template.should.include("exports.put = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -83,7 +106,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.delete(\'/resource\', (req, res) ->)")
+      template.should.include("exports.delete = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -93,7 +116,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.head(\'/resource\', (req, res) ->)")
+      template.should.include("exports.head = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -103,7 +126,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.options(\'/resource\', (req, res) ->)")
+      template.should.include("exports.options = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -113,7 +136,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.trace(\'/resource\', (req, res) ->)")
+      template.should.include("exports.trace = function(req, res){\n  //// Add your code here\n};")
 
       done()
 
@@ -123,6 +146,6 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       template = @scaffolder.renderTemplateFor method, '/resource'
       template.should.be.type('string')
-      template.should.include("app.patch(\'/resource\', (req, res) ->)")
+      template.should.include("exports.patch = function(req, res){\n  //// Add your code here\n};")
 
       done()

@@ -1,1 +1,3 @@
-app.put('{{uri}}', (req, res) ->)
+exports.put = function(req, res){
+  //// Add your code here
+};

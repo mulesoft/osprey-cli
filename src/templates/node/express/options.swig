@@ -1,1 +1,3 @@
-app.options('{{uri}}', (req, res) ->)
+exports.options = function(req, res){
+  //// Add your code here
+};

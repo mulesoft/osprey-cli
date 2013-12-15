@@ -1,1 +1,3 @@
-app.post('{{uri}}', (req, res) ->)
+exports.post = function(req, res){
+  //// Add your code here
+};

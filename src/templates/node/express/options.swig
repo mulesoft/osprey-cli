@@ -1,3 +1,2 @@
-exports.options = function(req, res){
-  //// Add your code here
-};
+exports.options = (req, res) ->
+  #Add your code here

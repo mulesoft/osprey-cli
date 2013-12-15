@@ -1,6 +1,6 @@
-express = require('express')
-http = require('http')
-path = require('path')
+express = require 'express'
+http = require 'http'
+path = require 'path'
 
 app = express()
 
@@ -13,7 +13,7 @@ app.use(app.router)
 
 {% for resource in resources %}
   {% for method in resource.methods %}
-    app.get('{{resource.uri}}', {{resource.name}}.{{method.name}})
+app.get('{{resource.uri}}', {{resource.name}}.{{method.name}})
   {% endfor %}
 {% endfor %}
 

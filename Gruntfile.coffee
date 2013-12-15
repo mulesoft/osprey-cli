@@ -40,6 +40,12 @@ module.exports = (grunt) ->
         cwd: 'src',
         src: 'examples/leagues/**/*.*',
         dest: 'dist/'
+      assets:
+        expand: true,
+        flatten: false,
+        cwd: 'src',
+        src: 'assets/**/*.*',
+        dest: 'dist/'
 
     watch:
       development:
@@ -58,4 +64,4 @@ module.exports = (grunt) ->
 
   grunt.registerTask('default', ['clean:build', 'watch'])
 
-  grunt.registerTask('release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'copy:templates', 'copy:examples'])
+  grunt.registerTask('release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'copy'])

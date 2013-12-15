@@ -1,3 +1,2 @@
-exports.put = function(req, res){
-  //// Add your code here
-};
+exports.put = (req, res) ->
+  #Add your code here

@@ -20,7 +20,7 @@ config = require '../package.json'
 
 program.version config.version
 program.usage '[options] <raml-file or path-to-raml>'
-program.option '-t, --template [template]', 'specify output template [node-express]', 'node-express'
+program.option '-t, --template [template]', 'specify output template [node-express]', 'templates/node/express'
 program.option '-T, --target [directory]', 'specify output directory', '.'
 program.option '-v, --verbose', 'set the verbose level of output'
 program.option '-q, --quiet', 'silence commands'
@@ -77,7 +77,8 @@ ramlFile = program.args[0]
 
 # Parse RAML
 parser = require './toolkit-parser'
+Scaffolder = require './scaffolder'
 
 parser.loadRaml ramlFile, log, (toolkitParser) ->
-  scaffolder = new Scaffolder program.template, log
+  scaffolder = new Scaffolder program.template, log, fs
   scaffolder.generate toolkitParser.getResourcesList(), program.target

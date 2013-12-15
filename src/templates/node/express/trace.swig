@@ -1,3 +1,2 @@
-exports.trace = function(req, res){
-  //// Add your code here
-};
+exports.trace = (req, res) ->
+  #Add your code here

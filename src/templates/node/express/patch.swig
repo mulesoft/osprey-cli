@@ -1,3 +1,2 @@
-exports.patch = function(req, res){
-  //// Add your code here
-};
+exports.patch = (req, res) ->
+  #Add your code here

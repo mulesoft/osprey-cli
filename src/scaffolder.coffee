@@ -7,30 +7,55 @@ class Scaffolder
   constructor: (@templatePath, @logger, @fileWriter) ->
 
   generate: (ramlResources, target) =>
-    @logger.debug 'Starting scaffolder'
+    @logger.debug '[Scaffolder] - Starting scaffolder'
+
     resources = @readResources ramlResources
+    @generateBaseApp target, resources
+    @generateResources target, resources
+    @generateDependenciesFile target
 
   generateBaseApp: (target, resources) =>
-    @logger.debug "Generating base app"
+    @logger.debug "[Scaffolder] - Generating base app"
 
     baseApp = swig.renderFile "#{ @templatePath }/app.swig",
       resources: resources
 
-    @fileWriter.writeFile target, "#{ baseApp }.coffee"
+    try
+      @fileWriter.writeFile path.join(target, "app.coffee"), baseApp
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
+
+  generateDependenciesFile: (target) =>
+    @logger.debug "[Scaffolder] - Generating Dependencies File"
+
+    try
+      dependencies = swig.renderFile path.join(@templatePath, "dependencies.swig")
+      @fileWriter.writeFile path.join(target, "package.json"), dependencies
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
+
+  generateResources: (target, resources) =>
+    @logger.debug "[Scaffolder] - Generating resources"
+    for resource in resources
+      do (resource) =>
+        @generateResourceFile target, resource
 
   generateResourceFile: (target, resource) =>
-    @logger.debug "Generating #{resource.name} file"
+    @logger.debug "[Scaffolder] - Generating #{resource.name} file"
 
     resourceTemplates = ""
 
     for template in resource.templates
       do (template) ->
-        resourceTemplates += template
+        resourceTemplates += "#{ template }\n\n"
 
-    @fileWriter.writeFile path.join(target, '/resources'), "#{ resource.name }.coffee"
+    try
+      @fileWriter.writeFile path.join(target, 'resources', "#{ resource.name }.coffee"), resourceTemplates
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
 
   readResources: (ramlResources) =>
-    @logger.debug 'Reading RAML resources'
+    @logger.debug '[Scaffolder] - Reading RAML resources'
 
     resources = []
 
@@ -54,10 +79,13 @@ class Scaffolder
     resources
 
   renderTemplateFor: (method, baseUri) =>
-    @logger.debug "Rendering #{ method.method } template for #{ baseUri }"
+    @logger.debug "[Scaffolder] - Rendering #{ method.method } template for #{ baseUri }"
 
-    swig.renderFile path.join(@templatePath, "#{ method.method }.swig"),
-      uri: baseUri,
-      example: method.body?['application/json']?.example?
+    try
+      swig.renderFile path.join(@templatePath, "#{ method.method }.swig"),
+        uri: baseUri,
+        example: method.body?['application/json']?.example?
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
 
 module.exports = Scaffolder

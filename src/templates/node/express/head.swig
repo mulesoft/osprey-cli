@@ -1,3 +1,2 @@
-exports.head = function(req, res){
-  //// Add your code here
-};
+exports.head = (req, res) ->
+  #Add your code here

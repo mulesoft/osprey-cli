@@ -12,10 +12,10 @@ log = logger.consoleLogger 'raml-toolkit'
 
 # Load file system
 fs = require 'fs'
+path = require 'path'
 
 # Set up commander
 program = require 'commander'
-
 config = require '../package.json'
 
 program.version config.version
@@ -48,7 +48,7 @@ log.debug "  - args: #{program.args}"
 log.debug " "
 
 # Validate template folder
-templateFolder = "#{__dirname}/templates/#{program.template.replace /-/, '/'}"
+templateFolder = "#{__dirname}/#{program.template.replace /-/, '/'}"
 log.debug "Template folder: #{templateFolder}"
 
 try
@@ -62,12 +62,15 @@ catch e
 # Validate target folder
 log.debug "Target folder: #{program.target}"
 
-try
-  folderStats = fs.lstatSync program.target
-  throw new Error unless folderStats.isDirectory
-catch e
-  log.debug "Target does not exist or is not a directory."
-  log.error "Error: Invalid target folder."
+# Create target folder if not exists
+unless fs.existsSync program.target
+  fs.mkdirSync program.target
+
+# Create resources folder
+resourcePath = path.join program.target, 'resources'
+
+unless fs.existsSync resourcePath
+  fs.mkdirSync resourcePath
 
 # Validate RAML parameter
 throw new Error "Error: Missing RAML parameter." if program.args.length is 0

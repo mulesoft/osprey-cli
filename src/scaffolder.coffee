@@ -92,9 +92,12 @@ class Scaffolder
     @logger.debug "[Scaffolder] - Rendering #{ method.method } template for #{ baseUri }"
 
     try
+      if method.responses?['200']?.body?['application/json']?.example?
+        example = method.responses['200'].body['application/json'].example
+
       swig.renderFile path.join(@templatePath, "#{ method.method }.swig"),
         uri: baseUri,
-        example: method.body?['application/json']?.example?
+        example: example
     catch e
       @logger.debug "[Scaffolder] - #{ e.message }"
 

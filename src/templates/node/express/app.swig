@@ -1,6 +1,9 @@
 express = require 'express'
 http = require 'http'
 path = require 'path'
+{% for resource in resources %}
+{{resource.name}} = require './resources/{{resource.name}}'
+{%- endfor %}
 
 app = express()
 

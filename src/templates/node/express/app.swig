@@ -11,11 +11,11 @@ app.use(express.bodyParser())
 app.use(express.methodOverride())
 app.use(app.router)
 
-{% for resource in resources %}
-  {% for method in resource.methods %}
-app.get('{{resource.uri}}', {{resource.name}}.{{method.name}})
-  {% endfor %}
-{% endfor %}
+{% for resource in resources -%}
+{% for method in resource.methods -%}
+app.{{method.name}}('{{resource.uri}}', {{resource.name}}.{{method.name}})
+{%- endfor %}
+{%- endfor %}
 
 http.createServer(app).listen(app.get('port'), () ->
   console.log('Express server listening on port ' + app.get('port'))

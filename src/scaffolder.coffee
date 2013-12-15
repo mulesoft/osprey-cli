@@ -13,6 +13,7 @@ class Scaffolder
     @generateBaseApp target, resources
     @generateResources target, resources
     @generateDependenciesFile target
+    @generateBuilderFile target
 
   generateBaseApp: (target, resources) =>
     @logger.debug "[Scaffolder] - Generating base app"
@@ -31,6 +32,15 @@ class Scaffolder
     try
       dependencies = swig.renderFile path.join(@templatePath, "dependencies.swig")
       @fileWriter.writeFile path.join(target, "package.json"), dependencies
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
+
+  generateBuilderFile: (target) =>
+    @logger.debug "[Scaffolder] - Generating Builder File"
+
+    try
+      dependencies = swig.renderFile path.join(@templatePath, "builder.swig")
+      @fileWriter.writeFile path.join(target, "Gruntfile.coffee"), dependencies
     catch e
       @logger.debug "[Scaffolder] - #{ e.message }"
 

@@ -55,7 +55,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
       ]
 
       fileWriter.target.should.eql '/target/app.coffee'
-      fileWriter.content.should.eql "express = require 'express'\nhttp = require 'http'\npath = require 'path'\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\n\n  \napp.get('/team', team.get)\n  \napp.get('/team', team.post)\n  \n\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n"
+      fileWriter.content.should.eql "express = require 'express'\nhttp = require 'http'\npath = require 'path'\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\napp.get('/team', team.get)\napp.post('/team', team.post)\n\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n"
 
       done()
 

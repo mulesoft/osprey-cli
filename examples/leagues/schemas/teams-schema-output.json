@@ -1,5 +1,4 @@
     {
-              "$schema": "http://json-schema.org/draft-03/schema",
               "properties": {
                   "homeCity": {
                       "description": "Name of the city to which this team belongs",

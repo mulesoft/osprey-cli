@@ -1,6 +1,9 @@
 express = require('express')
 http = require('http')
 path = require('path')
+parser = require '../../../src/toolkit-parser'
+simplyLog = require 'simply-log'
+Validation = require '../../../src/validation/validation'
 
 app = express()
 
@@ -11,37 +14,40 @@ app.use(express.bodyParser())
 app.use(express.methodOverride())
 app.use(app.router)
 
-# toolkitParser.load 'raml', (parser) => {
-# 	@parser = parser
-# }
+app.configure () =>
+  @logger = simplyLog.consoleLogger 'raml-toolkit'
+  @logger.setLevel simplyLog.DEBUG
 
-# app.middle(ramlValidations (
-# 	raml: @parser.getResources
-# ))
+  parser.loadRaml "/Users/evangelinamartinezruizmoreno/github/raml-toolkit/examples/leagues/leagues.raml", @logger, (toolkitParser) =>
+    console.log 'Raml file loaded'
+    @resources = toolkitParser.getResources()
 
-# class ramlValidations
-# 	@constructor: (uri, method) ->
-# 		rule rules.findbyuri uri
+    app.get('/teams/:teamId', (req, res) =>
+      resource = @resources[req.route.path]
+      validation = new Validation req, resource
+      if not validation.isValid()
+        res.status('400')
+      else
+        res.send({ name: 'test' })
+    )
 
-# 		rule[method]
+    app.get('/teams', (req, res) =>
+      resource = @resources[req.route.path]
+      validation = new Validation req, resource
+      if not validation.isValid()
+        res.status('400')
+      else
+        res.send({ name: 'test' })
+    )
 
-# rules:
-# 	'/leages/:id':
-# 		get:
-# 			headers:
-# 				'content-type': 'application/json'
-# 			queryParam:
-# 				name:
-# 					required: true
-
-# rules[uri][method].queryParam
-
-app.get('/leagues', (req, res) ->
-	if this.isValid('/leagues', 'GET')
-		res.send({ name: 'test' })
-	else
-		#anda a la goma
-)
+    app.post('/teams', (req, res) =>
+      resource = @resources[req.route.path]
+      validation = new Validation req, resource
+      if not validation.isValid()
+        res.status('400')
+      else
+        res.status('201')
+    )
 
 http.createServer(app).listen(app.get('port'), () ->
   console.log('Express server listening on port ' + app.get('port'))

@@ -5,21 +5,23 @@ class Validation
   constructor: (@req, @resource) ->
 
   isValid: () =>
-    if @resource.uriParameters? and not @validateUriParams()
-      return false
+    return false if @resource.uriParameters? and not @validateUriParams()
     method = @getMethod()
     if method?
       false unless @validateSchema method
-      false unless  method.queryParameters? and not @validateQueryParams method
-      false unless method.headers? and not @validateHeaders method
-      false unless @isForm() and not @validateFormParams method
+      return false if method.queryParameters? and not @validateQueryParams method
+      return false if method.headers? and not @validateHeaders method
+      return false if @isForm() and not @validateFormParams method
     true
 
   isForm: () =>
     @req.headers['content-type'] in ['application/x-www-form-urlencoded', 'multipart/form-data']
 
+  isJson: () =>
+    @req.headers['content-type'] == 'application/json' or @req.headers['content-type'].endsWith '+json'
+
   validateSchema: (@method) =>
-    if method.body? and @req.headers['content-type'] == 'application/json'
+    if method.body? and @isJson()
       contentType =  method.body[@req.headers['content-type']]
       if contentType? and contentType.schema?
         schemaValidator = new SchemaValidator()
@@ -33,6 +35,9 @@ class Validation
     return null
 
   validateUriParams: () =>
+    console.log "validate uri params"
+    console.log @req.path
+
     for key, ramlUriParameter of @resource.uriParameters
       reqUriParam = @req.route.params[key]
       if not @validate reqUriParam, ramlUriParameter

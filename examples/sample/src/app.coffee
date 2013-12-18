@@ -4,6 +4,7 @@ path = require('path')
 parser = require '../../../src/toolkit-parser'
 simplyLog = require 'simply-log'
 Validation = require '../../../src/validation/validation'
+utils = require 'express/lib/utils'
 
 app = express()
 
@@ -12,6 +13,29 @@ app.use(express.logger('dev'))
 app.use(express.json())
 app.use(express.bodyParser())
 app.use(express.methodOverride())
+
+class UriTemplateReader
+  constructor: (@templates) ->
+    for template in @templates
+      do (template) ->
+        regexp = utils.pathRegexp template.uriTemplate, [], false, false
+        template.regexp = regexp
+
+  getTemplateFor: (uri) ->
+    template = @templates.filter (template) ->
+      uri.match(template.regexp)?.length
+
+    if template? and template.length then template[0] else null
+
+  getUriParametersFor: (uri) ->
+    template = @getTemplateFor uri
+    return null unless template?
+    matches = uri.match template.regexp
+    keys = template.uriTemplate.match template.regexp
+    uriParameters = {}
+    for i in [1..(keys.length - 1)]
+      uriParameters[keys[i].replace ':', ''] = matches[i]
+    uriParameters
 
 validations = (ramlPath) ->
   (req, res, next) ->
@@ -27,10 +51,13 @@ validations = (ramlPath) ->
       if result.length
         resource = resources[result[0].path]
 
-        validation = new Validation req, resource
+        templates = toolkitParser.getUriTemplates()
+
+        uriTemplateReader = new UriTemplateReader templates
+
+        validation = new Validation req, uriTemplateReader, resource
 
         if not validation.isValid()
-          console.log "llegue aca la puta que lo pario!!!"
           res.status('400')
           return
 
@@ -53,3 +80,6 @@ app.post('/teams', (req, res) =>
 http.createServer(app).listen(app.get('port'), () ->
   console.log('Express server listening on port ' + app.get('port'))
 )
+
+
+

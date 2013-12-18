@@ -92,7 +92,7 @@ securitySchemes:
         body:
           application/json:
             schema: !include schemas/teams-schema-input.json
-            example: !include examples/teams-example.json     
+            example: !include examples/teams-example.json
   post:
     description: Add a new team to the league
     body:
@@ -143,9 +143,9 @@ securitySchemes:
       200:
         body:
           application/json:
-            example: !include examples/fixture-get-example.json           
-            schema: !include schemas/fixture-schema-output.json 
- 
+            example: !include examples/fixture-get-example.json
+            schema: !include schemas/fixture-schema-output.json
+
   /{homeTeamId}/{awayTeamId}:
     displayName: Match
     uriParameters:
@@ -179,7 +179,7 @@ securitySchemes:
                 "awayTeamScore": 0
               }
             schema: !include schemas/match-schema-input.json
- 
+
       responses:
         204:
           description: |
@@ -190,4 +190,4 @@ securitySchemes:
         409:
           description: |
             Cannot update match before the match is actually played.
-      
+

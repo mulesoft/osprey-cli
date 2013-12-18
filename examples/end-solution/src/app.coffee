@@ -97,12 +97,15 @@ app.use(express.methodOverride())
 app.use(express.compress());
 # TODO: Should I use max-cache?
 app.use('/api/console', express.static(__dirname + '/assets/console'));
-app.use('/api/raml', express.static(__dirname + '/assets/raml'));
+# app.use('/api/raml', express.static(__dirname + '/assets/raml/api.raml'));
 
 app.use apiKit(__dirname + '/assets/raml/api.raml')
 
-# app.get '/api', (req, res) ->
-#   console.log req
+app.get '/api', (req, res) ->
+  if /application\/raml\+yaml/.test(req.headers['accept'])
+    res.sendfile __dirname + '/assets/raml/api.raml'
+  else
+    res.send 415
 
 # app.get('/teams', (req, res) ->
 # 	res.send([{ name: 'All Teams' }])

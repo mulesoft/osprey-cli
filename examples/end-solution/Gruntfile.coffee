@@ -7,13 +7,13 @@ module.exports = (grunt) ->
         flatten: false,
         cwd: 'src',
         src: ['**/*.coffee'],
-        dest: './lib',
+        dest: './dist',
         ext: '.js'
 
     express:
       dev:
         options:
-          script: 'lib/app.js'
+          script: 'dist/app.js'
 
     watch:
       development:
@@ -22,7 +22,7 @@ module.exports = (grunt) ->
         options:
           atBegin: true
       express:
-        files: ['lib/**/*.js'],
+        files: ['dist/**/*.js'],
         tasks: ['express:dev:stop', 'express:dev'],
         options:
           atBegin: true,

@@ -93,17 +93,29 @@ app.use(express.logger('dev'))
 app.use(express.bodyParser())
 app.use(express.methodOverride())
 
+app.use apiKit(__dirname + '/assets/raml/api.raml')
 # Static Files Configuration
 app.use(express.compress());
+# TODO: This should be move to the apikit runtime
 # TODO: Should I use max-cache?
-app.use('/api/console', express.static(__dirname + '/assets/console'));
-# app.use('/api/raml', express.static(__dirname + '/assets/raml/api.raml'));
+app.use '/api/console', express.static(__dirname + '/assets/console')
 
-app.use apiKit(__dirname + '/assets/raml/api.raml')
+# TODO: Base Url should be replace
+# app.use '/api', express.static(__dirname + '/assets/raml')
+# app.use (req, res, next) ->
+#   if req.path == '/api/'
+#     if /application\/raml\+yaml/.test(req.headers['accept'])
+#       res.redirect('/api/api.raml');
+#       res.contentType('application/raml+yaml');
+#       next()
+#     else
+#       res.send 415
 
-app.get '/api', (req, res) ->
+#   next()
+
+app.get '/api', (req, res, next) ->
   if /application\/raml\+yaml/.test(req.headers['accept'])
-    res.sendfile __dirname + '/assets/raml/api.raml'
+    express.static(__dirname + '/assets/raml').apply(req, res, next)
   else
     res.send 415
 

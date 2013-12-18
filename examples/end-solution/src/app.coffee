@@ -3,23 +3,38 @@ http = require 'http'
 path = require 'path'
 parser = require '../../../dist/toolkit-parser'
 
+class ApiKitRouter
+  constructor: (@context, @resources) ->
+
+  defaultGetRoute: (res, uri) =>
+    unless @routerExists 'get', uri
+      methodInfo = @methodLookup 'get', uri
+
+      if methodInfo?
+        res.send methodInfo.responses?['200']?.body?['application/json']?.example
+
+  methodLookup: (httpMethod, uri) =>
+    if @resources[uri]?.methods?
+      methodInfo = @resources[uri]?.methods.filter (method) ->
+        method.method == httpMethod
+
+    if methodInfo? and methodInfo.length then methodInfo[0] else null
+
+  routerExists: (httpMethod, uri) =>
+    result = @context.routes[httpMethod].filter (route) ->
+      uri.match(route.regexp)?.length
+
+    result.length is 1
+
 apiKit = (raml) ->
   (req, res, next) ->
     parser.loadRaml raml, (toolkitParser) ->
       resources = toolkitParser.getResources()
 
-      result = app.routes[req.method.toLowerCase()].filter (route) ->
-        req.url.match(route.regexp)?.length
+      router = new ApiKitRouter app, resources
 
-      unless result.length
-        # TODO: Check if the resource exist in RAML
-
-        if resources[req.url]
-          methodInfo = resources[req.url].methods.filter (method) ->
-            method.method == req.method.toLowerCase()
-
-          if methodInfo.length
-            res.send methodInfo[0].responses?['200']?.body?['application/json']?.example
+      if req.method == 'GET'
+        router.defaultGetRoute res, req.url
 
       next()
 
@@ -33,9 +48,9 @@ app.use(express.methodOverride())
 
 app.use apiKit('../leagues/leagues.raml')
 
-# app.get('/teams', (req, res) ->
-# 	res.send([{ name: 'All Teams' }])
-# )
+app.get('/teams', (req, res) ->
+	res.send([{ name: 'All Teams' }])
+)
 
 app.get('/teams/:id', (req, res) ->
   res.send({ name: 'by Id' })

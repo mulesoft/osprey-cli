@@ -15,6 +15,15 @@ class ToolkitParser
     @logger.debug "Getting Resources"
     @resources
 
+  getUriTemplates: ->
+    @logger.debug "Getting Uris"
+    templates = []
+
+    for key,resource of @resources
+      templates.push { uriTemplate: key }
+
+    templates
+
   getResourcesList: ->
     @logger.debug "Getting Resources List"
     resourceList = []

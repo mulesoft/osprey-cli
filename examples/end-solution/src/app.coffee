@@ -4,44 +4,59 @@ path = require 'path'
 parser = require '../../../dist/toolkit-parser'
 utils = require 'express/lib/utils'
 
+class ApiKitGetHandler
+  resolve: (req, res, methodInfo) =>
+    # TODO: Add validations
+    # TODO: Add content negotiation
+    res.contentType('application/json');
+    res.send methodInfo.responses?['200']?.body?['application/json']?.example, { 'Content-Type': 'application/json' }, 200
+
+class ApiKitPostHandler
+  resolve: (req, res, methodInfo) =>
+    # TODO: Add validations
+    # TODO: Add content negotiation
+    res.contentType('application/json');
+    res.send 201
+
+class ApiKitPutHandler
+  resolve: (req, res, methodInfo) =>
+    # TODO: Add validations
+    res.send 204
+
+class ApiKitDeleteHandler
+  resolve: (req, res, methodInfo) =>
+    # TODO: Add validations
+    res.send 204
+
 class ApiKitRouter
-  constructor: (@context, @resources) ->
+  constructor: (@routes, @resources, @templates) ->
+    for template in @templates
+      do (template) ->
+        regexp = utils.pathRegexp template.uriTemplate, [], false, false
+        template.regexp = regexp
 
-  defaultGetRoute: (res, uri, template) =>
-    unless @routerExists 'get', uri
-      methodInfo = @methodLookup 'get', template
+    @httpMethodHandlers =
+      get: new ApiKitGetHandler
+      post: new ApiKitPostHandler
+      put: new ApiKitPutHandler
+      delete: new ApiKitDeleteHandler
 
-      if methodInfo?
-        # TODO: Add validations
-        # TODO: Add content negociation
-        res.contentType('application/json');
-        res.send methodInfo.responses?['200']?.body?['application/json']?.example, { 'Content-Type': 'application/json' }, 200
+  getTemplate: (uri) ->
+    template = @templates.filter (template) ->
+      uri.match(template.regexp)?.length
 
-  defaultPostRoute: (res, uri, template) =>
-    unless @routerExists 'post', uri
-      methodInfo = @methodLookup 'post', template
+    if template? and template.length then template[0] else null
 
-      if methodInfo?
-        # TODO: Add validations
-        # TODO: Add content negociation
-        res.contentType('application/json');
-        res.send 201
+  resolve: (req, res) =>
+    template = @getTemplate req.url
+    method = req.method.toLowerCase()
 
-  defaultPutRoute: (res, uri, template) =>
-    unless @routerExists 'put', uri
-      methodInfo = @methodLookup 'put', template
-
-      if methodInfo?
-        # TODO: Add validations
-        res.send 204
-
-  defaultDeleteRoute: (res, uri, template) =>
-    unless @routerExists 'delete', uri
-      methodInfo = @methodLookup 'delete', template
+    if template? and not @routerExists method, req.url
+      console.log 'unless'
+      methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?
-        # TODO: Add validations
-        res.send 204
+        @httpMethodHandlers[method].resolve(req, res, methodInfo)
 
   methodLookup: (httpMethod, uri) =>
     if @resources[uri]?.methods?
@@ -51,8 +66,8 @@ class ApiKitRouter
     if methodInfo? and methodInfo.length then methodInfo[0] else null
 
   routerExists: (httpMethod, uri) =>
-    if @context.routes[httpMethod]?
-      result = @context.routes[httpMethod].filter (route) ->
+    if @routes[httpMethod]?
+      result = @routes[httpMethod].filter (route) ->
         uri.match(route.regexp)?.length
 
     result? and result.length is 1
@@ -63,28 +78,8 @@ apiKit = (raml) ->
       resources = toolkitParser.getResources()
       uriTemplates = toolkitParser.getUriTemplates()
 
-      for template in uriTemplates
-        do (template) ->
-          regexp = utils.pathRegexp template.uriTemplate, [], false, false
-          template.regexp = regexp
-
-      template = uriTemplates.filter (template) ->
-        req.url.match(template.regexp)?.length
-
-      if template.length
-        router = new ApiKitRouter app, resources
-
-        if req.method == 'GET'
-          router.defaultGetRoute res, req.url, template[0].uriTemplate
-
-        if req.method == 'POST'
-          router.defaultPostRoute res, req.url, template[0].uriTemplate
-
-        if req.method == 'PUT'
-          router.defaultPutRoute res, req.url, template[0].uriTemplate
-
-        if req.method == 'DELETE'
-          router.defaultDeleteRoute res, req.url, template[0].uriTemplate
+      router = new ApiKitRouter app.routes, resources, uriTemplates
+      router.resolve req, res
 
       next()
 

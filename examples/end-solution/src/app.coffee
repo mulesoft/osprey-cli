@@ -90,7 +90,13 @@ app.use(express.logger('dev'))
 app.use(express.bodyParser())
 app.use(express.methodOverride())
 
-app.use apiKit('../leagues/leagues.raml')
+# Static Files Configuration
+app.use(express.compress());
+# TODO: Should I use max-cache?
+app.use('/api/console', express.static(__dirname + '/assets/console'));
+app.use('/api/raml', express.static(__dirname + '/assets/raml'));
+
+app.use apiKit(__dirname + '/assets/raml/api.raml')
 
 # app.get('/teams', (req, res) ->
 # 	res.send([{ name: 'All Teams' }])

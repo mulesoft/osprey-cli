@@ -15,7 +15,20 @@ module.exports = (grunt) ->
         options:
           script: 'dist/app.js'
 
+    copy:
+      assets:
+        expand: true,
+        flatten: false,
+        cwd: 'src',
+        src: 'assets/**/*.*',
+        dest: 'dist/'
+
     watch:
+      assets:
+        files: ['src/assets/**/*.*'],
+        tasks: ['copy:assets'],
+        options:
+          atBegin: true
       development:
         files: ['src/**/*.coffee'],
         tasks: ['coffee'],
@@ -32,5 +45,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-express-server'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
 
   grunt.registerTask 'default', ['watch']

@@ -2,7 +2,7 @@ parser = require '../toolkit-parser'
 SchemaValidator = require('jsonschema').Validator
 
 class Validation
-  constructor: (@req, @resource) ->
+  constructor: (@req, @uriTemplateReader, @resource) ->
 
   isValid: () =>
     return false if @resource.uriParameters? and not @validateUriParams()
@@ -35,12 +35,9 @@ class Validation
     return null
 
   validateUriParams: () =>
-    console.log "validate uri params"
-    console.log @req.path
-
+    reqUriParameters = @uriTemplateReader.getUriParametersFor @req.url
     for key, ramlUriParameter of @resource.uriParameters
-      reqUriParam = @req.route.params[key]
-      if not @validate reqUriParam, ramlUriParameter
+      if not @validate reqUriParameters[key], ramlUriParameter
         return false
     true
 
@@ -53,6 +50,7 @@ class Validation
     true
 
   validateQueryParams: (@method) =>
+    console.log method.queryParameters
     for key, ramlQueryParameter of method.queryParameters
       reqQueryParam = @req.query[key]
       if not @validate reqQueryParam, ramlQueryParameter
@@ -62,8 +60,7 @@ class Validation
   validateHeaders: (@method) =>
     for key, ramlHeader of method.headers
       reqHeader = @req.headers[key]
-      if not @validate reqHeader, ramlHeader
-        return false
+      return false if not @validate reqHeader, ramlHeader
     true
 
   validate: (@reqParam, @ramlParam) =>

@@ -4,6 +4,19 @@ path = require 'path'
 parser = require '../../../dist/toolkit-parser'
 utils = require 'express/lib/utils'
 
+class UriTemplateReader
+  constructor: (@templates) ->
+    for template in @templates
+      do (template) ->
+        regexp = utils.pathRegexp template.uriTemplate, [], false, false
+        template.regexp = regexp
+
+  getTemplateFor: (uri) ->
+    template = @templates.filter (template) ->
+      uri.match(template.regexp)?.length
+
+    if template? and template.length then template[0] else null
+
 class ApiKitGetHandler
   resolve: (req, res, methodInfo) =>
     # TODO: Add validations
@@ -29,26 +42,15 @@ class ApiKitDeleteHandler
     res.send 204
 
 class ApiKitRouter
-  constructor: (@routes, @resources, @templates) ->
-    for template in @templates
-      do (template) ->
-        regexp = utils.pathRegexp template.uriTemplate, [], false, false
-        template.regexp = regexp
-
+  constructor: (@routes, @resources, @uriTemplateReader) ->
     @httpMethodHandlers =
       get: new ApiKitGetHandler
       post: new ApiKitPostHandler
       put: new ApiKitPutHandler
       delete: new ApiKitDeleteHandler
 
-  getTemplate: (uri) ->
-    template = @templates.filter (template) ->
-      uri.match(template.regexp)?.length
-
-    if template? and template.length then template[0] else null
-
   resolve: (req, res) =>
-    template = @getTemplate req.url
+    template = @uriTemplateReader.getTemplateFor req.url
     method = req.method.toLowerCase()
 
     if template? and not @routerExists method, req.url
@@ -76,9 +78,10 @@ apiKit = (raml) ->
   (req, res, next) ->
     parser.loadRaml raml, (toolkitParser) ->
       resources = toolkitParser.getResources()
-      uriTemplates = toolkitParser.getUriTemplates()
+      templates = toolkitParser.getUriTemplates()
+      uriTemplateReader = new UriTemplateReader templates
 
-      router = new ApiKitRouter app.routes, resources, uriTemplates
+      router = new ApiKitRouter app.routes, resources, uriTemplateReader
       router.resolve req, res
 
       next()
@@ -97,6 +100,9 @@ app.use('/api/console', express.static(__dirname + '/assets/console'));
 app.use('/api/raml', express.static(__dirname + '/assets/raml'));
 
 app.use apiKit(__dirname + '/assets/raml/api.raml')
+
+# app.get '/api', (req, res) ->
+#   console.log req
 
 # app.get('/teams', (req, res) ->
 # 	res.send([{ name: 'All Teams' }])

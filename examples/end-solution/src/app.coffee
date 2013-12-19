@@ -21,8 +21,14 @@ class ApiKitGetHandler
   resolve: (req, res, methodInfo) =>
     # TODO: Add validations
     # TODO: Add content negotiation
-    res.contentType('application/json');
-    res.send methodInfo.responses?['200']?.body?['application/json']?.example, { 'Content-Type': 'application/json' }, 200
+
+    contentTypes = {}
+    # TODO: Fix coneg
+    for mimeType of methodInfo.responses?['200']?.body
+      contentTypes[mimeType] = do (mimeType) ->
+        res.send methodInfo.responses?['200']?.body?[mimeType].example, { 'Content-Type': mimeType }, 200
+
+    res.format contentTypes
 
 class ApiKitPostHandler
   resolve: (req, res, methodInfo) =>
@@ -54,7 +60,6 @@ class ApiKitRouter
     method = req.method.toLowerCase()
 
     if template? and not @routerExists method, req.url
-      console.log 'unless'
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?
@@ -88,45 +93,19 @@ apiKit = (raml) ->
 
 app = express()
 
-app.set('port', process.env.PORT || 3000)
-app.use(express.logger('dev'))
 app.use(express.bodyParser())
 app.use(express.methodOverride())
-
-app.use apiKit(__dirname + '/assets/raml/api.raml')
-# Static Files Configuration
 app.use(express.compress());
+
+# APIKit Configuration
+app.use apiKit(__dirname + '/assets/raml/api.raml')
+
 # TODO: This should be move to the apikit runtime
-# TODO: Should I use max-cache?
+# TODO: Ask for an stable version of the console!
 app.use '/api/console', express.static(__dirname + '/assets/console')
 
 # TODO: Base Url should be replace
-# app.use '/api', express.static(__dirname + '/assets/raml')
-# app.use (req, res, next) ->
-#   if req.path == '/api/'
-#     if /application\/raml\+yaml/.test(req.headers['accept'])
-#       res.redirect('/api/api.raml');
-#       res.contentType('application/raml+yaml');
-#       next()
-#     else
-#       res.send 415
+# TODO: It should check for application/raml+yaml
+app.use '/api', express.static(__dirname + '/assets/raml')
 
-#   next()
-
-app.get '/api', (req, res, next) ->
-  if /application\/raml\+yaml/.test(req.headers['accept'])
-    express.static(__dirname + '/assets/raml').apply(req, res, next)
-  else
-    res.send 415
-
-# app.get('/teams', (req, res) ->
-# 	res.send([{ name: 'All Teams' }])
-# )
-
-# app.get('/teams/:id', (req, res) ->
-#   res.send({ name: 'by Id' })
-# )
-
-http.createServer(app).listen(app.get('port'), () ->
-  console.log('Express server listening on port ' + app.get('port'))
-)
+http.createServer(app).listen(3000)

@@ -1,4 +1,3 @@
-parser = require '../toolkit-parser'
 SchemaValidator = require('jsonschema').Validator
 
 class Validation
@@ -29,8 +28,10 @@ class Validation
     true
 
   getMethod: () =>
+    console.log @req.method.toLowerCase()
     for method in @resource.methods
-      if method.method == @req.route.method
+      console.log method.method
+      if method.method == @req.method.toLowerCase()
         return method
     return null
 

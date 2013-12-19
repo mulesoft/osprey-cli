@@ -3,8 +3,8 @@ http = require('http')
 path = require('path')
 parser = require '../../../src/toolkit-parser'
 simplyLog = require 'simply-log'
-Validation = require '../../../src/validation/validation'
 utils = require 'express/lib/utils'
+validations = require '../../../src/middleware/validations'
 
 app = express()
 
@@ -14,56 +14,7 @@ app.use(express.json())
 app.use(express.bodyParser())
 app.use(express.methodOverride())
 
-class UriTemplateReader
-  constructor: (@templates) ->
-    for template in @templates
-      do (template) ->
-        regexp = utils.pathRegexp template.uriTemplate, [], false, false
-        template.regexp = regexp
-
-  getTemplateFor: (uri) ->
-    template = @templates.filter (template) ->
-      uri.match(template.regexp)?.length
-
-    if template? and template.length then template[0] else null
-
-  getUriParametersFor: (uri) ->
-    template = @getTemplateFor uri
-    return null unless template?
-    matches = uri.match template.regexp
-    keys = template.uriTemplate.match template.regexp
-    uriParameters = {}
-    for i in [1..(keys.length - 1)]
-      uriParameters[keys[i].replace ':', ''] = matches[i]
-    uriParameters
-
-validations = (ramlPath) ->
-  (req, res, next) ->
-    @logger = simplyLog.consoleLogger 'raml-toolkit'
-    @logger.setLevel simplyLog.DEBUG
-
-    parser.loadRaml ramlPath, @logger, (toolkitParser) ->
-      resources = toolkitParser.getResources()
-
-      result = app.routes[req.method.toLowerCase()].filter (route) ->
-        req.url.match(route.regexp)?.length
-
-      if result.length
-        resource = resources[result[0].path]
-
-        templates = toolkitParser.getUriTemplates()
-
-        uriTemplateReader = new UriTemplateReader templates
-
-        validation = new Validation req, uriTemplateReader, resource
-
-        if not validation.isValid()
-          res.status('400')
-          return
-
-      next()
-
-app.use validations("../leagues/leagues.raml")
+app.use validations("../leagues/leagues.raml", app.routes)
 
 app.get('/teams/:teamId', (req, res) =>
   res.send({ name: 'test' })

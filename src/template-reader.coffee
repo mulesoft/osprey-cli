@@ -1,6 +1,4 @@
-utils = require 'express/lib/utils'
-
-class UriTemplateReader
+class TemplateReader
   constructor: (@templates) ->
     for template in @templates
       do (template) ->
@@ -22,5 +20,3 @@ class UriTemplateReader
     for i in [1..(keys.length - 1)]
       uriParameters[keys[i].replace ':', ''] = matches[i]
     uriParameters
-
-module.exports = UriTemplateReader

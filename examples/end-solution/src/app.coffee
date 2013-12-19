@@ -18,32 +18,30 @@ class UriTemplateReader
     if template? and template.length then template[0] else null
 
 class ApiKitGetHandler
-  resolve: (req, res, methodInfo) =>
+  resolve: (req, res, next, methodInfo) =>
     # TODO: Add validations
-    # TODO: Add content negotiation
-
-    contentTypes = {}
-    # TODO: Fix coneg
     for mimeType of methodInfo.responses?['200']?.body
-      contentTypes[mimeType] = do (mimeType) ->
-        res.send methodInfo.responses?['200']?.body?[mimeType].example, { 'Content-Type': mimeType }, 200
+      if req.accepts(mimeType)
+        res.set('Content-Type', mimeType);
+        res.send methodInfo.responses['200'].body[mimeType].example
+        next()
 
-    res.format contentTypes
+    res.send 415
 
 class ApiKitPostHandler
-  resolve: (req, res, methodInfo) =>
+  resolve: (req, res, next, methodInfo) =>
     # TODO: Add validations
     # TODO: Add content negotiation
     res.contentType('application/json');
     res.send 201
 
 class ApiKitPutHandler
-  resolve: (req, res, methodInfo) =>
+  resolve: (req, res, next, methodInfo) =>
     # TODO: Add validations
     res.send 204
 
 class ApiKitDeleteHandler
-  resolve: (req, res, methodInfo) =>
+  resolve: (req, res, next, methodInfo) =>
     # TODO: Add validations
     res.send 204
 
@@ -55,7 +53,7 @@ class ApiKitRouter
       put: new ApiKitPutHandler
       delete: new ApiKitDeleteHandler
 
-  resolve: (req, res) =>
+  resolve: (req, res, next) =>
     template = @uriTemplateReader.getTemplateFor req.url
     method = req.method.toLowerCase()
 
@@ -63,7 +61,7 @@ class ApiKitRouter
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?
-        @httpMethodHandlers[method].resolve(req, res, methodInfo)
+        @httpMethodHandlers[method].resolve(req, res, next, methodInfo)
 
   methodLookup: (httpMethod, uri) =>
     if @resources[uri]?.methods?
@@ -87,7 +85,7 @@ apiKit = (raml) ->
       uriTemplateReader = new UriTemplateReader templates
 
       router = new ApiKitRouter app.routes, resources, uriTemplateReader
-      router.resolve req, res
+      router.resolve req, res, next
 
       next()
 

@@ -54,6 +54,7 @@ class ApiKitRouter
       delete: new ApiKitDeleteHandler
 
   resolve: (req, res, next) =>
+    # TODO: start using the api endpoint as defined in the raml file
     template = @uriTemplateReader.getTemplateFor req.url
     method = req.method.toLowerCase()
 
@@ -99,11 +100,17 @@ app.use(express.compress());
 app.use apiKit(__dirname + '/assets/raml/api.raml')
 
 # TODO: This should be move to the apikit runtime
-# TODO: Ask for an stable version of the console!
 app.use '/api/console', express.static(__dirname + '/assets/console')
 
 # TODO: Base Url should be replace
 # TODO: It should check for application/raml+yaml
-app.use '/api', express.static(__dirname + '/assets/raml')
+# app.use '/api', express.directory(__dirname + '/assets/raml', { icons: true })
+# app.use '/', express.static(__dirname + '/assets/raml', { index: 'api.raml' })
+
+app.get '/api', (req, res) ->
+  if /application\/raml\+yaml/.test(req.headers['accept'])
+    res.sendfile __dirname + '/assets/raml/api.raml'
+  else
+    res.send 415
 
 http.createServer(app).listen(3000)

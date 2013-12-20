@@ -227,6 +227,12 @@ documentation:
           Location:
             type: string
             description: Location of the newly created team
+        body:
+          application/json:
+            example: |
+              {
+                "name": test"
+              }
       409:
         description: |
           The team already exists

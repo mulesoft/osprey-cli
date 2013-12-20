@@ -2,9 +2,9 @@ ramlParser = require 'raml-parser'
 simplyLog = require 'simply-log'
 async = require 'async'
 
-class ToolkitParser
+class ParserWrapper
   constructor: (data, @logger)->
-    @logger = simplyLog.consoleLogger 'toolkit-parser' if arguments.length == 1
+    @logger = simplyLog.consoleLogger 'parser-wrapper' if arguments.length == 1
     @logger.debug "Building ToolkitParser instance"
     @raml = data
     @resources = {}
@@ -85,13 +85,13 @@ clone = (obj) ->
 ramlLoader = (filePath, loggerObj, callback) ->
   if arguments.length == 2
     callback = loggerObj
-    loggerObj = simplyLog.consoleLogger 'toolkit-parser'
+    loggerObj = simplyLog.consoleLogger 'parser-wrapper'
 
   loggerObj.debug "Parsing RAML file #{filePath}"
   ramlParser.loadFile(filePath).then(
     (data) ->
       loggerObj.debug "RAML file parsed successful!!!!!"
-      callback(new ToolkitParser data, loggerObj)
+      callback(new ParserWrapper data, loggerObj)
     ,(error) ->
       loggerObj.debug "Error parsing: #{error}"
       new Error "Error parsing: #{error}"

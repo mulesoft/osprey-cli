@@ -1,4 +1,4 @@
-parser = require '../src/toolkit-parser'
+parser = require '../src/parser-wrapper'
 should = require 'should'
 simplyLog = require 'simply-log'
 
@@ -7,8 +7,8 @@ describe 'TOOLKIT PARSER', ->
     @logger = simplyLog.consoleLogger 'raml-toolkit'
     #@logger.setLevel simplyLog.DEBUG
 
-    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (toolkitParser) =>
-      @parsedRaml = toolkitParser
+    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (wrapper) =>
+      @parsedRaml = wrapper
       done()
 
   describe 'RAML PARSER DATA ELEMENT', ->

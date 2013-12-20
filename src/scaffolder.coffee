@@ -1,4 +1,4 @@
-parser = require './toolkit-parser'
+parser = require './parser-wrapper'
 swig  = require 'swig'
 lingo = require 'lingo'
 path = require 'path'

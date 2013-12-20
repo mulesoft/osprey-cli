@@ -1,6 +1,6 @@
 UriTemplateReader = require './uri-template-reader'
 ApiKitRouter = require './router'
-parser = require '../toolkit-parser'
+parser = require '../parser-wrapper'
 express = require 'express'
 
 ramlEndpoint = (ramlPath) ->
@@ -12,9 +12,9 @@ ramlEndpoint = (ramlPath) ->
 
 middleware = (ramlPath, routes) ->
   (req, res, next) ->
-    parser.loadRaml ramlPath, (toolkitParser) ->
-      resources = toolkitParser.getResources()
-      templates = toolkitParser.getUriTemplates()
+    parser.loadRaml ramlPath, (wrapper) ->
+      resources = wrapper.getResources()
+      templates = wrapper.getUriTemplates()
       uriTemplateReader = new UriTemplateReader templates
 
       router = new ApiKitRouter routes, resources, uriTemplateReader

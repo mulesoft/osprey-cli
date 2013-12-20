@@ -1,4 +1,4 @@
-parser = require '../src/toolkit-parser'
+parser = require '../src/parser-wrapper'
 Scaffolder = require '../src/scaffolder'
 should = require 'should'
 simplyLog = require 'simply-log'
@@ -14,8 +14,8 @@ describe 'TOOLKIT SCAFFOLDER', ->
           @content = content
       )
 
-    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (toolkitParser) =>
-      @parsedRaml = toolkitParser
+    parser.loadRaml "./examples/leagues/leagues.raml", @logger, (wrapper) =>
+      @parsedRaml = wrapper
       @scaffolder = new Scaffolder './src/templates/node/express', @logger, @fileWriter
       done()
 

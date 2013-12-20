@@ -79,9 +79,9 @@ ramlFile = program.args[0]
 
 
 # Parse RAML
-parser = require './toolkit-parser'
+parser = require './parser-wrapper'
 Scaffolder = require './scaffolder'
 
-parser.loadRaml ramlFile, log, (toolkitParser) ->
+parser.loadRaml ramlFile, log, (wrapper) ->
   scaffolder = new Scaffolder program.template, log, fs
-  scaffolder.generate toolkitParser.getResourcesList(), program.target
+  scaffolder.generate wrapper.getResourcesList(), program.target

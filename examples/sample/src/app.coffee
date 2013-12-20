@@ -1,7 +1,6 @@
 express = require('express')
 http = require('http')
 path = require('path')
-parser = require '../../../src/toolkit-parser'
 simplyLog = require 'simply-log'
 utils = require 'express/lib/utils'
 validations = require '../../../src/middleware/validations'

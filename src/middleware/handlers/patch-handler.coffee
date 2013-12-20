@@ -2,6 +2,7 @@ HttpUtils = require '../utils/http-utils'
 
 class ApiKitPatchHandler extends HttpUtils
   resolve: (req, res, methodInfo) ->
-    res.send @readStatusCode(methodInfo)
+    @negotiateContentType req, res, methodInfo
+    @negotiateAcceptType req, res, methodInfo
 
 module.exports = ApiKitPatchHandler

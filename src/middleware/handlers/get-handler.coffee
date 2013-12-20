@@ -1,12 +1,13 @@
 class ApiKitGetHandler
-  resolve: (req, res, next, methodInfo) ->
+  resolve: (req, res, methodInfo) ->
     # TODO: Add validations
+    response = 415
+
     for mimeType of methodInfo.responses?['200']?.body
       if req.accepts(mimeType)
         res.set 'Content-Type', mimeType
-        res.send methodInfo.responses['200'].body[mimeType].example
-        next()
+        response = methodInfo.responses['200'].body[mimeType].example
 
-    res.send 415
+    res.send response
 
 module.exports = ApiKitGetHandler

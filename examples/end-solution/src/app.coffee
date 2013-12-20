@@ -12,9 +12,9 @@ app.use(express.compress());
 # APIKit Configuration
 app.use apiKit(__dirname + '/assets/raml/api.raml', app.routes)
 
-# TODO: This should be move to the apikit runtime
 app.use '/api/console', express.static(__dirname + '/assets/console')
 
+# TODO: This should be move to the apikit runtime
 app.get '/api', (req, res) ->
   if /application\/raml\+yaml/.test(req.headers['accept'])
     res.sendfile __dirname + '/assets/raml/api.raml'

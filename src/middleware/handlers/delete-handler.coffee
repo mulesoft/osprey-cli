@@ -1,5 +1,5 @@
 class ApiKitDeleteHandler
-  resolve: (req, res, next, methodInfo) ->
+  resolve: (req, res, methodInfo) ->
     # TODO: Add validations
     res.send 204
 

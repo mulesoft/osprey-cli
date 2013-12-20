@@ -20,7 +20,7 @@ class ApiKitRouter
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?
-        @httpMethodHandlers[method].resolve(req, res, next, methodInfo)
+        @httpMethodHandlers[method].resolve req, res, methodInfo
 
   methodLookup: (httpMethod, uri) =>
     if @resources[uri]?.methods?

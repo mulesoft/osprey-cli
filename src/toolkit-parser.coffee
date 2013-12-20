@@ -1,6 +1,6 @@
 ramlParser = require 'raml-parser'
 simplyLog = require 'simply-log'
-
+async = require 'async'
 
 class ToolkitParser
   constructor: (data, @logger)->
@@ -9,7 +9,6 @@ class ToolkitParser
     @raml = data
     @resources = {}
     @_generateResources()
-
 
   getResources: ->
     @logger.debug "Getting Resources"
@@ -61,8 +60,6 @@ class ToolkitParser
     delete resourceMap[uriKey].relativeUri
     delete resourceMap[uriKey]?.resources
 
-
-
 clone = (obj) ->
   if not obj? or typeof obj isnt 'object'
     return obj
@@ -85,8 +82,8 @@ clone = (obj) ->
 
   return newInstance
 
-
-exports.loadRaml = (filePath, loggerObj, callback) ->
+ramlLoader = (filePath, loggerObj, callback) ->
+  console.log 'toolkit-parser::loadRaml'
   if arguments.length == 2
     callback = loggerObj
     loggerObj = simplyLog.consoleLogger 'toolkit-parser'
@@ -100,3 +97,5 @@ exports.loadRaml = (filePath, loggerObj, callback) ->
       loggerObj.debug "Error parsing: #{error}"
       new Error "Error parsing: #{error}"
   )
+
+exports.loadRaml = async.memoize ramlLoader

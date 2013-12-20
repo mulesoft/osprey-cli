@@ -16,7 +16,7 @@ app.use '/api/console', express.static(__dirname + '/assets/console')
 
 # TODO: This should be move to the apikit runtime
 app.get '/api', (req, res) ->
-  if req.accepts('application/raml+yaml')?
+  if /application\/raml\+yaml/.test(req.headers['accept'])
     res.sendfile __dirname + '/assets/raml/api.raml'
   else
     res.send 415

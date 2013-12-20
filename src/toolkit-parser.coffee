@@ -83,7 +83,6 @@ clone = (obj) ->
   return newInstance
 
 ramlLoader = (filePath, loggerObj, callback) ->
-  console.log 'toolkit-parser::loadRaml'
   if arguments.length == 2
     callback = loggerObj
     loggerObj = simplyLog.consoleLogger 'toolkit-parser'

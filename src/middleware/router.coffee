@@ -21,6 +21,9 @@ class ApiKitRouter
 
       if methodInfo?
         @httpMethodHandlers[method].resolve req, res, methodInfo
+        return
+
+    next()
 
   methodLookup: (httpMethod, uri) =>
     if @resources[uri]?.methods?

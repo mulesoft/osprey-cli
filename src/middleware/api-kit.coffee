@@ -10,4 +10,4 @@ module.exports = (ramlPath, routes) ->
       uriTemplateReader = new UriTemplateReader templates
 
       router = new ApiKitRouter routes, resources, uriTemplateReader
-      router.resolve req, res
+      router.resolve req, res, next

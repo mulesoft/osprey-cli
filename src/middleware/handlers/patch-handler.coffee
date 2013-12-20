@@ -1,8 +1,7 @@
 HttpUtils = require '../utils/http-utils'
 
-class ApiKitPutHandler extends HttpUtils
+class ApiKitPatchHandler extends HttpUtils
   resolve: (req, res, methodInfo) ->
-    # TODO: Add validations
     res.send @readStatusCode(methodInfo)
 
-module.exports = ApiKitPutHandler
+module.exports = ApiKitPatchHandler

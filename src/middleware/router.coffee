@@ -1,15 +1,23 @@
-ApiKitGetHandler = require './handlers/get-handler'
-ApiKitPostHandler = require './handlers/post-handler'
-ApiKitPutHandler = require './handlers/put-handler'
-ApiKitDeleteHandler = require './handlers/delete-handler'
+GetHandler = require './handlers/get-handler'
+PostHandler = require './handlers/post-handler'
+PutHandler = require './handlers/put-handler'
+DeleteHandler = require './handlers/delete-handler'
+OptionsHandler = require './handlers/options-handler'
+HeadHandler = require './handlers/head-handler'
+TraceHandler = require './handlers/trace-handler'
+PatchHandler = require './handlers/patch-handler'
 
 class ApiKitRouter
   constructor: (@routes, @resources, @uriTemplateReader) ->
     @httpMethodHandlers =
-      get: new ApiKitGetHandler
-      post: new ApiKitPostHandler
-      put: new ApiKitPutHandler
-      delete: new ApiKitDeleteHandler
+      get: new GetHandler
+      post: new PostHandler
+      put: new PutHandler
+      delete: new DeleteHandler
+      options: new OptionsHandler
+      head: new HeadHandler
+      trace: new TraceHandler
+      patch: new PatchHandler
 
   resolve: (req, res, next) =>
     # TODO: start using the api endpoint as defined in the raml file

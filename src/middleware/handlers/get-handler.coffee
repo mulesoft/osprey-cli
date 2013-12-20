@@ -1,7 +1,7 @@
 class ApiKitGetHandler
   resolve: (req, res, methodInfo) ->
     # TODO: Add validations
-    response = 415
+    response = 406
 
     for mimeType of methodInfo.responses?['200']?.body
       if req.accepts(mimeType)

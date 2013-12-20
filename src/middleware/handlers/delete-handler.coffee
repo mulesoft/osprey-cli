@@ -1,6 +1,8 @@
-class ApiKitDeleteHandler
+HttpUtils = require '../utils/http-utils'
+
+class ApiKitDeleteHandler extends HttpUtils
   resolve: (req, res, methodInfo) ->
     # TODO: Add validations
-    res.send 204
+    res.send @readStatusCode(methodInfo)
 
 module.exports = ApiKitDeleteHandler

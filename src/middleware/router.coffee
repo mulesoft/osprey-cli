@@ -18,7 +18,7 @@ class ApiKitRouter
     template = @uriTemplateReader.getTemplateFor uri
     method = req.method.toLowerCase()
 
-    if template? and not @routerExists method, uri
+    if template? and not @routerExists method, req.url
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?

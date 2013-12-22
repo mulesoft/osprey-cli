@@ -10,7 +10,7 @@ ramlEndpoint = (ramlPath) ->
     else
       res.send 406
 
-middleware = (apiPath, ramlPath, routes) ->
+ramlRouting = (apiPath, ramlPath, routes) ->
   (req, res, next) ->
     if req.path.indexOf(apiPath) >= 0
       parser.loadRaml ramlPath, (wrapper) ->
@@ -24,14 +24,13 @@ middleware = (apiPath, ramlPath, routes) ->
       next()
 
 exports.register = (apiPath, context, path) ->
-  context.use middleware(apiPath, path + '/assets/raml/api.raml', context.routes)
+  context.use ramlRouting(apiPath, path + '/assets/raml/api.raml', context.routes)
   context.use "#{apiPath}/console", express.static(path + '/assets/console')
   context.get apiPath, ramlEndpoint(path + '/assets/raml/api.raml')
 
 exports.ramlEndpoint = ramlEndpoint
-exports.middleware = middleware
+exports.ramlRouting = ramlRouting
 
 # TODO: Validations should be exposed from here
 # TODO: Default Parameters should be exposed from here
 # TODO: Exception Handling should be exposed from here
-# TODO: Middleware should be renamed to runtime

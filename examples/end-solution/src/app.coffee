@@ -10,7 +10,7 @@ app.use express.methodOverride()
 app.use express.compress()
 
 # APIKit Configuration
-# app.use apiKit.middleware('/api', __dirname + '/assets/raml/api.raml', app.routes)
+# app.use apiKit.ramlRouting('/api', __dirname + '/assets/raml/api.raml', app.routes)
 # app.use '/api/console', express.static(__dirname + '/assets/console')
 # app.get '/api', apiKit.ramlEndpoint(__dirname + '/assets/raml/api.raml')
 

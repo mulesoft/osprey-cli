@@ -10,20 +10,23 @@ ramlEndpoint = (ramlPath) ->
     else
       res.send 406
 
-middleware = (ramlPath, routes) ->
+middleware = (apiPath, ramlPath, routes) ->
   (req, res, next) ->
-    parser.loadRaml ramlPath, (wrapper) ->
-      resources = wrapper.getResources()
-      templates = wrapper.getUriTemplates()
-      uriTemplateReader = new UriTemplateReader templates
+    if req.path.indexOf(apiPath) >= 0
+      parser.loadRaml ramlPath, (wrapper) ->
+        resources = wrapper.getResources()
+        templates = wrapper.getUriTemplates()
+        uriTemplateReader = new UriTemplateReader templates
 
-      router = new ApiKitRouter routes, resources, uriTemplateReader
-      router.resolve req, res, next
+        router = new ApiKitRouter routes, resources, uriTemplateReader
+        router.resolve apiPath, req, res, next
+    else
+      next()
 
-exports.register = (context, path) ->
-  context.use middleware(path + '/assets/raml/api.raml', context.routes)
-  context.use '/api/console', express.static(path + '/assets/console')
-  context.get '/api', ramlEndpoint(path + '/assets/raml/api.raml')
+exports.register = (apiPath, context, path) ->
+  context.use middleware(apiPath, path + '/assets/raml/api.raml', context.routes)
+  context.use "#{apiPath}/console", express.static(path + '/assets/console')
+  context.get apiPath, ramlEndpoint(path + '/assets/raml/api.raml')
 
 exports.ramlEndpoint = ramlEndpoint
 exports.middleware = middleware

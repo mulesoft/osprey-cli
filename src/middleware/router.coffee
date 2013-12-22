@@ -2,10 +2,7 @@ GetHandler = require './handlers/get-handler'
 PostHandler = require './handlers/post-handler'
 PutHandler = require './handlers/put-handler'
 DeleteHandler = require './handlers/delete-handler'
-OptionsHandler = require './handlers/options-handler'
 HeadHandler = require './handlers/head-handler'
-TraceHandler = require './handlers/trace-handler'
-PatchHandler = require './handlers/patch-handler'
 
 class ApiKitRouter
   constructor: (@routes, @resources, @uriTemplateReader) ->
@@ -14,17 +11,14 @@ class ApiKitRouter
       post: new PostHandler
       put: new PutHandler
       delete: new DeleteHandler
-      options: new OptionsHandler
       head: new HeadHandler
-      trace: new TraceHandler
-      patch: new PatchHandler
 
-  resolve: (req, res, next) =>
-    # TODO: start using the api endpoint as defined in the raml file
-    template = @uriTemplateReader.getTemplateFor req.url
+  resolve: (apiPath, req, res, next) =>
+    uri = req.url.replace apiPath, ''
+    template = @uriTemplateReader.getTemplateFor uri
     method = req.method.toLowerCase()
 
-    if template? and not @routerExists method, req.url
+    if template? and not @routerExists method, uri
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?

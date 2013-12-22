@@ -30,3 +30,8 @@ exports.register = (apiPath, context, path) ->
 
 exports.ramlEndpoint = ramlEndpoint
 exports.middleware = middleware
+
+# TODO: Validations should be exposed from here
+# TODO: Default Parameters should be exposed from here
+# TODO: Exception Handling should be exposed from here
+# TODO: Middleware should be renamed to runtime

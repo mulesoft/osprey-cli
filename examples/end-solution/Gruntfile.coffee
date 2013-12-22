@@ -16,6 +16,9 @@ module.exports = (grunt) ->
         max_line_length:
           level: 'ignore'
 
+    clean:
+      build: ['dist']
+
     express:
       dev:
         options:
@@ -49,6 +52,7 @@ module.exports = (grunt) ->
   )
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-express-server'
   grunt.loadNpmTasks 'grunt-contrib-copy'

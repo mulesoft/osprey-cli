@@ -17,6 +17,7 @@ class Validation
     @req.headers['content-type'] in ['application/x-www-form-urlencoded', 'multipart/form-data']
 
   isJson: () =>
+    # TODO: Fixme. If any content-type is defined it should be defaulted to the first content-type defined in the raml file
     @req.headers['content-type'] == 'application/json' or @req.headers['content-type'].endsWith '+json'
 
   validateSchema: (@method) =>
@@ -28,9 +29,7 @@ class Validation
     true
 
   getMethod: () =>
-    console.log @req.method.toLowerCase()
     for method in @resource.methods
-      console.log method.method
       if method.method == @req.method.toLowerCase()
         return method
     return null
@@ -47,12 +46,10 @@ class Validation
     for key, ramlFormParameter of method.body.formParameters
       reqFormParam = @req.body[key]
       if not @validate reqFormParam, ramlFormParameter
-        console.log 'return false'
         return false
     true
 
   validateQueryParams: (@method) =>
-    console.log method.queryParameters
     for key, ramlQueryParameter of method.queryParameters
       reqQueryParam = @req.query[key]
       if not @validate reqQueryParam, ramlQueryParameter

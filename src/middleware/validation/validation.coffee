@@ -1,7 +1,7 @@
 SchemaValidator = require('jsonschema').Validator
 
 class Validation
-  constructor: (@req, @uriTemplateReader, @resource) ->
+  constructor: (@req, @uriTemplateReader, @resource, @apiPath) ->
 
   isValid: () =>
     return false if @resource.uriParameters? and not @validateUriParams()
@@ -36,7 +36,8 @@ class Validation
     return null
 
   validateUriParams: () =>
-    reqUriParameters = @uriTemplateReader.getUriParametersFor @req.url
+    uri = @req.url.replace @apiPath, ''
+    reqUriParameters = @uriTemplateReader.getUriParametersFor uri
     for key, ramlUriParameter of @resource.uriParameters
       if not @validate reqUriParameters[key], ramlUriParameter
         return false

@@ -28,9 +28,7 @@ class Validation
     true
 
   getMethod: () =>
-    console.log @req.method.toLowerCase()
     for method in @resource.methods
-      console.log method.method
       if method.method == @req.method.toLowerCase()
         return method
     return null
@@ -47,12 +45,10 @@ class Validation
     for key, ramlFormParameter of method.body.formParameters
       reqFormParam = @req.body[key]
       if not @validate reqFormParam, ramlFormParameter
-        console.log 'return false'
         return false
     true
 
   validateQueryParams: (@method) =>
-    console.log method.queryParameters
     for key, ramlQueryParameter of method.queryParameters
       reqQueryParam = @req.query[key]
       if not @validate reqQueryParam, ramlQueryParameter

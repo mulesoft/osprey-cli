@@ -9,6 +9,7 @@ logger.defaultConsoleAppender = (name, level, args) ->
   Function.prototype.apply.call console[level], console, args
 
 log = logger.consoleLogger 'raml-toolkit'
+log.setLevel logger.WARN
 
 # Load file system
 fs = require 'fs'
@@ -20,8 +21,9 @@ config = require '../package.json'
 
 program.version config.version
 program.usage '[options] <raml-file or path-to-raml>'
-program.option '-t, --template [template]', 'specify output template [node-express]', 'templates/node/express'
-program.option '-T, --target [directory]', 'specify output directory', '.'
+program.option '-b, --baseUri [uri]', 'specify base URI for your API', '/api'
+program.option '-l, --language [language]', 'specify output programming language: javascript, coffescript', 'javascript'
+program.option '-t, --target [directory]', 'specify output directory'
 program.option '-v, --verbose', 'set the verbose level of output'
 program.option '-q, --quiet', 'silence commands'
 
@@ -40,42 +42,65 @@ if program.quiet
   log.setLevel logger.OFF
 
 # Run commands
-log.info  'Let the RAML magic begin:'
+log.info  'Runtime parameters'
 log.debug '  - verbose: enabled'
-log.info  "  - template: #{program.template}"
+log.info  "  - baseUri: #{program.baseUri}"
+log.info  "  - language: #{program.language}"
 log.info  "  - target: #{program.target}"
-log.debug "  - args: #{program.args}"
-log.debug " "
+log.info  "  - args: #{program.args}"
+log.info  " "
 
-# Validate template folder
-templateFolder = "#{__dirname}/#{program.template.replace /-/, '/'}"
-log.debug "Template folder: #{templateFolder}"
+# Validate baseUri
+unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
+  log.error "Error: Invalid base URI argument: #{program.baseUri}"
+  return 1
 
-try
-  folderStats = fs.lstatSync templateFolder
-  throw new Error unless folderStats.isDirectory
-catch e
-  log.debug "Template does not exist or is not a directory."
-  log.error "Error: Invalid template name."
+
+# Validate language valid value
+unless program.language in ['javascript', 'coffescript']
+  log.error "Error: Invalid output language type argument: #{program.output}"
+  return 1
 
 
 # Validate target folder
-log.debug "Target folder: #{program.target}"
+unless program.target
+  log.debug "Setting target directory to #{program.target}"
+  program.target = 'output'
 
-# Create target folder if not exists
-unless fs.existsSync program.target
-  fs.mkdirSync program.target
+# Create target directory if needed
+try
+  unless fs.existsSync program.target
+    log.debug "Creating directory: #{program.target}"
+    fs.mkdirSync program.target
+catch e
+  log.error "Error: Unable to create target directory #{progam.target}"
+  return 1
+
+folderStats = fs.lstatSync program.target
+unless folderStats.isDirectory
+  log.error "Error: Invalid target directory #{progam.target}"
+  return 1
+
 
 # Create resources folder
 resourcePath = path.join program.target, 'resources'
 
 unless fs.existsSync resourcePath
+  log.debug "Creating resource directory: #{resourcePath}"
   fs.mkdirSync resourcePath
 
+
 # Validate RAML parameter
-throw new Error "Error: Missing RAML parameter." if program.args.length is 0
-throw new Error "Error: Invalid RAML parameter." if program.args.length isnt 1
-ramlFile = program.args[0]
+log.debug "Validate RAML file"
+if program.args.length is 0
+  log.warn "Warning: No RAML file was provided. A sample RAML file will be used instead."
+  ramlFile = null
+else
+  ramlFile = program.args[0]
+
+if program.args.length > 1
+  log.error "Error: Invalid set of parameters."
+  return 1
 
 
 # Parse RAML

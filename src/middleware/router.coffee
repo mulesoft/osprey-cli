@@ -19,13 +19,13 @@ class ApiKitRouter
     template = @uriTemplateReader.getTemplateFor uri
     method = req.method.toLowerCase()
 
-    validation = new Validation req, @uriTemplateReader, @resources[template.uriTemplate], apiPath
-
-    if not validation.isValid()
-      res.send 400
-      return
-
     if template? and not @routerExists method, req.url
+      validation = new Validation req, @uriTemplateReader, @resources[template.uriTemplate], apiPath
+
+      if not validation.isValid()
+        res.send 400
+        return
+
       methodInfo = @methodLookup method, template.uriTemplate
 
       if methodInfo?

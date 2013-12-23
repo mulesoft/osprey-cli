@@ -1,3 +1,5 @@
+path = require 'path'
+
 module.exports = (grunt) ->
   grunt.initConfig(
     pkg: grunt.file.readJSON('package.json'),
@@ -6,56 +8,74 @@ module.exports = (grunt) ->
         expand: true,
         flatten: false,
         cwd: 'src',
-        src: ['**/*.coffee'],
+        src: ['**/*.coffee']
         dest: './dist',
         ext: '.js'
 
     coffeelint:
-      app: ['src/**/*.coffee'],
+      app: ['src/**/*.coffee']
       options:
         max_line_length:
           level: 'ignore'
 
+    mochaTest:
+      test:
+        options:
+          reporter: 'spec',
+          require: 'coffee-script'
+        src: ['test/**/*.coffee']
+
     clean:
       build: ['dist']
 
-    express:
+    nodemon:
       dev:
         options:
-          script: 'dist/app.js'
+          file: './src/app.coffee'
+          watchedFolders: ['src', 'test']
+          ignoredFiles: ['node_modules/**', 'src/assets/console']
+
+    concurrent:
+      development:
+        tasks: ['nodemon', 'watch']
+        options:
+          logConcurrentOutput: true
 
     copy:
       assets:
-        expand: true,
-        flatten: false,
-        cwd: 'src',
-        src: 'assets/**/*.*',
+        expand: true
+        flatten: false
+        cwd: 'src'
+        src: 'assets/**/*.*'
         dest: 'dist/'
 
     watch:
+      wait:
+        files: ['src/assets/raml/**/*.*', 'src/**/*.coffee', 'test/**/*.coffee']
+        tasks: ['wait']
       assets:
-        files: ['src/assets/**/*.*'],
-        tasks: ['copy:assets'],
+        files: ['src/assets/raml/**/*.*']
+        tasks: ['copy:assets']
         options:
+          livereload: true
           atBegin: true
       development:
-        files: ['src/**/*.coffee'],
-        tasks: ['coffee', 'coffeelint'],
+        files: ['src/**/*.coffee']
+        tasks: ['coffee', 'coffeelint']
         options:
           atBegin: true
-      express:
-        files: ['dist/**/*.js'],
-        tasks: ['express:dev:stop', 'express:dev'],
+      test:
+        files: ['src/**/*.coffee', 'test/**/*.coffee']
+        tasks: ['mochaTest']
         options:
-          atBegin: true,
-          spawn: false
+          atBegin: true
   )
 
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-express-server'
-  grunt.loadNpmTasks 'grunt-contrib-copy'
-  grunt.loadNpmTasks 'grunt-coffeelint'
+  require('load-grunt-tasks') grunt
 
-  grunt.registerTask 'default', ['watch']
+  grunt.registerTask 'default', ['concurrent']
+
+  grunt.registerTask 'wait', 'just taking some time', ->
+    # Workaround for syncing watch and nodemon
+    done = @async()
+    setTimeout((() -> done()), 500)

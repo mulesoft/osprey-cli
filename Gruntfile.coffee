@@ -55,12 +55,7 @@ module.exports = (grunt) ->
           atBegin: true
   )
 
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-copy'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-coffeelint'
-  grunt.loadNpmTasks 'grunt-mocha-test'
+  require('load-grunt-tasks') grunt
 
   grunt.registerTask 'default', ['clean:build', 'watch']
   grunt.registerTask 'release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'copy']

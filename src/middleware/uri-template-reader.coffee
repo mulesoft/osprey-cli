@@ -2,7 +2,10 @@ utils = require 'express/lib/utils'
 
 class UriTemplateReader
   constructor: (@templates) ->
-    for template in @templates
+    @generateUriMatchers(@templates)
+
+  generateUriMatchers: (templates) ->
+    for template in templates
       do (template) ->
         regexp = utils.pathRegexp template.uriTemplate, [], false, false
         template.regexp = regexp
@@ -18,9 +21,14 @@ class UriTemplateReader
     return null unless template?
     matches = uri.match template.regexp
     keys = template.uriTemplate.match template.regexp
+
+    return null unless keys.length > 1
+
     uriParameters = {}
+
     for i in [1..(keys.length - 1)]
       uriParameters[keys[i].replace ':', ''] = matches[i]
+
     uriParameters
 
 module.exports = UriTemplateReader

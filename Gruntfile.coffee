@@ -27,6 +27,11 @@ module.exports = (grunt) ->
     clean:
       build: ['dist']
 
+    concat:
+      dist:
+        src: ['src/shebang.js', 'dist/raml-toolkit.js'],
+        dest: 'dist/raml-toolkit.js'
+
     copy:
       templates:
         expand: true,
@@ -46,6 +51,12 @@ module.exports = (grunt) ->
         cwd: 'src',
         src: 'assets/**/*.*',
         dest: 'dist/'
+      license:
+        expand: true,
+        flatten: false,
+        # cwd: '',
+        src: 'LICENSE',
+        dest: 'dist/'
 
     watch:
       development:
@@ -58,9 +69,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-mocha-test'
 
   grunt.registerTask 'default', ['clean:build', 'watch']
-  grunt.registerTask 'release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'copy']
+  grunt.registerTask 'release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'concat', 'copy']

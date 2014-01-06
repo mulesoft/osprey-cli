@@ -1,4 +1,2 @@
-raml-toolkit
-============
-
-raml-toolkit
+API Kit for Node
+=================

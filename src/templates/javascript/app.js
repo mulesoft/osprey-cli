@@ -1,7 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var apiKit = require('../../../dist/middleware/api-kit');
+var apiKit = require('../../../dist/middleware/apikit-middleware');
 
 var app = express();
 

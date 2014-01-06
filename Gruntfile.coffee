@@ -29,8 +29,8 @@ module.exports = (grunt) ->
 
     concat:
       dist:
-        src: ['src/shebang.js', 'dist/raml-toolkit.js'],
-        dest: 'dist/raml-toolkit.js'
+        src: ['src/assets/shebang.js', 'dist/apikit.js'],
+        dest: 'dist/apikit.js'
 
     copy:
       templates:

@@ -3,7 +3,7 @@ http = require('http')
 path = require('path')
 simplyLog = require 'simply-log'
 utils = require 'express/lib/utils'
-validations = require '../../../src/middleware/validations'
+validations = require('../../../dist/middleware/apikit-middleware').validations
 
 app = express()
 

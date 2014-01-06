@@ -8,7 +8,7 @@ logger.defaultConsoleAppender = (name, level, args) ->
   console[level] = console.log unless console[level]
   Function.prototype.apply.call console[level], console, args
 
-log = logger.consoleLogger 'raml-toolkit'
+log = logger.consoleLogger 'apikit'
 log.setLevel logger.WARN
 
 # Load file system
@@ -104,8 +104,8 @@ if program.args.length > 1
 
 
 # Parse RAML
-parser = require './parser-wrapper'
-Scaffolder = require './scaffolder'
+parser = require './apikit-wrapper'
+Scaffolder = require './apikit-scaffolder'
 
 parser.loadRaml ramlFile, log, (wrapper) ->
   scaffolder = new Scaffolder program.template, log, fs

@@ -1,5 +1,5 @@
   Examples:
 
-    $ raml-toolkit api.raml
-    $ raml-toolkit -t ruby-sinatra api.raml
-    $ raml-toolkit -t java-play https://raw.github.com/jcenturion/raml-toolkit/master/examples/leagues/leagues.raml
+    $ apikit api.raml
+    $ apikit -t ruby-sinatra api.raml
+    $ apikit -t java-play https://raw.github.com/jcenturion/raml-toolkit/master/examples/leagues/leagues.raml

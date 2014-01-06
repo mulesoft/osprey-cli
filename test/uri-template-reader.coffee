@@ -1,4 +1,4 @@
-parser = require '../src/parser-wrapper'
+parser = require '../src/apikit-wrapper'
 UriTemplateReader = require '../src/middleware/uri-template-reader'
 should = require 'should'
 

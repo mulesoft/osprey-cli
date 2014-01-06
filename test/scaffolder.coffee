@@ -1,11 +1,11 @@
-parser = require '../src/parser-wrapper'
-Scaffolder = require '../src/scaffolder'
+parser = require '../src/apikit-wrapper'
+Scaffolder = require '../src/apikit-scaffolder'
 should = require 'should'
 simplyLog = require 'simply-log'
 
 describe 'TOOLKIT SCAFFOLDER', ->
   before (done) ->
-    @logger = simplyLog.consoleLogger 'raml-toolkit'
+    @logger = simplyLog.consoleLogger 'apikit'
     @templatePath = './src/templates/node/express'
 
     @fileWriter = new (class FileWriter

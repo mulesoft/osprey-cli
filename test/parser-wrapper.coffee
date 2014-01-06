@@ -1,4 +1,4 @@
-parser = require '../src/parser-wrapper'
+parser = require '../src/apikit-wrapper'
 should = require 'should'
 simplyLog = require 'simply-log'
 

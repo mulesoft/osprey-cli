@@ -1,7 +1,7 @@
 {
-  "name": "raml-toolkit",
-  "description": "RAML Toolkit",
-  "version": "0.0.1",
+  "name": "apikit",
+  "description": "RAML APIKit",
+  "version": "0.0.7",
   "author": "Mulesoft",
   "private": true,
   "repository": {
@@ -17,7 +17,7 @@
       "url": "https://github.com/jcenturion/raml-toolkit/blob/master/LICENSE"
     }
   ],
-  "main": "src/raml-toolkit.js",
+  "main": "src/apikit.js",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-coffee": "~0.7.0",
@@ -44,6 +44,6 @@
   },
   "preferGlobal": "true",
   "bin": {
-    "raml-toolkit" : "dist/raml-toolkit.js"
+    "apikit" : "dist/apikit.js"
   }
 }

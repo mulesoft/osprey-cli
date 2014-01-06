@@ -1,6 +1,6 @@
 UriTemplateReader = require './uri-template-reader'
 ApiKitRouter = require './router'
-parser = require '../parser-wrapper'
+parser = require '../apikit-wrapper'
 express = require 'express'
 Validation = require './validation/validation'
 

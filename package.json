@@ -17,7 +17,7 @@
       "url": "https://github.com/jcenturion/raml-toolkit/blob/master/LICENSE"
     }
   ],
-  "main": "src/apikit.js",
+  "main": "dist/middleware/apikit-middleware.js",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-coffee": "~0.7.0",
@@ -45,5 +45,6 @@
   "preferGlobal": "true",
   "bin": {
     "apikit" : "dist/apikit.js"
-  }
+  },
+  "files": ["dist"]
 }

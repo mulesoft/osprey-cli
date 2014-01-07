@@ -1,7 +1,7 @@
 express = require 'express'
 http = require 'http'
 path = require 'path'
-apiKit = require '../../../dist/middleware/apikit-middleware'
+apiKit = require 'apikit'
 
 app = module.exports = express()
 

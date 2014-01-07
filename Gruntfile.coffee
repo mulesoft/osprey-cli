@@ -29,8 +29,8 @@ module.exports = (grunt) ->
 
     concat:
       dist:
-        src: ['src/assets/shebang.js', 'dist/apikit.js'],
-        dest: 'dist/apikit.js'
+        src: ['src/assets/shebang.js', 'dist/apikit-node.js'],
+        dest: 'dist/apikit-node.js'
 
     copy:
       templates:
@@ -38,12 +38,6 @@ module.exports = (grunt) ->
         flatten: false,
         cwd: 'src',
         src: 'templates/**/*.swig',
-        dest: 'dist/'
-      examples:
-        expand: true,
-        flatten: false,
-        cwd: 'src',
-        src: 'examples/leagues/**/*.*',
         dest: 'dist/'
       assets:
         expand: true,
@@ -54,7 +48,6 @@ module.exports = (grunt) ->
       license:
         expand: true,
         flatten: false,
-        # cwd: '',
         src: 'LICENSE',
         dest: 'dist/'
 

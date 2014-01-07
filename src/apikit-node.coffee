@@ -104,8 +104,8 @@ if program.args.length > 1
 
 
 # Parse RAML
-parser = require './apikit-wrapper'
-Scaffolder = require './apikit-scaffolder'
+parser = require './wrapper'
+Scaffolder = require './scaffolder'
 
 parser.loadRaml ramlFile, log, (wrapper) ->
   scaffolder = new Scaffolder program.template, log, fs

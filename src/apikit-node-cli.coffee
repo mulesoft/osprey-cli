@@ -12,7 +12,7 @@ log = logger.consoleLogger 'apikit'
 log.setLevel logger.WARN
 
 # Load file system
-fs = require 'fs'
+fs = require 'fs.extra'
 path = require 'path'
 
 # Set up commander
@@ -22,7 +22,7 @@ config = require '../package.json'
 program.version config.version
 program.usage '[options] <raml-file or path-to-raml>'
 program.option '-b, --baseUri [uri]', 'specify base URI for your API', '/api'
-program.option '-l, --language [language]', 'specify output programming language: javascript, coffescript', 'javascript'
+program.option '-l, --language [language]', 'specify output programming language: javascript, coffeescript', 'javascript'
 program.option '-t, --target [directory]', 'specify output directory'
 program.option '-v, --verbose', 'set the verbose level of output'
 program.option '-q, --quiet', 'silence commands'
@@ -57,7 +57,7 @@ unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
 
 
 # Validate language valid value
-unless program.language in ['javascript', 'coffescript']
+unless program.language in ['javascript', 'coffeescript']
   log.error "Error: Invalid output language type argument: #{program.output}"
   return 1
 
@@ -104,9 +104,7 @@ if program.args.length > 1
 
 
 # Parse RAML
-parser = require './wrapper'
 Scaffolder = require './scaffolder'
 
-parser.loadRaml ramlFile, log, (wrapper) ->
-  scaffolder = new Scaffolder program.template, log, fs
-  scaffolder.generate wrapper.getResourcesList(), program.target
+scaffolder = new Scaffolder log, fs
+scaffolder.generate program

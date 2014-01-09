@@ -24,6 +24,7 @@ program.usage '[options] <raml-file or path-to-raml>'
 program.option '-b, --baseUri [uri]', 'specify base URI for your API', '/api'
 program.option '-l, --language [language]', 'specify output programming language: javascript, coffeescript', 'javascript'
 program.option '-t, --target [directory]', 'specify output directory'
+program.option '-n, --name [app-name]', 'specify application name', 'raml-app'
 program.option '-v, --verbose', 'set the verbose level of output'
 program.option '-q, --quiet', 'silence commands'
 

@@ -2,19 +2,19 @@
   "name": "apikit-node-cli",
   "description": "RAML APIKit Cli",
   "version": "0.0.7",
-  "author": "Mulesoft",
+  "author": "MuleSoft, Inc.",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/jcenturion/apikit-node-cli.git"
+    "url": "git://github.com/mulesoft/apikit-node-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/jcenturion/apikit-node-cli/issues"
+    "url": "https://github.com/mulesoft/apikit-node-cli/issues"
   },
   "licenses": [
     {
       "type": "Apache 2.0",
-      "url": "https://github.com/jcenturion/apikit-node/-cliblob/master/LICENSE"
+      "url": "https://github.com/mulesoft/apikit-node/-cliblob/master/LICENSE"
     }
   ],
   "devDependencies": {

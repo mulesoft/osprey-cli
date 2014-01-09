@@ -8,7 +8,7 @@ logger.defaultConsoleAppender = (name, level, args) ->
   console[level] = console.log unless console[level]
   Function.prototype.apply.call console[level], console, args
 
-log = logger.consoleLogger 'apikit'
+log = logger.consoleLogger 'apikit-node'
 log.setLevel logger.WARN
 
 # Load file system
@@ -33,40 +33,49 @@ program.on '--help', ->
   file = fs.readFileSync "#{__dirname}/assets/help.txt", 'utf8'
   log.info file
 
+# Set common help recommendation message
+helpTip = '\nUse -h or --help for more information.'
+
+# Parse input arguments
 program.parse process.argv
 
 # Set up log level
 if program.verbose
   log.setLevel logger.DEBUG
+  log.debug "Running #{config.name} #{config.version}\n"
 
 if program.quiet
   log.setLevel logger.OFF
 
-# Run commands
+# Log runtime parameters
 log.info  'Runtime parameters'
-log.debug '  - verbose: enabled'
 log.info  "  - baseUri: #{program.baseUri}"
 log.info  "  - language: #{program.language}"
-log.info  "  - target: #{program.target}"
-log.info  "  - args: #{program.args}"
+log.info  "  - target: #{program.target}" if program.target
+log.info  "  - name: #{program.name}"
+log.info  "  - args: #{program.args}" if program.args.length > 0
 log.info  " "
+
 
 # Validate baseUri
 unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
-  log.error "Error: Invalid base URI argument: #{program.baseUri}"
+  log.error "ERROR - Invalid base URI: #{program.baseUri}"
+  log.error helpTip
   return 1
 
 
 # Validate language valid value
 unless program.language in ['javascript', 'coffeescript']
-  log.error "Error: Invalid output language type argument: #{program.output}"
+  log.error "ERROR - Invalid output language type: #{program.language}"
+  log.error helpTip
   return 1
 
 
 # Validate target folder
 unless program.target
-  log.debug "Setting target directory to #{program.target}"
   program.target = 'output'
+  log.warn "WARNING - No target directory was provided. Setting target directory to: #{program.target}"
+
 
 # Create target directory if needed
 try
@@ -74,12 +83,14 @@ try
     log.debug "Creating directory: #{program.target}"
     fs.mkdirSync program.target
 catch e
-  log.error "Error: Unable to create target directory #{progam.target}"
+  log.error "ERROR - Unable to create target directory #{progam.target}"
+  log.error helpTip
   return 1
 
 folderStats = fs.lstatSync program.target
 unless folderStats.isDirectory
-  log.error "Error: Invalid target directory #{progam.target}"
+  log.error "ERROR - Invalid target directory #{progam.target}"
+  log.error helpTip
   return 1
 
 
@@ -92,15 +103,15 @@ unless fs.existsSync resourcePath
 
 
 # Validate RAML parameter
-log.debug "Validate RAML file"
 if program.args.length is 0
-  log.warn "Warning: No RAML file was provided. A sample RAML file will be used instead."
+  log.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
   ramlFile = null
 else
   ramlFile = program.args[0]
 
 if program.args.length > 1
-  log.error "Error: Invalid set of parameters."
+  log.error "ERROR - Invalid set of parameters."
+  log.error helpTip
   return 1
 
 

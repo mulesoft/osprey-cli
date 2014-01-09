@@ -1,5 +1,6 @@
   Examples:
 
     $ apikit api.raml
-    $ apikit -t ruby-sinatra api.raml
-    $ apikit -t java-play https://raw.github.com/jcenturion/raml-toolkit/master/examples/leagues/leagues.raml
+    $ apikit -t path-to-folder api.raml
+    $ apikit -n my-app api.raml
+    $ apikit -l coffeescript https://raw.github.com/mulesoft/apikit-node/master/examples/leagues/leagues.raml

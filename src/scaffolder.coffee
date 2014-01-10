@@ -6,37 +6,49 @@ path = require 'path'
 class Scaffolder
   constructor: (@logger, @fileWriter) ->
 
-  generate: (options, target) =>
+  generate: (@options) =>
     @logger.debug '[Scaffolder] - Starting scaffolder'
 
-    # resources = @readResources ramlResources
-    @generateBaseApp options
-    @copyGruntFile options
-    # @generateResources target, resources
-    # @generateDependenciesFile target
-    # @generateBuilderFile target
+    #TODO: Create src folder
+    fileType = if options.language == 'javascript' then 'js' else 'coffee'
 
-  generateBaseApp: (options) =>
-    @logger.debug "[Scaffolder] - Generating base app"
+    @createApp @options, fileType
+    @createGruntfile @options, fileType
+    @createPackage @options
 
-    baseApp = swig.renderFile "#{__dirname}/templates/#{ options.language }/app.swig",
+  createApp: (options, fileType) =>
+    @logger.debug "[Scaffolder] - Generating app.#{ fileType }"
+
+    templatePath = "#{__dirname}/templates/#{ options.language }/app.swig"
+    params =
       apiPath: options.baseUri
 
-    try
-      fileType = if options.language = 'javascript' then 'js' else 'coffee'
-      # TODO: Create the src folder
-      @fileWriter.writeFile path.join("#{ options.target }", "app.#{ fileType }"), baseApp
-    catch e
-      @logger.debug "[Scaffolder] - #{ e.message }"
+    @write path.join("#{ options.target }", "app.#{ fileType }"), @render(templatePath, params)
 
-  copyGruntFile: (options) =>
-    console.log options.language
-    fileType = if options.language = 'javascript' then 'js' else 'coffee'
+  createPackage: (options) =>
+    @logger.debug "[Scaffolder] - Generating Package.json"
+
+    templatePath = "#{__dirname}/templates/common/package.swig"
+    params =
+      appName: options.name
+
+    @write path.join("#{ options.target }", "package.json"), @render(templatePath, params)
+
+  createGruntfile: (options, fileType) =>
     src = "#{__dirname}/templates/#{ options.language }/app.swig"
     target = path.join("#{ options.target }", "Gruntfile.#{ fileType }")
 
     @fileWriter.copy src, target, (err) =>
       @logger.debug "[Scaffolder] - Gruntfile Generated"
+
+  render: (templatePath, params) =>
+    swig.renderFile templatePath, params
+
+  write: (path, data) =>
+    try
+      @fileWriter.writeFile path, data
+    catch e
+      @logger.debug "[Scaffolder] - #{ e.message }"
 
   # generateDependenciesFile: (target) =>
   #   @logger.debug "[Scaffolder] - Generating Dependencies File"

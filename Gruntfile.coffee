@@ -37,7 +37,7 @@ module.exports = (grunt) ->
         expand: true,
         flatten: false,
         cwd: 'src',
-        src: 'templates/**/*.swig',
+        src: 'templates/**/*.*',
         dest: 'dist/'
       assets:
         expand: true,
@@ -62,4 +62,4 @@ module.exports = (grunt) ->
   require('load-grunt-tasks') grunt
 
   grunt.registerTask 'default', ['clean:build', 'watch']
-  grunt.registerTask 'release', ['clean:build', 'coffeelint', 'coffee', 'mochaTest', 'concat', 'copy']
+  grunt.registerTask 'release', ['clean:build', 'coffeelint', 'copy', 'coffee', 'mochaTest', 'concat']

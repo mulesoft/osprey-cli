@@ -56,13 +56,14 @@ log.info  "  - name: #{program.name}"
 log.info  "  - args: #{program.args}" if program.args.length > 0
 log.info  " "
 
-
 # Validate baseUri
 unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
   log.error "ERROR - Invalid base URI: #{program.baseUri}"
   log.error helpTip
   return 1
 
+# Remove initial slash
+program.baseUri = program.baseUri.replace(/^\//g, '')
 
 # Validate language valid value
 unless program.language in ['javascript', 'coffeescript']
@@ -70,18 +71,24 @@ unless program.language in ['javascript', 'coffeescript']
   log.error helpTip
   return 1
 
-
 # Validate target folder
 unless program.target
   program.target = 'output'
   log.warn "WARNING - No target directory was provided. Setting target directory to: #{program.target}"
 
+# Clean up output folder
+if fs.existsSync program.target
+  try
+    fs.rmrfSync program.target, (err) ->
+      log.debug 'Target folder was clean up'
+  catch e
+    log.error helpTip
+    return 1
 
 # Create target directory if needed
 try
-  unless fs.existsSync program.target
-    log.debug "Creating directory: #{program.target}"
-    fs.mkdirSync program.target
+  log.debug "Creating directory: #{program.target}"
+  fs.mkdirSync program.target
 catch e
   log.error "ERROR - Unable to create target directory #{progam.target}"
   log.error helpTip
@@ -93,14 +100,19 @@ unless folderStats.isDirectory
   log.error helpTip
   return 1
 
+# TOOO: Refactor this thing!
+# Create base structure
+srcPath = path.join program.target, 'src'
 
-# Create resources folder
-resourcePath = path.join program.target, 'resources'
+unless fs.existsSync srcPath
+  log.debug "Creating src directory: #{srcPath}"
+  fs.mkdirSync srcPath
 
-unless fs.existsSync resourcePath
-  log.debug "Creating resource directory: #{resourcePath}"
-  fs.mkdirSync resourcePath
+testPath = path.join program.target, 'test'
 
+unless fs.existsSync testPath
+  log.debug "Creating test directory: #{testPath}"
+  fs.mkdirSync testPath
 
 # Validate RAML parameter
 if program.args.length is 0
@@ -113,7 +125,6 @@ if program.args.length > 1
   log.error "ERROR - Invalid set of parameters."
   log.error helpTip
   return 1
-
 
 # Parse RAML
 Scaffolder = require './scaffolder'

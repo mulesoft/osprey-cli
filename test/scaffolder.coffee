@@ -1,46 +1,26 @@
-# parser = require '../src/wrapper'
-# Scaffolder = require '../src/scaffolder'
-# should = require 'should'
-# simplyLog = require 'simply-log'
+parser = require '../src/wrapper'
+Scaffolder = require '../src/scaffolder'
+should = require 'should'
+simplyLog = require 'simply-log'
 
-# describe 'TOOLKIT SCAFFOLDER', ->
-#   before (done) ->
-#     @logger = simplyLog.consoleLogger 'apikit'
-#     @templatePath = './src/templates/node/express'
+describe 'TOOLKIT SCAFFOLDER', ->
+  before (done) ->
+    @logger = simplyLog.consoleLogger 'apikit'
+    @templatePath = './src/templates/node/express'
 
-#     @fileWriter = new (class FileWriter
-#         writeFile:  (target, content) =>
-#           @target = target
-#           @content = content
-#       )
+    @fileWriter = new (class FileWriter
+        writeFile:  (target, content) =>
+          @target = target
+          @content = content
+      )
 
-#     parser.loadRaml "./test/assets/leagues/leagues.raml", @logger, (wrapper) =>
-#       @parsedRaml = wrapper
-#       @scaffolder = new Scaffolder './src/templates/node/express', @logger, @fileWriter
-#       done()
+    parser.loadRaml "./test/assets/leagues/leagues.raml", @logger, (wrapper) =>
+      @parsedRaml = wrapper
+      @scaffolder = new Scaffolder @logger, @fileWriter
+      done()
 
-#   describe 'SCAFFOLDER READ RAML RESOURCES', ->
-#     it 'Should correctly read RAML resources', (done) ->
-#       # Act
-#       resources = @scaffolder.readResources(@parsedRaml.getResourcesList())
-
-#       # Assert
-#       resources.should.have.lengthOf 5
-
-#       done()
-
-#     it 'Should render templates for each resource', (done) ->
-#       # Act
-#       resources = @scaffolder.readResources(@parsedRaml.getResourcesList())
-
-#       # Assert
-#       resources[0].templates.should.have.lengthOf 2
-#       resources[1].templates.should.have.lengthOf 2
-#       resources[2].templates.should.have.lengthOf 1
-#       resources[3].templates.should.have.lengthOf 2
-#       resources[4].templates.should.have.lengthOf 1
-
-#       done()
+  describe 'SCAFFOLDER READ RAML RESOURCES', ->
+    
 
 #   describe 'SCAFFOLDER GENERATION', ->
 #     it 'Should correctly generate the base app for Express Templates', (done) ->

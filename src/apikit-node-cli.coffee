@@ -102,17 +102,16 @@ unless folderStats.isDirectory
 
 # TOOO: Refactor this thing!
 # Create base structure
-srcPath = path.join program.target, 'src'
+log.debug "Creating src directory"
+fs.mkdirSync path.join(program.target, 'src')
 
-unless fs.existsSync srcPath
-  log.debug "Creating src directory: #{srcPath}"
-  fs.mkdirSync srcPath
+log.debug "Creating assets directory"
+fs.mkdirSync path.join(program.target, 'src/assets')
+fs.mkdirSync path.join(program.target, 'src/assets/raml')
+fs.mkdirSync path.join(program.target, 'src/assets/console')
 
-testPath = path.join program.target, 'test'
-
-unless fs.existsSync testPath
-  log.debug "Creating test directory: #{testPath}"
-  fs.mkdirSync testPath
+log.debug "Creating test directory"
+fs.mkdirSync path.join(program.target, 'test')
 
 # Validate RAML parameter
 if program.args.length is 0

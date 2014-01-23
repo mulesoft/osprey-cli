@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "3.4.4",
-    "apikit-node": "0.0.7"
+    "express": "3.4.4"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -20,6 +19,7 @@
     "grunt-nodemon": "~0.1.2",
     "grunt-concurrent": "~0.4.2",
     "load-grunt-tasks": "~0.2.1",
-    "grunt-wait": "~0.1.0"
+    "grunt-wait": "~0.1.0",
+    "grunt-contrib-jshint": "~0.8.0"
   }
 }

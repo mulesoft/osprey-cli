@@ -3,32 +3,8 @@ var path = require('path');
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    coffee: {
-      compile: {
-        expand: true,
-        flatten: false,
-        cwd: 'src',
-        src: ['**/*.coffee'],
-        dest: './dist',
-        ext: '.js'
-      }
-    },
-    coffeelint: {
-      app: ['src/**/*.coffee'],
-      options: {
-        max_line_length: {
-          level: 'ignore'
-        }
-      }
-    },
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'spec',
-          require: 'coffee-script'
-        },
-        src: ['test/**/*.coffee']
-      }
+    jshint: {
+      all: ['src/app.js']
     },
     clean: {
       build: ['dist']
@@ -36,7 +12,7 @@ module.exports = function(grunt) {
     nodemon: {
       dev: {
         options: {
-          file: './src/app.coffee',
+          file: './src/app.js',
           watchedFolders: ['src', 'test'],
           ignoredFiles: ['node_modules/**', 'src/assets/console']
         }
@@ -61,7 +37,7 @@ module.exports = function(grunt) {
     },
     watch: {
       wait: {
-        files: ['src/assets/raml/**/*.*', 'src/**/*.coffee', 'test/**/*.coffee'],
+        files: ['src/assets/raml/**/*.*', 'src/**/*.js', 'test/**/*.js'],
         tasks: ['wait']
       },
       assets: {
@@ -73,15 +49,8 @@ module.exports = function(grunt) {
         }
       },
       development: {
-        files: ['src/**/*.coffee'],
-        tasks: ['coffee', 'coffeelint'],
-        options: {
-          atBegin: true
-        }
-      },
-      test: {
-        files: ['src/**/*.coffee', 'test/**/*.coffee'],
-        tasks: ['mochaTest'],
+        files: ['src/**/*.js'],
+        tasks: ['jshint'],
         options: {
           atBegin: true
         }

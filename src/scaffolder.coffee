@@ -70,7 +70,7 @@ class Scaffolder
       source = options.args[0]
       dest = path.join options.target, 'src/assets/raml'
       
-      @fileWriter.copyRecursive source, dest, (err) =>
+      @fileWriter.copyRecursive source, dest, (err) ->
 
   render: (templatePath, params) ->
     swig.renderFile templatePath, params

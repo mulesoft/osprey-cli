@@ -108,7 +108,6 @@ fs.mkdirSync path.join(program.target, 'src')
 log.debug "Creating assets directory"
 fs.mkdirSync path.join(program.target, 'src/assets')
 fs.mkdirSync path.join(program.target, 'src/assets/raml')
-fs.mkdirSync path.join(program.target, 'src/assets/console')
 
 log.debug "Creating test directory"
 fs.mkdirSync path.join(program.target, 'test')

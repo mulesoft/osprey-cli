@@ -14,7 +14,6 @@ class Scaffolder
     @createApp options, fileType
     @createGruntfile options, fileType
     @createPackage options
-    @copyAssets options
     @copyRaml options
 
   createApp: (options, fileType) =>
@@ -43,18 +42,6 @@ class Scaffolder
 
     @fileWriter.copy src, target, (err) =>
       @logger.debug "[Scaffolder] - Generating Gruntfile"
-
-  copyAssets: (options) =>
-    source = path.join __dirname, 'assets', 'console'
-    dest = path.join options.target, 'src/assets/console'
-    templatePath = path.join __dirname, 'templates/common/index.swig'
-
-    params =
-      apiPath: options.baseUri
-
-    @fileWriter.copyRecursive source, dest, (err) =>
-      @logger.debug "[Scaffolder] - Generating Assets"
-      @write path.join(options.target, 'src/assets/console/index.html'), @render(templatePath, params)
 
   copyRaml: (options) =>
     @logger.debug "[Scaffolder] - Generating RAML file"

@@ -24,10 +24,13 @@ To start using APIKit you'll need the following:
 | --language        |javascript      | Specifies output programming language: javascript, coffeescript
 | --target          |output          | Specifies output directory
 | --name            |raml-app        | Specifies application name
-| --verbose         |-               | Set the verbose level of output
-| --quiet           |-               | Silence commands
+| --verbose         |-               | Sets the verbose level of output
+| --quiet           |-               | Silences commands
+
+### Usage
+
+`apikit [options] <raml-file or path-to-raml>`
 
 ### Examples
-
 `apikit -n my-app api.raml`
 `apikit --language coffeescript https://raw.github.com/mulesoft/apikit-node/master/examples/leagues/leagues.raml`

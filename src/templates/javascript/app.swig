@@ -23,6 +23,7 @@ apiKit.register('/{{apiPath}}', app, {
 // });
 
 if (!module.parent) {
-  app.listen(app.get('port'));
-  console.log('listening on port 3000');
+  var port = app.get('port');
+  app.listen(port);
+  console.log('listening on port ' + port);
 }

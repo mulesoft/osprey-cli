@@ -35,5 +35,7 @@ To start using APIKit you'll need the following:
 
 ### Examples
 `apikit new`
+
 `apikit new api.raml`
+
 `apikit new api.raml -n my-app`

@@ -1,6 +1,6 @@
   Examples:
 
-    $ apikit api.raml
-    $ apikit -t path-to-folder api.raml
-    $ apikit -n my-app api.raml
-    $ apikit -l coffeescript https://raw.github.com/mulesoft/apikit-node/master/examples/leagues/leagues.raml
+    $ apikit new
+    $ apikit new api.raml
+    $ apikit new api.raml -t path-to-folder
+    $ apikit new api.raml -n my-app

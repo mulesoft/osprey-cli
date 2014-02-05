@@ -46,7 +46,7 @@ class Scaffolder
   copyRaml: (options) =>
     @logger.debug "[Scaffolder] - Generating RAML file"
 
-    if options.args.length is 0
+    if options.args.length is 1
       templatePath = path.join __dirname, 'templates/common/raml.swig'
 
       params =
@@ -54,7 +54,7 @@ class Scaffolder
 
       @write path.join(options.target, 'src/assets/raml/api.raml'), @render(templatePath, params)
     else
-      source = options.args[0]
+      source = options.args[1]
       dest = path.join options.target, 'src/assets/raml'
 
       if @fileWriter.lstatSync(source).isDirectory()

@@ -11,8 +11,10 @@ To start using APIKit you'll need the following:
 ### Getting started
 
 1. Clone APIKit - `git clone git@github.com:mulesoft/apikit-node-cli.git`
-2. Install APIKit Node CLI globally - `npm install -g /Users/{username}/Projects/apikit-node-cli`
-3. Run apikit from a Command Line
+2. Resolve dependencies - `npm install`
+3. Compile APIKit - `grunt release`
+4. Install APIKit Node CLI globally - `npm install -g /Users/{username}/Projects/apikit-node-cli`
+5. Run apikit from a Command Line
 
 ## Command line options
 
@@ -29,8 +31,9 @@ To start using APIKit you'll need the following:
 
 ### Usage
 
-`apikit [options] <raml-file or path-to-raml>`
+`apikit new <raml-file or path-to-raml> [options]`
 
 ### Examples
-`apikit -n my-app api.raml`
-`apikit --language coffeescript https://raw.github.com/mulesoft/apikit-node/master/examples/leagues/leagues.raml`
+`apikit new`
+`apikit new api.raml`
+`apikit new api.raml -n my-app`

@@ -20,7 +20,7 @@ program = require 'commander'
 config = require '../package.json'
 
 program.version config.version
-program.usage '[options] <raml-file or path-to-raml>'
+program.usage 'new <raml-file or path-to-raml> [options]'
 program.option '-b, --baseUri [uri]', 'specify base URI for your API', '/api'
 program.option '-l, --language [language]', 'specify output programming language: javascript, coffeescript', 'javascript'
 program.option '-t, --target [directory]', 'specify output directory'
@@ -39,93 +39,96 @@ helpTip = '\nUse -h or --help for more information.'
 # Parse input arguments
 program.parse process.argv
 
-# Set up log level
-if program.verbose
-  log.setLevel logger.DEBUG
-  log.debug "Running #{config.name} #{config.version}\n"
+if program.args[0] == 'new'
+  # Set up log level
+  if program.verbose
+    log.setLevel logger.DEBUG
+    log.debug "Running #{config.name} #{config.version}\n"
 
-if program.quiet
-  log.setLevel logger.OFF
+  if program.quiet
+    log.setLevel logger.OFF
 
-# Log runtime parameters
-log.info  'Runtime parameters'
-log.info  "  - baseUri: #{program.baseUri}"
-log.info  "  - language: #{program.language}"
-log.info  "  - target: #{program.target}" if program.target
-log.info  "  - name: #{program.name}"
-log.info  "  - args: #{program.args}" if program.args.length > 0
-log.info  " "
+  # Log runtime parameters
+  log.info  'Runtime parameters'
+  log.info  "  - baseUri: #{program.baseUri}"
+  log.info  "  - language: #{program.language}"
+  log.info  "  - target: #{program.target}" if program.target
+  log.info  "  - name: #{program.name}"
+  log.info  "  - args: #{program.args}" if program.args.length > 0
+  log.info  " "
 
-# Validate baseUri
-unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
-  log.error "ERROR - Invalid base URI: #{program.baseUri}"
-  log.error helpTip
-  return 1
-
-# Remove initial slash
-program.baseUri = program.baseUri.replace(/^\//g, '')
-
-# Validate language valid value
-unless program.language in ['javascript', 'coffeescript']
-  log.error "ERROR - Invalid output language type: #{program.language}"
-  log.error helpTip
-  return 1
-
-# Validate target folder
-unless program.target
-  program.target = 'output'
-  log.warn "WARNING - No target directory was provided. Setting target directory to: #{program.target}"
-
-# Clean up output folder
-if fs.existsSync program.target
-  try
-    fs.rmrfSync program.target, (err) ->
-      log.debug 'Target folder was clean up'
-  catch e
+  # Validate baseUri
+  unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
+    log.error "ERROR - Invalid base URI: #{program.baseUri}"
     log.error helpTip
     return 1
 
-# Create target directory if needed
-try
-  log.debug "Creating directory: #{program.target}"
-  fs.mkdirSync program.target
-catch e
-  log.error "ERROR - Unable to create target directory #{progam.target}"
-  log.error helpTip
-  return 1
+  # Remove initial slash
+  program.baseUri = program.baseUri.replace(/^\//g, '')
 
-folderStats = fs.lstatSync program.target
-unless folderStats.isDirectory
-  log.error "ERROR - Invalid target directory #{progam.target}"
-  log.error helpTip
-  return 1
+  # Validate language valid value
+  unless program.language in ['javascript', 'coffeescript']
+    log.error "ERROR - Invalid output language type: #{program.language}"
+    log.error helpTip
+    return 1
 
-# TOOO: Refactor this thing!
-# Create base structure
-log.debug "Creating src directory"
-fs.mkdirSync path.join(program.target, 'src')
+  # Validate target folder
+  unless program.target
+    program.target = 'output'
+    log.warn "WARNING - No target directory was provided. Setting target directory to: #{program.target}"
 
-log.debug "Creating assets directory"
-fs.mkdirSync path.join(program.target, 'src/assets')
-fs.mkdirSync path.join(program.target, 'src/assets/raml')
+  # Clean up output folder
+  if fs.existsSync program.target
+    try
+      fs.rmrfSync program.target, (err) ->
+        log.debug 'Target folder was clean up'
+    catch e
+      log.error helpTip
+      return 1
 
-log.debug "Creating test directory"
-fs.mkdirSync path.join(program.target, 'test')
+  # Create target directory if needed
+  try
+    log.debug "Creating directory: #{program.target}"
+    fs.mkdirSync program.target
+  catch e
+    log.error "ERROR - Unable to create target directory #{progam.target}"
+    log.error helpTip
+    return 1
 
-# Validate RAML parameter
-if program.args.length is 0
-  log.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
-  ramlFile = null
+  folderStats = fs.lstatSync program.target
+  unless folderStats.isDirectory
+    log.error "ERROR - Invalid target directory #{progam.target}"
+    log.error helpTip
+    return 1
+
+  # TOOO: Refactor this thing!
+  # Create base structure
+  log.debug "Creating src directory"
+  fs.mkdirSync path.join(program.target, 'src')
+
+  log.debug "Creating assets directory"
+  fs.mkdirSync path.join(program.target, 'src/assets')
+  fs.mkdirSync path.join(program.target, 'src/assets/raml')
+
+  log.debug "Creating test directory"
+  fs.mkdirSync path.join(program.target, 'test')
+
+  # Validate RAML parameter
+  if program.args.length is 1
+    log.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
+    ramlFile = null
+  else
+    ramlFile = program.args[2]
+
+  if program.args.length > 2
+    log.error "ERROR - Invalid set of parameters."
+    log.error helpTip
+    return 1
+
+  # Parse RAML
+  Scaffolder = require './scaffolder'
+
+  scaffolder = new Scaffolder log, fs
+  scaffolder.generate program
 else
-  ramlFile = program.args[0]
-
-if program.args.length > 1
-  log.error "ERROR - Invalid set of parameters."
-  log.error helpTip
-  return 1
-
-# Parse RAML
-Scaffolder = require './scaffolder'
-
-scaffolder = new Scaffolder log, fs
-scaffolder.generate program
+  program.help()

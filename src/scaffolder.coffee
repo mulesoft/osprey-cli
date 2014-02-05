@@ -29,7 +29,7 @@ class Scaffolder
   createPackage: (options) =>
     @logger.debug "[Scaffolder] - Generating Package.json"
 
-    templatePath = path.join __dirname, 'templates/common/package.swig'
+    templatePath = path.join __dirname, 'templates', options.language, 'package.swig'
 
     params =
       appName: options.name
@@ -56,8 +56,12 @@ class Scaffolder
     else
       source = options.args[0]
       dest = path.join options.target, 'src/assets/raml'
-      
-      @fileWriter.copyRecursive source, dest, (err) ->
+
+      if @fileWriter.lstatSync(source).isDirectory()
+        @fileWriter.copyRecursive source, dest, (err) ->
+      else
+        dest = path.join dest, path.basename(source)
+        @fileWriter.copy source, dest, (err) ->
 
   render: (templatePath, params) ->
     swig.renderFile templatePath, params

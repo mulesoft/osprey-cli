@@ -12,9 +12,7 @@ app.use(express.logger('dev'));
 app.set('port', process.env.PORT || 3000);
 
 apiKit.register('/{{apiPath}}', app, {
-  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),
-  enableConsole: true,
-  enableMocks: true
+  ramlFile: path.join(__dirname, '/assets/raml/api.raml')
 });
 
 // Adding business logic to a valid RAML Resource

@@ -7,10 +7,8 @@
   },
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-contrib-coffee": "0.7.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-coffeelint": "0.0.8",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-mocha-test": "~0.8.1",
     "mocha": "1.15.1",

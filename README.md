@@ -1,7 +1,7 @@
 Osprey CLI
 ==========
 
-A command-line tool for Osprey.
+A command-line tool for [Osprey](https://github.com/mulesoft/osprey).
 
 ### Prerequisites
 

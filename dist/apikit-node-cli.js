@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 (function() {
   var Scaffolder, config, e, folderStats, fs, helpTip, log, logger, path, program, ramlFile, scaffolder, _ref;
 

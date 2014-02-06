@@ -11,12 +11,12 @@ app.use express.logger('dev')
 
 app.set 'port', process.env.PORT || 3000
 
-apiKit.register '/{{apiPath}}', app, {
+api = apiKit.create '/{{apiPath}}', app, {
   ramlFile: path.join(__dirname, '/assets/raml/api.raml')
 }
 
 # Adding business logic to a valid RAML Resource
-# apiKit.get '/examples/:exampleId', (req, res) ->
+# api.get '/examples/:exampleId', (req, res) ->
 #   res.send({ name: 'example' })
 
 unless module.parent

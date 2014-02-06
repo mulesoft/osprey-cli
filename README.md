@@ -1,5 +1,7 @@
-APIKit Node CLI
-===============
+Osprey CLI
+==========
+
+A command-line tool for Osprey.
 
 ### Prerequisites
 

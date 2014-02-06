@@ -22,7 +22,7 @@
 
   parser = new ArgumentParser({
     version: config.version,
-    description: 'APIKit Node CLI'
+    description: 'Osprey Node CLI'
   });
 
   subparsers = parser.addSubparsers({
@@ -88,7 +88,7 @@
     return Function.prototype.apply.call(console[level], console, args);
   };
 
-  log = logger.consoleLogger('apikit-node');
+  log = logger.consoleLogger('osprey-cli');
 
   log.setLevel(logger.WARN);
 

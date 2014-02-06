@@ -13,7 +13,7 @@ ArgumentParser = argParse.ArgumentParser
 
 parser = new ArgumentParser
   version: config.version,
-  description: 'APIKit Node CLI'
+  description: 'Osprey Node CLI'
 
 subparsers = parser.addSubparsers
   title:'subcommands',
@@ -85,7 +85,7 @@ logger.defaultConsoleAppender = (name, level, args) ->
   console[level] = console.log unless console[level]
   Function.prototype.apply.call console[level], console, args
 
-log = logger.consoleLogger 'apikit-node'
+log = logger.consoleLogger 'osprey-cli'
 log.setLevel logger.WARN
 
 if options.command == 'new'

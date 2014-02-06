@@ -29,8 +29,8 @@ module.exports = (grunt) ->
 
     concat:
       dist:
-        src: ['src/assets/shebang.js', 'dist/apikit-node-cli.js'],
-        dest: 'dist/apikit-node-cli.js'
+        src: ['src/assets/shebang.js', 'dist/osprey-cli.js'],
+        dest: 'dist/osprey-cli.js'
 
     copy:
       templates:

@@ -11,7 +11,7 @@
     function ParserWrapper(data, logger) {
       this.logger = logger;
       if (arguments.length === 1) {
-        this.logger = simplyLog.consoleLogger('apikit-wrapper');
+        this.logger = simplyLog.consoleLogger('osprey-wrapper');
       }
       this.logger.debug("Building ToolkitParser instance");
       this.raml = data;
@@ -134,7 +134,7 @@
   ramlLoader = function(filePath, loggerObj, callback) {
     if (arguments.length === 2) {
       callback = loggerObj;
-      loggerObj = simplyLog.consoleLogger('apikit-wrapper');
+      loggerObj = simplyLog.consoleLogger('osprey-wrapper');
     }
     loggerObj.debug("Parsing RAML file " + filePath);
     return ramlParser.loadFile(filePath).then(function(data) {

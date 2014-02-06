@@ -5,18 +5,18 @@ A command-line tool for Osprey.
 
 ### Prerequisites
 
-To start using APIKit you'll need the following:
+To start using Osprey CLI you'll need the following:
 
 * [Node JS](http://nodejs.org/)
 * [NPM](https://npmjs.org/)
 
 ### Getting started
 
-Install APIKit Node CLI globally - `npm install -g git+https://github.com/mulesoft/apikit-node-cli.git`.
+Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/osprey-cli.git`.
 
 ### Creating a new application
 
-`apikit new <raml-file or path-to-raml> [options]`
+`osprey new <raml-file or path-to-raml> [options]`
 
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|
@@ -30,15 +30,15 @@ Install APIKit Node CLI globally - `npm install -g git+https://github.com/muleso
 | --quiet           |-               | Silences commands
 
 ##### Examples
-`apikit new`
+`osprey new`
 
-`apikit new api.raml`
+`osprey new api.raml`
 
-`apikit new api.raml -n my-app`
+`osprey new api.raml -n my-app`
 
 ### Listing RAML resources
 
-`apikit list <raml-file>`
+`osprey list <raml-file>`
 
 ##### Examples
-`apikit list api.raml`
+`osprey list api.raml`

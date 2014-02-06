@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var apiKit = require('apikit-node');
+var osprey = require('osprey');
 
 var app = module.exports = express();
 
@@ -11,12 +11,12 @@ app.use(express.logger('dev'));
 
 app.set('port', process.env.PORT || 3000);
 
-apiKit.register('/{{apiPath}}', app, {
+api = osprey.create('/{{apiPath}}', app, {
   ramlFile: path.join(__dirname, '/assets/raml/api.raml')
 });
 
 // Adding business logic to a valid RAML Resource
-// apiKit.get('/examples/:exampleId', function(req, res) {
+// api.get('/examples/:exampleId', function(req, res) {
 //   res.send({ name: 'example' });
 // });
 

@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var apiKit = require('apikit-node');
+var osprey = require('osprey');
 
 var app = module.exports = express();
 
@@ -11,7 +11,7 @@ app.use(express.logger('dev'));
 
 app.set('port', process.env.PORT || 3000);
 
-api = apiKit.create('/{{apiPath}}', app, {
+api = osprey.create('/{{apiPath}}', app, {
   ramlFile: path.join(__dirname, '/assets/raml/api.raml')
 });
 

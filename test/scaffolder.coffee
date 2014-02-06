@@ -5,7 +5,7 @@ simplyLog = require 'simply-log'
 
 describe 'TOOLKIT SCAFFOLDER', ->
   before (done) ->
-    @logger = simplyLog.consoleLogger 'apikit'
+    @logger = simplyLog.consoleLogger 'osprey'
     @templatePath = './src/templates/node/express'
 
     @fileWriter = new (class FileWriter

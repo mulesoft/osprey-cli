@@ -1,8 +1,85 @@
 #!/usr/bin/env node
 
-# Set up logger
+fs = require 'fs.extra'
+path = require 'path'
+argParse = require 'argparse'
 logger = require 'simply-log'
+config = require '../package.json'
+Scaffolder = require './scaffolder'
+ramlParser = require 'raml-parser'
+Table = require 'cli-table'
 
+ArgumentParser = argParse.ArgumentParser
+
+parser = new ArgumentParser
+  version: config.version,
+  description: 'APIKit Node CLI'
+
+subparsers = parser.addSubparsers
+  title:'subcommands',
+  dest:"command"
+
+newParser = subparsers.addParser 'new'
+
+newParser.addArgument(
+  ['raml'],
+  nargs: '?',
+  help: 'A RAML file path or the path to container folder'
+)
+
+newParser.addArgument(
+  [ '-b', '--baseUri' ],
+  help: 'Specify base URI for your API'
+  defaultValue: '/api'
+  metavar: ''
+)
+
+newParser.addArgument(
+  [ '-l', '--language' ],
+  help: 'Specify output programming language: javascript, coffeescript',
+  choices: ['javascript', 'coffeescript']
+  defaultValue: 'javascript',
+  metavar: ''
+)
+
+newParser.addArgument(
+  [ '-t', '--target' ],
+  help: 'Specify output directory',
+  metavar: ''
+)
+
+newParser.addArgument(
+  [ '-n', '--name' ],
+  help: 'Specify application name',
+  defaultValue: 'raml-app',
+  metavar: ''
+)
+
+newParser.addArgument(
+  [ '-v', '--verbose' ],
+  help: 'Set the verbose level of output',
+  action: 'storeTrue'
+  metavar: ''
+)
+
+newParser.addArgument(
+  [ '-q', '--quiet' ],
+  action: 'storeTrue'
+  help: 'Silence commands',
+  metavar: ''
+)
+
+listParser = subparsers.addParser 'list'
+
+listParser.addArgument(
+  [ 'raml' ],
+  help: 'A RAML file path or the path to container folder'
+)
+
+# Parse input arguments
+options = parser.parseArgs()
+
+# Set up logger
 logger.defaultConsoleAppender = (name, level, args) ->
   # For those Console that don't have a real "level" link back to console.log
   console[level] = console.log unless console[level]
@@ -11,76 +88,42 @@ logger.defaultConsoleAppender = (name, level, args) ->
 log = logger.consoleLogger 'apikit-node'
 log.setLevel logger.WARN
 
-# Load file system
-fs = require 'fs.extra'
-path = require 'path'
-
-# Set up commander
-program = require 'commander'
-config = require '../package.json'
-
-program.version config.version
-program.usage 'new <raml-file or path-to-raml> [options]'
-program.option '-b, --baseUri [uri]', 'specify base URI for your API', '/api'
-program.option '-l, --language [language]', 'specify output programming language: javascript, coffeescript', 'javascript'
-program.option '-t, --target [directory]', 'specify output directory'
-program.option '-n, --name [app-name]', 'specify application name', 'raml-app'
-program.option '-v, --verbose', 'set the verbose level of output'
-program.option '-q, --quiet', 'silence commands'
-
-program.on '--help', ->
-  # Read help file and print its contents.
-  file = fs.readFileSync "#{__dirname}/assets/help.txt", 'utf8'
-  log.info file
-
-# Set common help recommendation message
-helpTip = '\nUse -h or --help for more information.'
-
-# Parse input arguments
-program.parse process.argv
-
-if program.args[0] == 'new'
+if options.command == 'new'
   # Set up log level
-  if program.verbose
+  if options.verbose
     log.setLevel logger.DEBUG
     log.debug "Running #{config.name} #{config.version}\n"
 
-  if program.quiet
+  if options.quiet
     log.setLevel logger.OFF
 
   # Log runtime parameters
   log.info  'Runtime parameters'
-  log.info  "  - baseUri: #{program.baseUri}"
-  log.info  "  - language: #{program.language}"
-  log.info  "  - target: #{program.target}" if program.target
-  log.info  "  - name: #{program.name}"
-  log.info  "  - args: #{program.args}" if program.args.length > 0
+  log.info  "  - baseUri: #{options.baseUri}"
+  log.info  "  - language: #{options.language}"
+  log.info  "  - target: #{options.target}"
+  log.info  "  - name: #{options.name}"
+  log.info  "  - raml: #{options.raml}"
   log.info  " "
 
   # Validate baseUri
-  unless program.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
-    log.error "ERROR - Invalid base URI: #{program.baseUri}"
+  unless options.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
+    log.error "ERROR - Invalid base URI: #{options.baseUri}"
     log.error helpTip
     return 1
 
   # Remove initial slash
-  program.baseUri = program.baseUri.replace(/^\//g, '')
-
-  # Validate language valid value
-  unless program.language in ['javascript', 'coffeescript']
-    log.error "ERROR - Invalid output language type: #{program.language}"
-    log.error helpTip
-    return 1
+  options.baseUri = options.baseUri.replace(/^\//g, '')
 
   # Validate target folder
-  unless program.target
-    program.target = 'output'
-    log.warn "WARNING - No target directory was provided. Setting target directory to: #{program.target}"
+  unless options.target
+    options.target = 'output'
+    log.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
 
   # Clean up output folder
-  if fs.existsSync program.target
+  if fs.existsSync options.target
     try
-      fs.rmrfSync program.target, (err) ->
+      fs.rmrfSync options.target, (err) ->
         log.debug 'Target folder was clean up'
     catch e
       log.error helpTip
@@ -88,14 +131,14 @@ if program.args[0] == 'new'
 
   # Create target directory if needed
   try
-    log.debug "Creating directory: #{program.target}"
-    fs.mkdirSync program.target
+    log.debug "Creating directory: #{options.target}"
+    fs.mkdirSync options.target
   catch e
     log.error "ERROR - Unable to create target directory #{progam.target}"
     log.error helpTip
     return 1
 
-  folderStats = fs.lstatSync program.target
+  folderStats = fs.lstatSync options.target
   unless folderStats.isDirectory
     log.error "ERROR - Invalid target directory #{progam.target}"
     log.error helpTip
@@ -104,31 +147,45 @@ if program.args[0] == 'new'
   # TOOO: Refactor this thing!
   # Create base structure
   log.debug "Creating src directory"
-  fs.mkdirSync path.join(program.target, 'src')
+  fs.mkdirSync path.join(options.target, 'src')
 
   log.debug "Creating assets directory"
-  fs.mkdirSync path.join(program.target, 'src/assets')
-  fs.mkdirSync path.join(program.target, 'src/assets/raml')
+  fs.mkdirSync path.join(options.target, 'src/assets')
+  fs.mkdirSync path.join(options.target, 'src/assets/raml')
 
   log.debug "Creating test directory"
-  fs.mkdirSync path.join(program.target, 'test')
+  fs.mkdirSync path.join(options.target, 'test')
 
-  # Validate RAML parameter
-  if program.args.length is 1
+  #Validate RAML parameter
+  unless options.raml
     log.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
-    ramlFile = null
-  else
-    ramlFile = program.args[2]
-
-  if program.args.length > 2
-    log.error "ERROR - Invalid set of parameters."
-    log.error helpTip
-    return 1
 
   # Parse RAML
-  Scaffolder = require './scaffolder'
-
   scaffolder = new Scaffolder log, fs
-  scaffolder.generate program
-else
-  program.help()
+  scaffolder.generate options
+else if options.command == 'list'
+  table = new Table
+    colWidths: [15, 100],
+    chars: { 'top': '' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
+             , 'bottom': '' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
+             , 'left': '' , 'left-mid': '' , 'mid': '' , 'mid-mid': ''
+             , 'right': '' , 'right-mid': '' , 'middle': ' ' },
+    style: { 'padding-left': 0, 'padding-right': 0 }
+
+  resourceReader = (resources, resourceUri) ->
+    if !!resources
+      resources.forEach (resource) ->
+        relativeUri = resourceUri + resource.relativeUri
+
+        resource.methods?.forEach (method) ->
+          table.push [method.method.toUpperCase(), relativeUri]
+
+        if !!resource.resources
+          resourceReader resource.resources, relativeUri
+
+  ramlParser.loadFile(options.raml).then((data) ->
+    resourceReader data.resources, ''
+    console.log table.toString()
+  , (error) ->
+    console.log 'Error parsing: ' + error
+  )

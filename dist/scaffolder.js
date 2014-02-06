@@ -65,14 +65,14 @@
     Scaffolder.prototype.copyRaml = function(options) {
       var dest, params, source, templatePath;
       this.logger.debug("[Scaffolder] - Generating RAML file");
-      if (options.args.length === 1) {
+      if (!options.raml) {
         templatePath = path.join(__dirname, 'templates/common/raml.swig');
         params = {
           appName: options.name
         };
         return this.write(path.join(options.target, 'src/assets/raml/api.raml'), this.render(templatePath, params));
       } else {
-        source = options.args[1];
+        source = options.raml;
         dest = path.join(options.target, 'src/assets/raml');
         if (this.fileWriter.lstatSync(source).isDirectory()) {
           return this.fileWriter.copyRecursive(source, dest, function(err) {});

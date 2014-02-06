@@ -12,7 +12,9 @@ To start using APIKit you'll need the following:
 
 Install APIKit Node CLI globally - `npm install -g git+https://github.com/mulesoft/apikit-node-cli.git`.
 
-## Command line options
+### Creating a new application
+
+`apikit new <raml-file or path-to-raml> [options]`
 
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|
@@ -25,13 +27,16 @@ Install APIKit Node CLI globally - `npm install -g git+https://github.com/muleso
 | --verbose         |-               | Sets the verbose level of output
 | --quiet           |-               | Silences commands
 
-### Usage
-
-`apikit new <raml-file or path-to-raml> [options]`
-
-### Examples
+##### Examples
 `apikit new`
 
 `apikit new api.raml`
 
 `apikit new api.raml -n my-app`
+
+### Listing RAML resources
+
+`apikit list <raml-file>`
+
+##### Examples
+`apikit list api.raml`

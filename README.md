@@ -10,11 +10,7 @@ To start using APIKit you'll need the following:
 
 ### Getting started
 
-1. Clone APIKit - `git clone git@github.com:mulesoft/apikit-node-cli.git`
-2. Resolve dependencies - `npm install`
-3. Compile APIKit - `grunt release`
-4. Install APIKit Node CLI globally - `npm install -g /Users/{username}/Projects/apikit-node-cli`
-5. Run apikit from a Command Line
+Install APIKit Node CLI globally - `npm install -g git+https://github.com/mulesoft/apikit-node-cli.git`.
 
 ## Command line options
 

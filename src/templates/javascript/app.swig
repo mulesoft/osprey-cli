@@ -12,7 +12,8 @@ app.use(express.logger('dev'));
 app.set('port', process.env.PORT || 3000);
 
 api = osprey.create('/{{apiPath}}', app, {
-  ramlFile: path.join(__dirname, '/assets/raml/api.raml')
+  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),
+  logLevel: 'debug'
 });
 
 // Adding business logic to a valid RAML Resource

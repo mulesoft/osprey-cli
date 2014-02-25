@@ -13,11 +13,9 @@
     "grunt-mocha-test": "~0.8.1",
     "mocha": "1.15.1",
     "should": "2.1.1",
-    "supertest": "~0.8.2",
-    "grunt-nodemon": "~0.1.2",
-    "grunt-concurrent": "~0.4.2",
+    "grunt-express-server": "~0.4.13",
     "load-grunt-tasks": "~0.2.1",
-    "grunt-wait": "~0.1.0",
+    "supertest": "~0.8.2",
     "grunt-contrib-jshint": "~0.8.0"
   }
 }

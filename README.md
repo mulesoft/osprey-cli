@@ -6,6 +6,9 @@ The scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-ba
 Osprey-Cli creates an Osprey-based application by calling a command and specifying a few parameters.
 As result, you will get the skeleton of an Osprey application (coded in javascript or coffeescript) to start working right away.
 
+### Contributing
+If you are interesting in contributing by submitting your code to this project, please read the [Contributors Agreement](https://api-notebook.anypoint.mulesoft.com/notebooks#bc1cf75a0284268407e4)
+
 ### Prerequisites
 
 To start using Osprey CLI you'll need the following:

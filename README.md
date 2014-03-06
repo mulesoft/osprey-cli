@@ -1,7 +1,10 @@
 Osprey CLI
 ==========
 
-A command-line tool for [Osprey](https://github.com/mulesoft/osprey).
+The scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications with just a command.
+### Fundamentals
+Osprey-Cli creates an Osprey-based application by calling a command and specifying a few parameters.
+As result, you will get the skeleton of an Osprey application (coded in javascript or coffeescript) to start working right away.
 
 ### Prerequisites
 
@@ -86,6 +89,3 @@ Your package.json should looks like:
 ##### Running the API
 From your terminal run:
 `grunt`
-
-
-

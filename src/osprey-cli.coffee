@@ -3,11 +3,12 @@
 fs = require 'fs.extra'
 path = require 'path'
 argParse = require 'argparse'
-logger = require 'simply-log'
+# winston = require 'winston'
 config = require '../package.json'
 Scaffolder = require './scaffolder'
 ramlParser = require 'raml-parser'
 Table = require 'cli-table'
+logger = require './utils/logger'
 
 ArgumentParser = argParse.ArgumentParser
 
@@ -79,37 +80,28 @@ listParser.addArgument(
 # Parse input arguments
 options = parser.parseArgs()
 
-# Set up logger
-logger.defaultConsoleAppender = (name, level, args) ->
-  # For those Console that don't have a real "level" link back to console.log
-  console[level] = console.log unless console[level]
-  Function.prototype.apply.call console[level], console, args
-
-log = logger.consoleLogger 'osprey-cli'
-log.setLevel logger.WARN
+logger.setLevel 'info'
 
 if options.command == 'new'
   # Set up log level
   if options.verbose
-    log.setLevel logger.DEBUG
-    log.debug "Running #{config.name} #{config.version}\n"
-
+    #log.setLevel logger.DEBUG
+    logger.info "Running #{config.name} #{config.version}\n"
   if options.quiet
-    log.setLevel logger.OFF
-
+    logger.setLevel 'off'
   # Log runtime parameters
-  log.info  'Runtime parameters'
-  log.info  "  - baseUri: #{options.baseUri}"
-  log.info  "  - language: #{options.language}"
-  log.info  "  - target: #{options.target}"
-  log.info  "  - name: #{options.name}"
-  log.info  "  - raml: #{options.raml}"
-  log.info  " "
+  logger.info "Runtime parameters"
+  logger.info "  - baseUri: #{options.baseUri}"
+  logger.info "  - language: #{options.language}"
+  logger.info "  - target: #{options.target}"
+  logger.info "  - name: #{options.name}"
+  logger.info "  - raml: #{options.raml}"
+  logger.info " "
 
   # Validate baseUri
   unless options.baseUri.match(/^\/[A-Z0-9._%+-\/]+$/i)
-    log.error "ERROR - Invalid base URI: #{options.baseUri}"
-    log.error helpTip
+    logger.error "ERROR - Invalid base URI: #{options.baseUri}"
+    logger.error helpTip
     return 1
 
   # Remove initial slash
@@ -118,50 +110,50 @@ if options.command == 'new'
   # Validate target folder
   unless options.target
     options.target = 'output'
-    log.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
+    logger.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
 
   # Clean up output folder
   if fs.existsSync options.target
     try
       fs.rmrfSync options.target, (err) ->
-        log.debug 'Target folder was clean up'
+        logger.debug 'Target folder was clean up'
     catch e
-      log.error helpTip
+      logger.error helpTip
       return 1
 
   # Create target directory if needed
   try
-    log.debug "Creating directory: #{options.target}"
+    logger.debug "Creating directory: #{options.target}"
     fs.mkdirSync options.target
   catch e
-    log.error "ERROR - Unable to create target directory #{progam.target}"
-    log.error helpTip
+    logger.error "ERROR - Unable to create target directory #{progam.target}"
+    logger.error helpTip
     return 1
 
   folderStats = fs.lstatSync options.target
   unless folderStats.isDirectory
-    log.error "ERROR - Invalid target directory #{progam.target}"
-    log.error helpTip
+    logger.error "ERROR - Invalid target directory #{progam.target}"
+    logger.error helpTip
     return 1
 
   # TOOO: Refactor this thing!
   # Create base structure
-  log.debug "Creating src directory"
+  logger.debug "Creating src directory"
   fs.mkdirSync path.join(options.target, 'src')
 
-  log.debug "Creating assets directory"
+  logger.debug "Creating assets directory"
   fs.mkdirSync path.join(options.target, 'src/assets')
   fs.mkdirSync path.join(options.target, 'src/assets/raml')
 
-  log.debug "Creating test directory"
+  logger.debug "Creating test directory"
   fs.mkdirSync path.join(options.target, 'test')
 
   #Validate RAML parameter
   unless options.raml
-    log.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
+    logger.warn "WARNING - No RAML file was provided. A sample RAML file will be used instead."
 
   # Parse RAML
-  scaffolder = new Scaffolder log, fs
+  scaffolder = new Scaffolder logger, fs
   scaffolder.generate options
 else if options.command == 'list'
   table = new Table

@@ -1,6 +1,5 @@
-  Examples:
-
-    $ osprey new
-    $ osprey new api.raml
-    $ osprey new api.raml -t path-to-folder
-    $ osprey new api.raml -n my-app
+Examples:
+    	$ osprey new
+    	$ osprey new api.raml
+    	$ osprey new api.raml -t path-to-folder
+    	$ osprey new api.raml -n my-app

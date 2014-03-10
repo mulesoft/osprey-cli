@@ -3,7 +3,6 @@
 fs = require 'fs.extra'
 path = require 'path'
 argParse = require 'argparse'
-# winston = require 'winston'
 config = require '../package.json'
 Scaffolder = require './scaffolder'
 ramlParser = require 'raml-parser'
@@ -11,6 +10,8 @@ Table = require 'cli-table'
 logger = require './utils/logger'
 
 ArgumentParser = argParse.ArgumentParser
+
+helpTip = fs.readFileSync('./src/assets/help.txt').toString()
 
 parser = new ArgumentParser
   version: config.version,
@@ -179,5 +180,5 @@ else if options.command == 'list'
     resourceReader data.resources, ''
     console.log table.toString()
   , (error) ->
-    console.log 'Error parsing: ' + error
+    logger.error 'Error parsing: ' + error
   )

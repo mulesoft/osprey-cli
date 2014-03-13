@@ -22,7 +22,7 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 
 #### Creating a new application
 
-`osprey new <raml-file or path-to-raml> [options]`
+`osprey new [raml-file or path-to-raml] [options]`
 
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|

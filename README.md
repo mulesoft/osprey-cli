@@ -3,7 +3,7 @@ Osprey CLI
 
 The scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications with just a command.
 ### Fundamentals
-Osprey-Cli creates an Osprey-based application by calling a command and specifying a few parameters.
+Osprey-CLI creates an Osprey-based application by calling a command and specifying a few parameters.
 As result, you will get the skeleton of an Osprey application (coded in javascript or coffeescript) to start working right away.
 
 ### Contributing

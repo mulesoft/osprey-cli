@@ -69,7 +69,7 @@ Your package.json should looks like:
     "osprey": "git+ssh://git@github.com:mulesoft/osprey.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",g
+    "grunt": "~0.4.2",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",

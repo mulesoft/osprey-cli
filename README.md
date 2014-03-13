@@ -20,7 +20,7 @@ To start using Osprey CLI you'll need the following:
 
 Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/osprey-cli.git`.
 
-### Creating a new application
+#### Creating a new application
 
 `osprey new <raml-file or path-to-raml> [options]`
 
@@ -42,14 +42,14 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 
 `osprey new api.raml -n my-app`
 
-### Listing RAML resources
+#### Listing RAML resources
 
 `osprey list <raml-file>`
 
 ##### Examples
 `osprey list api.raml`
 
-### Run API
+#### Run API
 
 ##### Prerequisites
 Before the API could be up and running it is necessary to add a dependency to package.json. 
@@ -69,7 +69,7 @@ Your package.json should looks like:
     "osprey": "git+ssh://git@github.com:mulesoft/osprey.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",
+    "grunt": "~0.4.2",g
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",

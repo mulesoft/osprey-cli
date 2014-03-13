@@ -89,4 +89,6 @@ Your package.json should looks like:
 
 ##### Running the API
 From your terminal run:
-`grunt`
+`grunt` (recommended: It will set up the proper listeners so changes in the code are automatically refreshed in runtime).
+
+**OR** you can always run: `node src/app.js` 

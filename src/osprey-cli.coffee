@@ -8,10 +8,11 @@ Scaffolder = require './scaffolder'
 ramlParser = require 'raml-parser'
 Table = require 'cli-table'
 logger = require './utils/logger'
+tips = require './assets/help.json'
 
 ArgumentParser = argParse.ArgumentParser
 
-helpTip = fs.readFileSync('./src/assets/help.txt').toString()
+helpTip = tips.new
 
 parser = new ArgumentParser
   version: config.version,

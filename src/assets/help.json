@@ -1,0 +1,3 @@
+{
+"new": "Examples:\n        $ osprey new\n        $ osprey new api.raml\n        $ osprey new api.raml -t path-to-folder\n        $ osprey new api.raml -n my-app"
+}

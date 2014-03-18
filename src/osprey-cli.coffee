@@ -84,6 +84,8 @@ options = parser.parseArgs()
 
 logger.setLevel 'info'
 
+###################### NEW ########################################################################
+
 if options.command == 'new'
   # Set up log level
   if options.verbose
@@ -157,6 +159,10 @@ if options.command == 'new'
   # Parse RAML
   scaffolder = new Scaffolder logger, fs
   scaffolder.generate options
+
+
+############################# LIST #################################################################
+
 else if options.command == 'list'
   table = new Table
     colWidths: [15, 100],

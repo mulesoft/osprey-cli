@@ -1,53 +1,69 @@
-parser = require '../src/wrapper'
+#parser = require '../src/wrapper'
 Scaffolder = require '../src/scaffolder'
 should = require 'should'
-simplyLog = require 'simply-log'
+logger = require '../src/utils/logger'
+ramlParser = require 'raml-parser'
+#simplyLog = require 'simply-log'
 
 describe 'TOOLKIT SCAFFOLDER', ->
-  before (done) ->
-    @logger = simplyLog.consoleLogger 'osprey'
-    @templatePath = './src/templates/node/express'
+  #before (done) ->
+  #  @logger = logger#simplyLog.consoleLogger 'osprey'
+    #@templatePath = './src/templates/node/express'
 
-    @fileWriter = new (class FileWriter
+    # @fileWriter = new (class FileWriter
+    #     writeFile:  (target, content) =>
+    #       @target = target
+    #       @content = content
+    #   )
+
+    # ramlParser.loadFile "./test/assets/leagues/leagues.raml", @logger, (wrapper) =>
+    #   @parsedRaml = wrapper
+    #   @scaffolder = new Scaffolder @logger, @fileWriter
+    #   done()
+
+  describe 'SCAFFOLDER READ RAML RESOURCES', ->
+
+  describe 'SCAFFOLDER GENERATION', ->
+    it 'Should correctly generate the base app for Express Templates', (done) ->
+      # Arrange
+      fileWriter = new (class FileWriter
         writeFile:  (target, content) =>
           @target = target
           @content = content
+        copy: (src, target)->
+        lstatSync: (src)->
+          return new (class directory
+            isDirectory:()->
+              return true
+            )
+        copyRecursive: ()->
       )
 
-    parser.loadRaml "./test/assets/leagues/leagues.raml", @logger, (wrapper) =>
-      @parsedRaml = wrapper
-      @scaffolder = new Scaffolder @logger, @fileWriter
+      scaffolder = new Scaffolder logger, fileWriter
+
+      # Act
+      options = new Object()
+      options.baseUri = 'baseUri'
+      options.language = 'javascript'
+      options.target = '/target'
+      options.name = 'demo'
+      options.raml = 'hello.raml'
+
+      scaffolder.generate options
+      # '/target', [
+      #   name: 'team'
+      #   uri: '/team'
+      #   methods: [
+      #     { name: 'get'}
+      #     { name: 'post' }
+      #   ]
+      # ]
+
+      # Assert
+      fileWriter.target.should.eql '/target/src/app.coffee'
+      #fileWriter.content.should.eql "express = require 'express'\nhttp = require 'http'\npath = require 'path'\n\nteam = require './resources/team'\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\napp.get('/team', team.get)\napp.post('/team', team.post)\n\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n"
+
       done()
-
-  describe 'SCAFFOLDER READ RAML RESOURCES', ->
-    
-
-#   describe 'SCAFFOLDER GENERATION', ->
-#     it 'Should correctly generate the base app for Express Templates', (done) ->
-#       # Arrange
-#       fileWriter = new (class FileWriter
-#         writeFile:  (target, content) =>
-#           @target = target
-#           @content = content
-#       )
-
-#       scaffolder = new Scaffolder './src/templates/node/express', @logger, fileWriter
-
-#       # Act
-#       scaffolder.generateBaseApp '/target', [
-#         name: 'team'
-#         uri: '/team'
-#         methods: [
-#           { name: 'get'}
-#           { name: 'post' }
-#         ]
-#       ]
-
-#       # Assert
-#       fileWriter.target.should.eql '/target/app.coffee'
-#       fileWriter.content.should.eql "express = require 'express'\nhttp = require 'http'\npath = require 'path'\n\nteam = require './resources/team'\n\napp = express()\n\napp.set('port', process.env.PORT || 3000)\napp.use(express.logger('dev'))\napp.use(express.json())\napp.use(express.bodyParser())\napp.use(express.methodOverride())\napp.use(app.router)\n\napp.get('/team', team.get)\napp.post('/team', team.post)\n\n\nhttp.createServer(app).listen(app.get('port'), () ->\n  console.log('Express server listening on port ' + app.get('port'))\n)\n"
-
-#       done()
 
 #     it 'Should correctly generate a resource file', (done) ->
 #       # Arrange

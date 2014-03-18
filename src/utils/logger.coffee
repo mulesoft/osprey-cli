@@ -60,4 +60,4 @@ exports.log = (message) ->
 
 exports.table = (table) ->
   for key,value of table
-      logger.log 'Osprey', "  #{key}: #{value}".replace(/\n$/, '').data
+    logger.log 'Osprey', "  #{key}: #{value}".replace(/\n$/, '').data

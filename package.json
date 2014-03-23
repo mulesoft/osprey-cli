@@ -34,12 +34,13 @@
   "dependencies": {
     "swig": "~1.2.2",
     "commander": "~2.1.0",
-    "simply-log": "~0.2.6",
     "raml-parser": "0.8.4",
     "lingo": "0.0.5",
     "jsonschema": "0.4.0",
     "express": "3.4.4",
     "async": "~0.2.9",
+    "winston": "~0.7.2",
+    "colors": "~0.6.2",
     "fs.extra": "~1.2.1",
     "argparse": "~0.1.15",
     "cli-table": "~0.3.0"

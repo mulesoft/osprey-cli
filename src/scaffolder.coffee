@@ -5,6 +5,7 @@ path = require 'path'
 
 class Scaffolder
   constructor: (@logger, @fileWriter) ->
+    logger.setLevel 'info'
 
   generate: (options) =>
     @logger.debug '[Scaffolder] - Starting scaffolder'

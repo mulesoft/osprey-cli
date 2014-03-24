@@ -1,8 +1,6 @@
 (function() {
-  var Scaffolder, lingo, parser, path, swig,
+  var Scaffolder, lingo, path, swig,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  parser = require('./wrapper');
 
   swig = require('swig');
 
@@ -20,6 +18,7 @@
       this.createPackage = __bind(this.createPackage, this);
       this.createApp = __bind(this.createApp, this);
       this.generate = __bind(this.generate, this);
+      logger.setLevel('info');
     }
 
     Scaffolder.prototype.generate = function(options) {

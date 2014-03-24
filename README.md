@@ -31,7 +31,7 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 | --baseUri         |/api            | Specifies base URI for your API
 | --language        |javascript      | Specifies output programming language: javascript, coffeescript
 | --target          |cwd             | Specifies output directory
-| --name            |raml-app        | Specifies application name
+| --name            |-               | Specifies application name. This option is required.
 | --verbose         |-               | Sets the verbose level of output
 | --quiet           |-               | Silences commands
 

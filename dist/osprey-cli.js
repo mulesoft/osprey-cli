@@ -62,6 +62,7 @@
   newParser.addArgument(['-n', '--name'], {
     help: 'Specify application name',
     defaultValue: 'raml-app',
+    required: true,
     metavar: ''
   });
 

@@ -108,7 +108,7 @@
     }
     options.baseUri = options.baseUri.replace(/^\//g, '');
     if (!options.target) {
-      options.target = 'output';
+      options.target = process.cwd();
       logger.warn("WARNING - No target directory was provided. Setting target directory to: " + options.target);
     }
     if (fs.existsSync(options.target)) {

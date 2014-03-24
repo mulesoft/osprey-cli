@@ -113,7 +113,7 @@ if options.command == 'new'
 
   # Validate target folder
   unless options.target
-    options.target = 'output'
+    options.target = process.cwd()
     logger.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
 
   # Clean up output folder

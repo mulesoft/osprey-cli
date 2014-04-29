@@ -2,6 +2,16 @@ Osprey CLI
 ==========
 
 The scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications with just a command.
+
+### Important
+**Osprey-CLI current release is still a work in progress. Osprey development team and other teams from MuleSoft have been working on Osprey based
+implementations, and even though it has been a great experience and it has been properly enhanced, it doesn't meet our criteria for a first stable version yet. **
+
+**We encourage you to use it and contribute raising issues, providing feedback or pushing your own code.**
+
+#### Not supported features (yet)
+Please, check the issues for [Osprey-Cli 1.0 Milestone](https://github.com/mulesoft/osprey-cli/issues?milestone=1&state=open) to be up-to-date with the future features to be implemented.
+
 ### Fundamentals
 Osprey-CLI creates an Osprey-based application by calling a command and specifying a few parameters.
 As result, you will get the skeleton of an Osprey application (coded in javascript or coffeescript) to start working right away.
@@ -52,7 +62,7 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 #### Run API
 
 ##### Prerequisites
-Before the API could be up and running it is necessary to add a dependency to package.json. 
+Before the API could be up and running it is necessary to add a dependency to package.json.
 Inside "dependencies" add the following line:
 
 `"osprey": "git+ssh://git@github.com:mulesoft/osprey.git"`
@@ -91,4 +101,4 @@ Your package.json should looks like:
 From your terminal run:
 `grunt` (recommended: It will set up the proper listeners so changes in the code are automatically refreshed in runtime).
 
-**OR** you can always run: `node src/app.js` 
+**OR** you can always run: `node src/app.js`

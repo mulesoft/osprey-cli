@@ -37,7 +37,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql "express = require 'express'\npath = require 'path'\nosprey = require 'osprey'\n\napp = module.exports = express()\n\napp.use express.bodyParser()\napp.use express.methodOverride()\napp.use express.compress()\napp.use express.logger('dev')\n\napp.set 'port', process.env.PORT || 3000\n\napi = osprey.create '/"  + options.baseUri + "', app,\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'\n\n# Adding business logic to a valid RAML Resource\n# api.get '/examples/:exampleId', (req, res) ->\n#   res.send({ name: 'example' })\n\nunless module.parent\n  port = app.get('port')\n  app.listen port\n  console.log \"listening on port \#{port}\""
+      fileWriter.content.should.eql "express = require 'express'\npath = require 'path'\nosprey = require 'osprey'\n\napp = module.exports = express()\n\napp.use express.bodyParser()\napp.use express.methodOverride()\napp.use express.compress()\napp.use express.logger('dev')\n\napp.set 'port', process.env.PORT || 3000\n\napi = osprey.create '/"  + options.baseUri + "', app,\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'  #  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all\n\n# Adding business logic to a valid RAML Resource\n# api.get '/examples/:exampleId', (req, res) ->\n#   res.send({ name: 'example' })\n\nunless module.parent\n  port = app.get('port')\n  app.listen port\n  console.log \"listening on port \#{port}\""
       done()
 
      it 'Should correctly generate app.js', (done) ->
@@ -69,7 +69,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql "var express = require('express');\nvar path = require('path');\nvar osprey = require('osprey');\n\nvar app = module.exports = express();\n\napp.use(express.bodyParser());\napp.use(express.methodOverride());\napp.use(express.compress());\napp.use(express.logger('dev'));\n\napp.set('port', process.env.PORT || 3000);\n\napi = osprey.create('/hello', app, {\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'\n});\n\n// Adding business logic to a valid RAML Resource\n// api.get('/examples/:exampleId', function(req, res) {\n//   res.send({ name: 'example' });\n// });\n\nif (!module.parent) {\n  var port = app.get('port');\n  app.listen(port);\n  console.log('listening on port ' + port);\n}"
+      fileWriter.content.should.eql "var express = require('express');\nvar path = require('path');\nvar osprey = require('osprey');\n\nvar app = module.exports = express();\n\napp.use(express.bodyParser());\napp.use(express.methodOverride());\napp.use(express.compress());\napp.use(express.logger('dev'));\n\napp.set('port', process.env.PORT || 3000);\n\napi = osprey.create('/hello', app, {\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all\n});\n\n// Adding business logic to a valid RAML Resource\n// api.get('/examples/:exampleId', function(req, res) {\n//   res.send({ name: 'example' });\n// });\n\nif (!module.parent) {\n  var port = app.get('port');\n  app.listen(port);\n  console.log('listening on port ' + port);\n}"
       done()
 
      it 'Should correctly generate package file', (done) ->

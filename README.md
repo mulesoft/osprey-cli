@@ -1,23 +1,27 @@
 Osprey CLI
 ==========
 
-The scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications with just a command.
+The Command Line Interface (CLI) scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications, ideally from a pre-defined [RAML](raml.org) API spec, with just a single command.
 
 ### Important
-**Osprey-CLI current release is still a work in progress. Osprey development team and other teams from MuleSoft have been working on Osprey based
-implementations, and even though it has been a great experience and it has been properly enhanced, it doesn't meet our criteria for a first stable version yet. **
+The current release of Osprey CLI is very much a work in progress. As it is in active use within a number of rapid development projects, it too is evolving with the needs those projects uncover. While it is proving extremely beneficial, because it's still evolving rapidly we don't yet feel it meets our criteria for a first fully stable release.
 
-**We encourage you to use it and contribute raising issues, providing feedback or pushing your own code.**
+**We encourage you to use it and participate by raising issues, providing feedback or contributing your own code (see below)**
 
-#### Not supported features (yet)
-Please, check the issues for [Osprey-Cli 1.0 Milestone](https://github.com/mulesoft/osprey-cli/issues?milestone=1&state=open) to be up-to-date with the future features to be implemented.
+### Coming Soon
+Please check the  [Osprey CLI 1.0 Milestone](https://github.com/mulesoft/osprey-cli/issues?milestone=1&state=open) issues list to stay up-to-date with the immediate roadmap.
 
 ### Fundamentals
-Osprey-CLI creates an Osprey-based application by calling a command and specifying a few parameters.
-As result, you will get the skeleton of an Osprey application (coded in javascript or coffeescript) to start working right away.
+Osprey-CLI creates an Osprey-based application by invoking a command and specifying a few parameters.
+As result, you will get the skeleton of an Osprey application (coded in JavaScript or CoffeeScript) to start working right away.
+
+### Related projects
+Check out the main [Osprey](https://github.com/mulesoft/osprey) project itself for information about the framework on which this tool generates applications.
 
 ### Contributing
-If you are interesting in contributing by submitting your code to this project, please read the [Contributors Agreement](https://api-notebook.anypoint.mulesoft.com/notebooks#bc1cf75a0284268407e4)
+If you are interesting in contributing some code to this project, thanks! Please submit a [Contributors Agreement](https://api-notebook.anypoint.mulesoft.com/notebooks#bc1cf75a0284268407e4) acknowledging that you are transferring ownership.
+
+To discuss this project, please use its github issues or the [RAML forum](http://forums.raml.org/).
 
 ### Prerequisites
 

@@ -1,7 +1,7 @@
 {
   "name": "osprey-cli",
   "description": "Osprey CLI",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "MuleSoft, Inc.",
   "repository": {
     "type": "git",

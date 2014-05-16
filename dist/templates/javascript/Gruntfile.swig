@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         options: {
           node_env: 'development'
         }
-      }
+      },
       test: {
         options: {
           node_env: 'test',
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     watch: {
       express: {
         files: ['src/**/*.js', 'src/assets/raml/**/*.*'],

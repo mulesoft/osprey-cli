@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "3.4.4"
+    "express": "3.4.4",
+    "osprey": "0.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

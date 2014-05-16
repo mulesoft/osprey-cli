@@ -101,9 +101,9 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/package.json'
-      fileWriter.content.should.eql "{\n  \"name\": \"demo\",\n  \"version\": \"0.0.1\",\n  \"private\": true,\n  \"dependencies\": {\n    \"express\": \"3.4.4\"\n  },\n  \"devDependencies\": {\n    \"grunt\": \"~0.4.2\",\n    \"grunt-contrib-watch\": \"~0.5.3\",\n    \"grunt-contrib-copy\": \"~0.4.1\",\n    \"grunt-contrib-clean\": \"~0.5.0\",\n    \"grunt-mocha-test\": \"~0.8.1\",\n    \"mocha\": \"1.15.1\",\n    \"should\": \"2.1.1\",\n    \"grunt-express-server\": \"~0.4.13\",\n    \"load-grunt-tasks\": \"~0.2.1\",\n    \"supertest\": \"~0.8.2\",\n    \"grunt-contrib-jshint\": \"~0.8.0\"\n  }\n}"
+      fileWriter.content.should.eql "{\n  \"name\": \"demo\",\n  \"version\": \"0.0.1\",\n  \"private\": true,\n  \"dependencies\": {\n    \"express\": \"3.4.4\",\n    \"osprey\": \"0.1.0\"\n  },\n  \"devDependencies\": {\n    \"grunt\": \"~0.4.2\",\n    \"grunt-contrib-watch\": \"~0.5.3\",\n    \"grunt-contrib-copy\": \"~0.4.1\",\n    \"grunt-contrib-clean\": \"~0.5.0\",\n    \"grunt-mocha-test\": \"~0.8.1\",\n    \"mocha\": \"1.15.1\",\n    \"should\": \"2.1.1\",\n    \"grunt-express-server\": \"~0.4.13\",\n    \"load-grunt-tasks\": \"~0.2.1\",\n    \"supertest\": \"~0.8.2\",\n    \"grunt-contrib-jshint\": \"~0.8.0\"\n  }\n}\n"
       done()
-    
+
     it 'Should correctly generate Gruntfile.coffee', (done) ->
       # Arrange
       fileWriter = new (class FileWriter
@@ -177,7 +177,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/Gruntfile.js'
-      content.should.eql "var path = require('path');\n\nmodule.exports = function(grunt) {\n  grunt.initConfig({\n    pkg: grunt.file.readJSON('package.json'),\n    jshint: {\n      all: ['src/**/*.js']\n    },\n\n    express: {\n      options: {\n        port: process.env.PORT || 3000,\n        script: 'src/app.js'\n      },\n      development: {\n        options: {\n          node_env: 'development'\n        }\n      }\n      test: {\n        options: {\n          node_env: 'test',\n          port: 3001\n        }\n      }\n    },\n    \n    watch: {\n      express: {\n        files: ['src/**/*.js', 'src/assets/raml/**/*.*'],\n        tasks: ['jshint', 'express:development'],\n        options: {\n          spawn: false,\n          atBegin: true\n        }\n      }\n    }\n  });\n\n  require('load-grunt-tasks')(grunt);\n\n  grunt.registerTask('default', ['watch']);\n};"
+      content.should.eql "var path = require('path');\n\nmodule.exports = function(grunt) {\n  grunt.initConfig({\n    pkg: grunt.file.readJSON('package.json'),\n    jshint: {\n      all: ['src/**/*.js']\n    },\n\n    express: {\n      options: {\n        port: process.env.PORT || 3000,\n        script: 'src/app.js'\n      },\n      development: {\n        options: {\n          node_env: 'development'\n        }\n      },\n      test: {\n        options: {\n          node_env: 'test',\n          port: 3001\n        }\n      }\n    },\n\n    watch: {\n      express: {\n        files: ['src/**/*.js', 'src/assets/raml/**/*.*'],\n        tasks: ['jshint', 'express:development'],\n        options: {\n          spawn: false,\n          atBegin: true\n        }\n      }\n    }\n  });\n\n  require('load-grunt-tasks')(grunt);\n\n  grunt.registerTask('default', ['watch']);\n};\n"
       done()
     it 'Should correctly generate default raml file having the correct name inside', (done) ->
       # Arrange

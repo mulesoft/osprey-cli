@@ -32,7 +32,7 @@ To start using Osprey CLI you'll need the following:
 
 ### Getting started
 
-Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/osprey-cli.git`.
+Install Osprey CLI globally - `npm install -g osprey-cli`.
 
 #### Creating a new application
 

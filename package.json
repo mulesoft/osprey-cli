@@ -7,6 +7,15 @@
     "type": "git",
     "url": "git://github.com/mulesoft/osprey-cli.git"
   },
+  "keywords": [
+    "osprey",
+    "raml",
+    "mulesoft",
+    "express",
+    "cli",
+    "rest",
+    "api"
+  ],
   "bugs": {
     "url": "https://github.com/mulesoft/osprey-cli/issues"
   },

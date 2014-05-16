@@ -38,8 +38,7 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 
 `osprey new [raml-file or path-to-raml] [options]`
 
-For `[raml-file or path-to-raml]` you can specify either a RAML file or a folder containing a RAML definition distributed in several files.
-In both cases, the original file will be copied and placed on a subfolder inside the generated project structure: `[output folder]/src/assets/raml` (where `[output folder]` is specified by the `--target` parameter).
+For `[path-to-raml-file or path-to-raml-folder]` you can specify either the path to either a RAML file or a folder containing a RAML definition distributed across several files. In both cases, the original file(s) will be copied to a subfolder inside the generated project structure: `[output folder]/src/assets/raml` (where `[output folder]` is specified by the `--target` parameter).
 
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|
@@ -48,14 +47,16 @@ In both cases, the original file will be copied and placed on a subfolder inside
 | --baseUri         |/api            | Specifies base URI for your API
 | --language        |javascript      | Specifies output programming language: javascript, coffeescript
 | --target          |cwd             | Specifies output directory
-| --name            |-               | Specifies application name. This parameter is required.
+| --name            |-               | Specifies application name. __This parameter is required.__
 | --verbose         |-               | Sets the verbose level of output
 | --quiet           |-               | Silences commands
 
 ##### Examples
 `osprey new --name my-app` or `osprey new -n my-app`
 
-`osprey new api.raml --name my-app` or `osprey new api.raml -n my-app`
+`osprey new api.raml --name my-app`
+
+`osprey new resources/specs -n my-app -l coffeescript`
 
 #### Listing RAML resources
 

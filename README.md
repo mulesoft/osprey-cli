@@ -1,7 +1,7 @@
 Osprey CLI
 ==========
 
-The Command Line Interface (CLI) scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications, ideally from a pre-defined [RAML](raml.org) API spec, with just a single command.
+The Command Line Interface (CLI) scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications, ideally from a pre-defined [RAML](http://raml.org) API spec, with just a single command.
 
 ### Important
 The current release of Osprey CLI is very much a work in progress. As it is in active use within a number of rapid development projects, it too is evolving with the needs those projects uncover. While it is proving extremely beneficial, because it's still evolving rapidly we don't yet feel it meets our criteria for a first fully stable release.

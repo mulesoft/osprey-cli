@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "express": "3.4.4",
-    "osprey": "0.1.0"
+    "osprey": "0.1.1"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

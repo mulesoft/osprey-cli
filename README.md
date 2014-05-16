@@ -19,7 +19,7 @@ As result, you will get the skeleton of an Osprey application (coded in JavaScri
 Check out the main [Osprey](https://github.com/mulesoft/osprey) project itself for information about the framework on which this tool generates applications.
 
 ### Contributing
-If you are interesting in contributing some code to this project, thanks! Please submit a [Contributors Agreement](https://api-notebook.anypoint.mulesoft.com/notebooks#bc1cf75a0284268407e4) acknowledging that you are transferring ownership.
+If you are interested in contributing some code to this project, thanks! Please submit a [Contributors Agreement](https://api-notebook.anypoint.mulesoft.com/notebooks#bc1cf75a0284268407e4) acknowledging that you are transferring ownership.
 
 To discuss this project, please use its github issues or the [RAML forum](http://forums.raml.org/).
 

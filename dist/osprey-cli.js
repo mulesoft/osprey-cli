@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 (function() {
-  var ArgumentParser, Scaffolder, Table, argParse, config, e, folderStats, fs, helpTip, listParser, logger, newParser, options, parser, path, ramlParser, resourceReader, scaffolder, subparsers, table, tips;
+  var ArgumentParser, Scaffolder, Table, argParse, config, e, folderFiles, folderStats, fs, helpTip, listParser, logger, newParser, options, parser, path, ramlParser, resourceReader, scaffolder, subparsers, table, tips;
 
   fs = require('fs.extra');
 
@@ -112,31 +112,25 @@
       options.target = process.cwd();
       logger.warn("WARNING - No target directory was provided. Setting target directory to: " + options.target);
     }
-    if (fs.existsSync(options.target)) {
+    folderStats = fs.lstatSync(options.target);
+    folderFiles = fs.readdirSync(options.target);
+    if (folderFiles.length !== 0) {
+      logger.error("ERROR - The target must be empty");
+      return 1;
+    }
+    if (!folderStats.isDirectory) {
+      logger.error("ERROR - Invalid target directory " + options.target);
+      return 1;
+    }
+    if (!fs.existsSync(options.target)) {
       try {
-        fs.rmrfSync(options.target, function(err) {
-          return logger.debug('Target folder was clean up');
-        });
+        logger.debug("Creating directory: " + options.target);
+        fs.mkdirSync(options.target);
       } catch (_error) {
         e = _error;
-        logger.error(helpTip);
+        logger.error("ERROR - Unable to create target directory " + options.target);
         return 1;
       }
-    }
-    try {
-      logger.debug("Creating directory: " + options.target);
-      fs.mkdirSync(options.target);
-    } catch (_error) {
-      e = _error;
-      logger.error("ERROR - Unable to create target directory " + progam.target);
-      logger.error(helpTip);
-      return 1;
-    }
-    folderStats = fs.lstatSync(options.target);
-    if (!folderStats.isDirectory) {
-      logger.error("ERROR - Invalid target directory " + progam.target);
-      logger.error(helpTip);
-      return 1;
     }
     logger.debug("Creating src directory");
     fs.mkdirSync(path.join(options.target, 'src'));

@@ -117,31 +117,26 @@ if options.command == 'new'
     options.target = process.cwd()
     logger.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
 
-  # Clean up output folder
-  if fs.existsSync options.target
+  # Create target directory if needed
+  folderStats = fs.lstatSync options.target
+  folderFiles = fs.readdirSync options.target
+
+  unless folderFiles.length == 0
+    logger.error "ERROR - The target must be empty"
+    return 1
+
+  unless folderStats.isDirectory
+    logger.error "ERROR - Invalid target directory #{options.target}"
+    return 1
+
+  unless fs.existsSync(options.target)
     try
-      fs.rmrfSync options.target, (err) ->
-        logger.debug 'Target folder was clean up'
+      logger.debug "Creating directory: #{options.target}"
+      fs.mkdirSync options.target
     catch e
-      logger.error helpTip
+      logger.error "ERROR - Unable to create target directory #{options.target}"
       return 1
 
-  # Create target directory if needed
-  try
-    logger.debug "Creating directory: #{options.target}"
-    fs.mkdirSync options.target
-  catch e
-    logger.error "ERROR - Unable to create target directory #{progam.target}"
-    logger.error helpTip
-    return 1
-
-  folderStats = fs.lstatSync options.target
-  unless folderStats.isDirectory
-    logger.error "ERROR - Invalid target directory #{progam.target}"
-    logger.error helpTip
-    return 1
-
-  # TOOO: Refactor this thing!
   # Create base structure
   logger.debug "Creating src directory"
   fs.mkdirSync path.join(options.target, 'src')

@@ -117,19 +117,28 @@ if options.command == 'new'
     options.target = process.cwd()
     logger.warn "WARNING - No target directory was provided. Setting target directory to: #{options.target}"
 
+  if fs.existsSync(options.raml)
+    folderStats = fs.lstatSync options.raml
+    if folderStats.isDirectory
+      if options.target.indexOf(options.raml) != -1
+        logger.error "ERROR - The target folder could not be a subfolder of the raml file path."
+        logger.error "Target  : #{options.target}"
+        logger.error "RamlPath: #{options.raml}"
+        return 1
+
   # Create target directory if needed
-  folderStats = fs.lstatSync options.target
-  folderFiles = fs.readdirSync options.target
+  if fs.existsSync(options.target)
+    folderStats = fs.lstatSync options.target
+    folderFiles = fs.readdirSync options.target
 
-  unless folderFiles.length == 0
-    logger.error "ERROR - The target must be empty"
-    return 1
+    unless folderFiles.length == 0
+      logger.error "ERROR - The target must be empty"
+      return 1
 
-  unless folderStats.isDirectory
-    logger.error "ERROR - Invalid target directory #{options.target}"
-    return 1
-
-  unless fs.existsSync(options.target)
+    unless folderStats.isDirectory
+      logger.error "ERROR - Invalid target directory #{options.target}"
+      return 1
+  else
     try
       logger.debug "Creating directory: #{options.target}"
       fs.mkdirSync options.target
@@ -155,7 +164,6 @@ if options.command == 'new'
   # Parse RAML
   scaffolder = new Scaffolder logger, fs
   scaffolder.generate options
-
 
 ############################# LIST #################################################################
 

@@ -101,7 +101,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/package.json'
-      fileWriter.content.should.eql "{\n  \"name\": \"demo\",\n  \"version\": \"0.0.1\",\n  \"private\": true,\n  \"dependencies\": {\n    \"express\": \"3.4.4\",\n    \"osprey\": \"0.1.0\"\n  },\n  \"devDependencies\": {\n    \"grunt\": \"~0.4.2\",\n    \"grunt-contrib-watch\": \"~0.5.3\",\n    \"grunt-contrib-copy\": \"~0.4.1\",\n    \"grunt-contrib-clean\": \"~0.5.0\",\n    \"grunt-mocha-test\": \"~0.8.1\",\n    \"mocha\": \"1.15.1\",\n    \"should\": \"2.1.1\",\n    \"grunt-express-server\": \"~0.4.13\",\n    \"load-grunt-tasks\": \"~0.2.1\",\n    \"supertest\": \"~0.8.2\",\n    \"grunt-contrib-jshint\": \"~0.8.0\"\n  }\n}\n"
+      fileWriter.content.should.eql "{\n  \"name\": \"demo\",\n  \"version\": \"0.0.1\",\n  \"private\": true,\n  \"dependencies\": {\n    \"express\": \"3.4.4\",\n    \"osprey\": \"0.1.1\"\n  },\n  \"devDependencies\": {\n    \"grunt\": \"~0.4.2\",\n    \"grunt-contrib-watch\": \"~0.5.3\",\n    \"grunt-contrib-copy\": \"~0.4.1\",\n    \"grunt-contrib-clean\": \"~0.5.0\",\n    \"grunt-mocha-test\": \"~0.8.1\",\n    \"mocha\": \"1.15.1\",\n    \"should\": \"2.1.1\",\n    \"grunt-express-server\": \"~0.4.13\",\n    \"load-grunt-tasks\": \"~0.2.1\",\n    \"supertest\": \"~0.8.2\",\n    \"grunt-contrib-jshint\": \"~0.8.0\"\n  }\n}\n"
       done()
 
     it 'Should correctly generate Gruntfile.coffee', (done) ->

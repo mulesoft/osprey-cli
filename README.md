@@ -39,7 +39,7 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 `osprey new [raml-file or path-to-raml] [options]`
 
 For `[raml-file or path-to-raml]` you can specify either a RAML file or a folder containing a RAML definition distributed in several files.
-In both cases, the original file will be copied and placed on a subfolder inside the generated project structure: `[output folder]/src/assets/raml` (being output folder the specified by `--target` parameter).
+In both cases, the original file will be copied and placed on a subfolder inside the generated project structure: `[output folder]/src/assets/raml` (where `[output folder]` is specified by the `--target` parameter).
 
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|

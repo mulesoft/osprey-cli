@@ -38,6 +38,9 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 
 `osprey new [raml-file or path-to-raml] [options]`
 
+For `[raml-file or path-to-raml]` you can specify either a RAML file or a folder containing a RAML definition distributed in several files.
+In both cases, the original file will be copied and placed on a subfolder inside the generated project structure: `[output folder]/src/assets/raml`.
+
 | Option            | Default Value  | Description  |
 |:------------------|:---------------|:---------------|
 | --help            |-               | Shows usage information
@@ -45,16 +48,14 @@ Install Osprey CLI globally - `npm install -g git+https://github.com/mulesoft/os
 | --baseUri         |/api            | Specifies base URI for your API
 | --language        |javascript      | Specifies output programming language: javascript, coffeescript
 | --target          |cwd             | Specifies output directory
-| --name            |-               | Specifies application name. This option is required.
+| --name            |-               | Specifies application name. This parameter is required.
 | --verbose         |-               | Sets the verbose level of output
 | --quiet           |-               | Silences commands
 
 ##### Examples
-`osprey new`
+`osprey new --name my-app` or `osprey new -n my-app`
 
-`osprey new api.raml`
-
-`osprey new api.raml -n my-app`
+`osprey new api.raml --name my-app` or `osprey new api.raml -n my-app`
 
 #### Listing RAML resources
 

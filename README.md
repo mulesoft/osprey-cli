@@ -58,11 +58,12 @@ For `[path-to-raml-file or path-to-raml-folder]` you can specify either the path
 
 `osprey new resources/specs -n my-app -l coffeescript`
 
-#### Listing RAML resources
+#### Bonus utility: Listing RAML resources in any RAML file
 
 `osprey list <raml-file>`
 
-##### Examples
+e.g.:
+
 `osprey list api.raml`
 
 #### Run API

@@ -1,6 +1,7 @@
 Osprey CLI
 ==========
 
+[![NPM version](https://badge.fury.io/js/osprey-cli.svg)](http://badge.fury.io/js/osprey-cli)
 [![Build Status](https://travis-ci.org/mulesoft/osprey-cli.png)](https://travis-ci.org/mulesoft/osprey-cli)
 [![Dependency Status](https://david-dm.org/mulesoft/osprey-cli.png)](https://david-dm.org/mulesoft/osprey-cli)
 

@@ -63,4 +63,5 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['watch']
   grunt.registerTask 'release', ['clean:build', 'coffeelint', 'copy', 'coffee', 'mochaTest', 'concat']
+  grunt.registerTask 'test', ['mochaTest']
 

@@ -59,5 +59,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "scripts": {
+    "test": "grunt test"
+  }
 }

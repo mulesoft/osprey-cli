@@ -1,6 +1,10 @@
 Osprey CLI
 ==========
 
+[![NPM version](https://badge.fury.io/js/osprey-cli.svg)](http://badge.fury.io/js/osprey-cli)
+[![Build Status](https://travis-ci.org/mulesoft/osprey-cli.png)](https://travis-ci.org/mulesoft/osprey-cli)
+[![Dependency Status](https://david-dm.org/mulesoft/osprey-cli.png)](https://david-dm.org/mulesoft/osprey-cli)
+
 The Command Line Interface (CLI) scaffolding tool to generate [Osprey](https://github.com/mulesoft/osprey)-based applications, ideally from a pre-defined [RAML](http://raml.org) API spec, with just a single command.
 
 ### Important

@@ -37,7 +37,34 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql "express = require 'express'\npath = require 'path'\nosprey = require 'osprey'\n\napp = module.exports = express()\n\napp.use express.bodyParser()\napp.use express.methodOverride()\napp.use express.compress()\napp.use express.logger('dev')\n\napp.set 'port', process.env.PORT || 3000\n\napi = osprey.create '/"  + options.baseUri + "', app,\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'  #  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all\n\n# Adding business logic to a valid RAML Resource\n# api.get '/examples/:exampleId', (req, res) ->\n#   res.send({ name: 'example' })\n\nunless module.parent\n  port = app.get('port')\n  app.listen port\n  console.log \"listening on port \#{port}\""
+      fileWriter.content.should.eql [
+        "express = require 'express'",
+        "path = require 'path'",
+        "osprey = require 'osprey'",
+        "",
+        "app = module.exports = express()",
+        "",
+        "app.use express.bodyParser()",
+        "app.use express.methodOverride()",
+        "app.use express.compress()",
+        "app.use express.logger('dev')",
+        "",
+        "app.set 'port', process.env.PORT || 3000",
+        "",
+        "api = osprey.create '/hello', app,",
+        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  logLevel: 'debug'  #  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
+        "",
+        "# Adding business logic to a valid RAML Resource",
+        "# api.get '/examples/:exampleId', (req, res) ->",
+        "#   res.send({ name: 'example' })",
+        "",
+        "unless module.parent",
+        "  port = app.get('port')",
+        "  app.listen port",
+        '  console.log "listening on port #{port}"'
+      ].join('\n')
+
       done()
 
      it 'Should correctly generate app.js', (done) ->
@@ -69,7 +96,37 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql "var express = require('express');\nvar path = require('path');\nvar osprey = require('osprey');\n\nvar app = module.exports = express();\n\napp.use(express.bodyParser());\napp.use(express.methodOverride());\napp.use(express.compress());\napp.use(express.logger('dev'));\n\napp.set('port', process.env.PORT || 3000);\n\napi = osprey.create('/hello', app, {\n  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),\n  logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all\n});\n\n// Adding business logic to a valid RAML Resource\n// api.get('/examples/:exampleId', function(req, res) {\n//   res.send({ name: 'example' });\n// });\n\nif (!module.parent) {\n  var port = app.get('port');\n  app.listen(port);\n  console.log('listening on port ' + port);\n}"
+      fileWriter.content.should.eql [
+        "var express = require('express');",
+        "var path = require('path');",
+        "var osprey = require('osprey');",
+        "",
+        "var app = module.exports = express();",
+        "",
+        "app.use(express.bodyParser());",
+        "app.use(express.methodOverride());",
+        "app.use(express.compress());",
+        "app.use(express.logger('dev'));",
+        "",
+        "app.set('port', process.env.PORT || 3000);",
+        "",
+        "api = osprey.create('/hello', app, {",
+        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
+        "});",
+        "",
+        "// Adding business logic to a valid RAML Resource",
+        "// api.get('/examples/:exampleId', function(req, res) {",
+        "//   res.send({ name: 'example' });",
+        "// });",
+        "",
+        "if (!module.parent) {",
+        "  var port = app.get('port');",
+        "  app.listen(port);",
+        "  console.log('listening on port ' + port);",
+        "}"
+      ].join('\n')
+
       done()
 
      it 'Should correctly generate package file', (done) ->
@@ -101,7 +158,32 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/package.json'
-      fileWriter.content.should.eql "{\n  \"name\": \"demo\",\n  \"version\": \"0.0.1\",\n  \"private\": true,\n  \"dependencies\": {\n    \"express\": \"3.4.4\",\n    \"osprey\": \"0.1.1\"\n  },\n  \"devDependencies\": {\n    \"grunt\": \"~0.4.2\",\n    \"grunt-contrib-watch\": \"~0.5.3\",\n    \"grunt-contrib-copy\": \"~0.4.1\",\n    \"grunt-contrib-clean\": \"~0.5.0\",\n    \"grunt-mocha-test\": \"~0.8.1\",\n    \"mocha\": \"1.15.1\",\n    \"should\": \"2.1.1\",\n    \"grunt-express-server\": \"~0.4.13\",\n    \"load-grunt-tasks\": \"~0.2.1\",\n    \"supertest\": \"~0.8.2\",\n    \"grunt-contrib-jshint\": \"~0.8.0\"\n  }\n}\n"
+      fileWriter.content.should.eql [
+        '{',
+        '  "name": "demo",',
+        '  "version": "0.0.1",',
+        '  "private": true,',
+        '  "dependencies": {',
+        '    "express": "3.4.4",',
+        '    "osprey": "0.1.1"',
+        '  },',
+        '  "devDependencies": {',
+        '    "grunt": "~0.4.2",',
+        '    "grunt-contrib-watch": "~0.5.3",',
+        '    "grunt-contrib-copy": "~0.4.1",',
+        '    "grunt-contrib-clean": "~0.5.0",',
+        '    "grunt-mocha-test": "~0.8.1",',
+        '    "mocha": "1.15.1",',
+        '    "should": "2.1.1",',
+        '    "grunt-express-server": "~0.4.13",',
+        '    "load-grunt-tasks": "~0.2.1",',
+        '    "supertest": "~0.8.2",',
+        '    "grunt-contrib-jshint": "~0.8.0"',
+        '  }',
+        '}',
+        ''
+      ].join('\n')
+
       done()
 
     it 'Should correctly generate Gruntfile.coffee', (done) ->
@@ -139,7 +221,55 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/Gruntfile.coffee'
-      content.should.eql "path = require 'path'\n\nmodule.exports = (grunt) ->\n  require('load-grunt-tasks') grunt\n\n  grunt.initConfig(\n    pkg: grunt.file.readJSON('package.json')\n\n    coffee:\n      compile:\n        expand: true\n        flatten: false\n        cwd: 'src'\n        src: ['**/*.coffee']\n        dest: './dist'\n        ext: '.js'\n\n    coffeelint:\n      app: ['src/**/*.coffee']\n      options:\n        max_line_length:\n          level: 'ignore'\n\n    express:\n      options:\n        cmd: 'coffee'\n        port: process.env.PORT || 3000\n        script: 'src/app.coffee'\n      development:\n        options:\n          node_env: 'development'\n      test:\n        options:\n          node_env: 'test'\n          port: 3001\n          \n    watch:\n      express:\n        files: ['src/**/*.coffee', 'src/assets/raml/**/*.*']\n        tasks: ['coffeelint', 'express:development']\n        options:\n          spawn: false\n          atBegin: true\n  )\n\n  grunt.registerTask 'default', ['watch']"
+      content.should.eql [
+        "path = require 'path'",
+        "",
+        "module.exports = (grunt) ->",
+        "  require('load-grunt-tasks') grunt",
+        "",
+        "  grunt.initConfig(",
+        "    pkg: grunt.file.readJSON('package.json')",
+        "",
+        "    coffee:",
+        "      compile:",
+        "        expand: true",
+        "        flatten: false",
+        "        cwd: 'src'",
+        "        src: ['**/*.coffee']",
+        "        dest: './dist'",
+        "        ext: '.js'",
+        "",
+        "    coffeelint:",
+        "      app: ['src/**/*.coffee']",
+        "      options:",
+        "        max_line_length:",
+        "          level: 'ignore'",
+        "",
+        "    express:",
+        "      options:",
+        "        cmd: 'coffee'",
+        "        port: process.env.PORT || 3000",
+        "        script: 'src/app.coffee'",
+        "      development:",
+        "        options:",
+        "          node_env: 'development'",
+        "      test:",
+        "        options:",
+        "          node_env: 'test'",
+        "          port: 3001",
+        "          ",
+        "    watch:",
+        "      express:",
+        "        files: ['src/**/*.coffee', 'src/assets/raml/**/*.*']",
+        "        tasks: ['coffeelint', 'express:development']",
+        "        options:",
+        "          spawn: false",
+        "          atBegin: true",
+        "  )",
+        "",
+        "  grunt.registerTask 'default', ['watch']"
+      ].join('\n')
+
       done()
 
     it 'Should correctly generate Gruntfile.js', (done) ->
@@ -177,7 +307,54 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/Gruntfile.js'
-      content.should.eql "var path = require('path');\n\nmodule.exports = function(grunt) {\n  grunt.initConfig({\n    pkg: grunt.file.readJSON('package.json'),\n    jshint: {\n      all: ['src/**/*.js']\n    },\n\n    express: {\n      options: {\n        port: process.env.PORT || 3000,\n        script: 'src/app.js'\n      },\n      development: {\n        options: {\n          node_env: 'development'\n        }\n      },\n      test: {\n        options: {\n          node_env: 'test',\n          port: 3001\n        }\n      }\n    },\n\n    watch: {\n      express: {\n        files: ['src/**/*.js', 'src/assets/raml/**/*.*'],\n        tasks: ['jshint', 'express:development'],\n        options: {\n          spawn: false,\n          atBegin: true\n        }\n      }\n    }\n  });\n\n  require('load-grunt-tasks')(grunt);\n\n  grunt.registerTask('default', ['watch']);\n};\n"
+
+      content.should.eql [
+        "var path = require('path');",
+        "",
+        "module.exports = function(grunt) {",
+        "  grunt.initConfig({",
+        "    pkg: grunt.file.readJSON('package.json'),",
+        "    jshint: {",
+        "      all: ['src/**/*.js']",
+        "    },",
+        "",
+        "    express: {",
+        "      options: {",
+        "        port: process.env.PORT || 3000,",
+        "        script: 'src/app.js'",
+        "      },",
+        "      development: {",
+        "        options: {",
+        "          node_env: 'development'",
+        "        }",
+        "      },",
+        "      test: {",
+        "        options: {",
+        "          node_env: 'test',",
+        "          port: 3001",
+        "        }",
+        "      }",
+        "    },",
+        "",
+        "    watch: {",
+        "      express: {",
+        "        files: ['src/**/*.js', 'src/assets/raml/**/*.*'],",
+        "        tasks: ['jshint', 'express:development'],",
+        "        options: {",
+        "          spawn: false,",
+        "          atBegin: true",
+        "        }",
+        "      }",
+        "    }",
+        "  });",
+        "",
+        "  require('load-grunt-tasks')(grunt);",
+        "",
+        "  grunt.registerTask('default', ['watch']);",
+        "};",
+        ""
+      ].join('\n')
+
       done()
     it 'Should correctly generate default raml file having the correct name inside', (done) ->
       # Arrange

@@ -52,7 +52,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "app.set 'port', process.env.PORT || 3000",
         "",
         "api = osprey.create '/hello', app,",
-        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  ramlFile: path.join(__dirname, '/assets/raml/" + options.raml + "'),",
         "  logLevel: 'debug'  #  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
         "",
         "# Adding business logic to a valid RAML Resource",
@@ -63,6 +63,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "  port = app.get('port')",
         "  app.listen port",
         '  console.log "listening on port #{port}"'
+        ""
       ].join('\n')
 
       done()
@@ -111,7 +112,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "app.set('port', process.env.PORT || 3000);",
         "",
         "api = osprey.create('/hello', app, {",
-        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  ramlFile: path.join(__dirname, '/assets/raml/" + options.raml + "'),",
         "  logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
         "});",
         "",
@@ -125,6 +126,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "  app.listen(port);",
         "  console.log('listening on port ' + port);",
         "}"
+        ""
       ].join('\n')
 
       done()

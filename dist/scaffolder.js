@@ -36,7 +36,8 @@
       this.logger.debug("[Scaffolder] - Generating app." + fileType);
       templatePath = path.join(__dirname, 'templates', options.language, 'app.swig');
       params = {
-        apiPath: options.baseUri
+        apiPath: options.baseUri,
+        ramlFileName: options.raml ? path.basename(options.raml) : 'api.raml'
       };
       return this.write(path.join(options.target, "src/app." + fileType), this.render(templatePath, params));
     };
@@ -52,13 +53,14 @@
     };
 
     Scaffolder.prototype.createGruntfile = function(options, fileType) {
-      var src, target,
-        _this = this;
+      var src, target;
       src = path.join(__dirname, 'templates', options.language, 'Gruntfile.swig');
       target = path.join(options.target, "Gruntfile." + fileType);
-      return this.fileWriter.copy(src, target, function(err) {
-        return _this.logger.debug("[Scaffolder] - Generating Gruntfile");
-      });
+      return this.fileWriter.copy(src, target, (function(_this) {
+        return function(err) {
+          return _this.logger.debug("[Scaffolder] - Generating Gruntfile");
+        };
+      })(this));
     };
 
     Scaffolder.prototype.copyRaml = function(options) {

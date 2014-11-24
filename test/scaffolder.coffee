@@ -37,7 +37,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql [
+      fileWriter.content.trim().should.eql [
         "express = require 'express'",
         "path = require 'path'",
         "osprey = require 'osprey'",
@@ -52,7 +52,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "app.set 'port', process.env.PORT || 3000",
         "",
         "api = osprey.create '/hello', app,",
-        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  ramlFile: path.join(__dirname, '/assets/raml/" + options.raml + "'),",
         "  logLevel: 'debug'  #  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
         "",
         "# Adding business logic to a valid RAML Resource",
@@ -63,7 +63,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "  port = app.get('port')",
         "  app.listen port",
         '  console.log "listening on port #{port}"'
-      ].join('\n')
+      ].join('\n').trim()
 
       done()
 
@@ -96,7 +96,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
 
       # Assert
       fileWriter.target.should.eql 'target/src/app.coffee'
-      fileWriter.content.should.eql [
+      fileWriter.content.trim().should.eql [
         "var express = require('express');",
         "var path = require('path');",
         "var osprey = require('osprey');",
@@ -111,7 +111,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "app.set('port', process.env.PORT || 3000);",
         "",
         "api = osprey.create('/hello', app, {",
-        "  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),",
+        "  ramlFile: path.join(__dirname, '/assets/raml/" + options.raml + "'),",
         "  logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all",
         "});",
         "",
@@ -125,7 +125,7 @@ describe 'TOOLKIT SCAFFOLDER', ->
         "  app.listen(port);",
         "  console.log('listening on port ' + port);",
         "}"
-      ].join('\n')
+      ].join('\n').trim()
 
       done()
 

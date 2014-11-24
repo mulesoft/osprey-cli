@@ -24,6 +24,7 @@ class Scaffolder
 
     params =
       apiPath: options.baseUri
+      ramlFileName: if options.raml then path.basename(options.raml) else 'api.raml'
 
     @write path.join(options.target, "src/app.#{ fileType }"), @render(templatePath, params)
 

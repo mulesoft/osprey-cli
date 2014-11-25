@@ -12,7 +12,7 @@ app.use(express.logger('dev'));
 app.set('port', process.env.PORT || 3000);
 
 api = osprey.create('/{{apiPath}}', app, {
-  ramlFile: path.join(__dirname, '/assets/raml/api.raml'),
+  ramlFile: path.join(__dirname, '/assets/raml/{{ramlFileName}}'),
   logLevel: 'debug'  //  logLevel: off->No logs | info->Show Osprey modules initializations | debug->Show all
 });
 

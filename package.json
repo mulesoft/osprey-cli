@@ -55,7 +55,7 @@
   },
   "preferGlobal": "true",
   "bin": {
-    "osprey": "dist/osprey-cli.js"
+    "osprey-cli": "dist/osprey-cli.js"
   },
   "files": [
     "dist"

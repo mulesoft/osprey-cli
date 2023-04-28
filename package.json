@@ -26,17 +26,17 @@
     }
   ],
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-coffee": "0.10.1",
+    "grunt": "~1.5.3",
+    "grunt-contrib-coffee": "2.0.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "0.5.0",
     "grunt-contrib-concat": "0.4.0",
-    "grunt-contrib-watch": "0.6.1",
+    "grunt-contrib-watch": "1.0.1",
     "grunt-coffeelint": "0.0.10",
-    "grunt-mocha-test": "0.10.2",
+    "grunt-mocha-test": "0.12.0",
     "coffee-script": "1.7.1",
-    "load-grunt-tasks": "0.4.0",
-    "mocha": "1.19.0",
+    "load-grunt-tasks": "2.0.0",
+    "mocha": "10.1.0",
     "should": "3.3.1"
   },
   "dependencies": {
@@ -51,7 +51,8 @@
     "colors": "~0.6.2",
     "fs.extra": "~1.2.1",
     "argparse": "~0.1.15",
-    "cli-table": "~0.3.0"
+    "cli-table": "~0.3.0",
+    "@snyk/protect": "latest"
   },
   "preferGlobal": "true",
   "bin": {
@@ -61,6 +62,9 @@
     "dist"
   ],
   "scripts": {
-    "test": "grunt test"
-  }
+    "test": "grunt test",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }
